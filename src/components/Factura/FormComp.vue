@@ -514,7 +514,7 @@ export default defineComponent({
   grid-auto-flow: dense;
   grid-template-rows: auto auto;
   gap: 3px;
-  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
 }
 
 .grid-2 {

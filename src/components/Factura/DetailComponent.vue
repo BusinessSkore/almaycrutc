@@ -195,6 +195,7 @@ import {
   getFactura,
   updateFactura,
 } from "@/services/cuetasporcobrarcj/FacturaService";
+import { createMensaje } from "@/services/cuetasporcobrarcj/ChatService";
 import numeral from "numeral";
 import moment from "moment";
 
@@ -214,6 +215,13 @@ export default defineComponent({
     };
   },
   methods: {
+    async addMessage() {
+      try {
+        const res = await createMensaje(this.message);
+      } catch (error) {
+        // console.error(error);
+      }
+    },
     toggleAlert() {
       this.showAlert = !this.showAlert;
     },
@@ -284,6 +292,7 @@ export default defineComponent({
           } else {
             this.medicoSelected[0].compNoGuberAsig += 1;
           }
+          this.addMessage();
           this.$router.push("/facturas");
         }
       } catch (error) {
@@ -295,7 +304,8 @@ export default defineComponent({
     async handleDelete() {
       try {
         if (typeof this.$route.params.id === "string") {
-          deleteFactura(this.$route.params.id);
+          await deleteFactura(this.$route.params.id);
+          this.addMessage();
           this.$router.push("/facturas");
         }
       } catch (error) {
@@ -401,7 +411,7 @@ export default defineComponent({
   grid-auto-flow: dense;
   grid-template-rows: auto auto;
   gap: 3px;
-  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
 }
 
 .grid-2 {
