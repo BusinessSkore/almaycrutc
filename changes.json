@@ -1,0 +1,42 @@
+[
+    {
+        "order": 3,
+        "description": "Logout Sin Retorno",
+        "state": "Done"
+    },
+    {
+        "order": 1,
+        "description": "Listado de Reclamaciónes en orden de último al primero.",
+        "state": "Done"
+    },
+    {
+        "order": 2,
+        "description": "Al cambiar nss cargar informacion guardada de paciente.",
+        "state": "Done"
+    },
+    {
+        "order": 4,
+        "description": "Damar solo reclamaciones.",
+        "state": "Done"
+    },
+    {
+        "order": 6,
+        "description": "Corregir errores descritos en el deployment.",
+        "state": "Pending"
+    },
+    {
+        "order": 5,
+        "description": "Ventana de Monitoreo",
+        "state": "Done"
+    },
+    {
+        "order": 7,
+        "description": "Eliminar todos los Any como tipo",
+        "state": "Pending"
+    },
+    {
+        "order": 8,
+        "description": "Corregir formato de presentacion de fecha restarle 4 horas o cambiar zona horaria en mongoose",
+        "state": "Pending"
+    }
+]

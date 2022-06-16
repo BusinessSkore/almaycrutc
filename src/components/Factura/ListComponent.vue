@@ -1,0 +1,265 @@
+<template>
+  <table v-if="this.totales.facturas" id="customers">
+    <tr>
+      <th>ID</th>
+      <th>Fecha</th>
+      <th>Orígen</th>
+      <th>ARS</th>
+      <th>Autorización</th>
+      <th>Paciente</th>
+      <th>No. Afiliado</th>
+      <th>Cédula</th>
+      <th>Cobertura</th>
+      <!-- <th>Total</th> -->
+    </tr>
+    <tr
+      v-for="(factura, index) in facturas"
+      :key="index"
+      @click="this.$router.push(`/facturas/${factura._id}`)"
+    >
+      <td>{{ factura.idfact }}</td>
+      <td>{{ formatDate(factura.fecha_ingreso) }}</td>
+      <td>{{ factura.tipo_factura }}</td>
+      <td>{{ factura.id_ars }}</td>
+      <td>{{ factura.nro_autorizacion_salida }}</td>
+      <td>{{ factura.nom }}</td>
+      <td>{{ factura.numero_afiliado }}</td>
+      <td>{{ factura.rnc }}</td>
+      <td class="der">{{ formatNumber(factura.cobertura, true) }}</td>
+      <!-- <td class="der" >{{ formatNumber(factura.total_servicio) }}</td> -->
+    </tr>
+    <tr>
+      <td>Total: {{ formatNumber(this.totales.facturas) }}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td class="der">{{ formatNumber(this.totales.cobertura, true) }}</td>
+      <!-- <td></td> -->
+    </tr>
+  </table>
+
+  <h6 class="noRegist" v-if="!this.totales.facturas">
+    No se Encontraron Registros.
+  </h6>
+
+  <!-- <div class="gridlistafacturas">
+    <table class="table table-hover">
+      <thead v-if="this.totales.facturas">
+        <tr class="mith">
+          <th class="cwhite">Título</th>
+          <th class="cwhite">Descripción</th>
+          <th class="cwhite"></th>
+          <th class="cwhite"></th>
+        </tr>
+      </thead>
+      <tbody v-for="(factura, index) in facturas" :key="index">
+        <tr :class="toColor(factura.type)">
+          <td class="bold">
+            {{ factura.title }}
+          </td>
+          <td class="bold">
+            {{ factura.description }}
+          </td>
+          <td class="bold">
+            <i
+              style="cursor: pointer"
+              @click="this.$router.push(`/facturas/${factura._id}`)"
+              class="fas fa-edit"
+            ></i>
+          </td>
+          <td class="bold">
+            <i
+              style="cursor: pointer"
+              @click="marcarListo(factura)"
+              class="fas fa-check"
+            ></i>
+          </td>
+        </tr>
+      </tbody>
+      <tbody>
+        <h6 class="noRegist" v-if="!this.totales.facturas">
+          No se encontraron registros.
+        </h6>
+        <tr v-if="this.totales.facturas">
+          <td class="bold izq bold">
+            Total: {{ formatNumber2(this.totales.facturas) }}
+          </td>
+          <td class="bold der"></td>
+          <td class="bold der"></td>
+          <td class="bold der"></td>
+        </tr>
+      </tbody>
+    </table>
+  </div> -->
+</template>
+
+<script lang="ts">
+import numeral from "numeral";
+import moment from "moment";
+import { updateOne } from "@/services/cuetasporcobrarcj/FacturaService";
+import { Factura } from "@/interfaces/Factura";
+
+export default {
+  props: ["facturas"],
+  data() {
+    return {
+      data: false,
+      totales: {},
+    };
+  },
+  methods: {
+    async marcarListo(factura: Factura) {
+      alert("Factura Lista.");
+      try {
+        const res = await updateOne(factura);
+      } catch (error) {
+        // console.error(error);
+      }
+    },
+
+    toColor(type: string) {
+      if (type == "Error") {
+        return "table-danger";
+      } else if (type == "Función") {
+        return "table-success";
+      } else if (type == "Factura") {
+        return "table-warning";
+      }
+    },
+    valorTotal() {
+      this.totales.facturas = this.facturas.length;
+      this.totales.cobertura = this.facturas.reduce(
+        (accum: any, item: any) => accum + item.cobertura,
+        0
+      );
+    },
+
+    formatNumber(value: number, decimal: boolean) {
+      if (decimal == true) {
+        return numeral(value).format("0,0.00");
+      } else {
+        return numeral(value).format("0,0");
+      }
+    },
+
+    // formatNumber2(value: number) {
+    //   return numeral(value).format("0,0");
+    // },
+
+    formatSecuence(value: number) {
+      return numeral(value).format("00000000");
+    },
+
+    formatDate(dateValue: Date) {
+      let out = moment(dateValue).add(0, "h");
+      return moment(out).format("DD/MM/YYYY");
+    },
+  },
+
+  updated() {
+    this.valorTotal();
+    // this.data = !this.data;
+  },
+};
+</script>
+
+<style lang="css" scoped>
+.bold {
+  font-weight: bold;
+}
+
+.gridlistafacturas {
+  display: grid;
+  grid-auto-flow: dense;
+  grid-template-rows: auto auto;
+  gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(100%, 1fr));
+}
+
+img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 25%;
+  margin-bottom: 10px;
+}
+
+.ta-c {
+  text-align: center;
+}
+
+p {
+  margin: 0px;
+}
+
+.red {
+  color: red;
+}
+
+.blue {
+  color: blue;
+}
+
+.green {
+  color: green;
+}
+
+td,
+th {
+  font-size: 75%;
+}
+
+.mith {
+  background-color: rgb(5, 24, 250);
+}
+
+.cwhite {
+  color: white;
+}
+
+.der {
+  text-align: right;
+}
+
+.noRegist {
+  font-weight: bold;
+  color: rgb(255, 85, 85);
+  text-align: center;
+  /* background-color: rgb(255, 85, 85); */
+  font-size: 75%;
+}
+
+/* Tabla */
+#customers {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#customers td,
+#customers th {
+  border: 1px solid #ddd;
+  padding: 3px;
+  cursor: pointer;
+}
+
+#customers tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+#customers tr:hover {
+  background-color: #ddd;
+}
+
+#customers th {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-align: center;
+  background-color: rgb(51, 163, 67);
+  color: white;
+}
+</style>
