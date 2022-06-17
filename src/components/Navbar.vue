@@ -86,7 +86,10 @@
           </li> -->
           <!-------------------------------------Start Option------------------------------------->
           <li
-            v-if="this.$store.state.user.type == 'Power User'"
+            v-if="
+              this.$store.state.user.type == 'Power User' ||
+                this.$store.state.user.type == 'Administrador'
+            "
             class="nav-item"
           >
             <a class="nav-link" @click="this.$router.push(`/facturas`)" href="#"

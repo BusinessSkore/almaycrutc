@@ -18,7 +18,7 @@
               v-show="!cargando"
               v-if="this.$store.state.user.type == 'Power User'"
               class="card bg-secondary"
-              style="max-width: 40rem;"
+              style="max-width: 20rem;"
             >
               <div class="card-header">
                 <p>Cantidad de Mejoras por Estatus</p>
@@ -40,7 +40,7 @@
               v-show="!cargando"
               v-if="this.$store.state.user.type == 'Power User'"
               class="card bg-secondary"
-              style="max-width: 40rem;"
+              style="max-width: 20rem;"
             >
               <div class="card-header"><p>Cantidad de Usuarios por Rol</p></div>
               <div class="card-body">
@@ -62,7 +62,7 @@
                   this.$store.state.user.type == 'Administrador'
               "
               class="card bg-secondary"
-              style="max-width: 40rem;"
+              style="max-width: 60rem;"
             >
               <div class="card-header">
                 <p>Cantidad de Facturas por Estatus</p>
@@ -78,9 +78,9 @@
                     <td :class="toColor(item._id.status)">
                       {{ item._id.status }}
                     </td>
-                    <td class="ta-r">{{ formatNumber(item.count) }}</td>
+                    <td class="ta-r">{{ formatNumber(item.count) }} ({{ formatNumber((item.count / this.totales.facturas) * 100) }}%)</td>
                     <td class="ta-r">
-                      {{ formatNumber(item.cobertura, true) }}
+                      {{ formatNumber(item.cobertura, true) }} ({{ formatNumber((item.cobertura / this.totales.cobertura) * 100) }}%)
                     </td>
                   </tr>
                   <tr>
@@ -178,8 +178,8 @@ export default {
       var channel = pusher.subscribe("my-channel");
       channel.bind("my-event", (data: any) => {
         this.loadfacturasCant2();
-        this.player.src = this.song.src;
-        this.player.play();
+        // this.player.src = this.song.src;
+        // this.player.play();
       });
       // End pusher subscribe
     },

@@ -90,8 +90,8 @@ export default {
       var channel = pusher.subscribe("my-channel");
       channel.bind("my-event", (data: any) => {
         this.loadFacturas2();
-        this.player.src = this.song.src;
-        this.player.play();
+        // this.player.src = this.song.src;
+        // this.player.play();
       });
       // End pusher subscribe
     },

@@ -11,24 +11,31 @@
       <!-- <th>Cédula</th> -->
       <th>Cobertura</th>
       <!-- <th>Total</th> -->
-      <th></th>
+      <!-- <th></th> -->
     </tr>
     <tr
       v-for="(factura, index) in facturas"
       :key="index"
       @click="this.$router.push(`/facturas/${factura._id}`)"
     >
-      <td>{{ factura.idfact }}</td>
-      <td>{{ formatDate(factura.fecha_ingreso) }}</td>
+      <td :class="toColor(factura.status)">{{ factura.idfact }}</td>
+      <td :class="toColorDate(diffDate(factura.fecha_ingreso))">
+        {{ formatDate(factura.fecha_ingreso) }} ({{
+          diffDate(factura.fecha_ingreso)
+        }}
+        días)
+      </td>
       <!-- <td>{{ factura.tipo_factura }}</td> -->
       <td>{{ getARS(factura.id_ars) }}</td>
       <!-- <td>{{ factura.nro_autorizacion_salida }}</td> -->
       <td>{{ factura.nom }}</td>
       <!-- <td>{{ factura.numero_afiliado }}</td> -->
       <!-- <td>{{ factura.rnc }}</td> -->
-      <td class="der">{{ formatNumber(factura.cobertura, true) }}</td>
+      <td class="der" :class="toColorNumber(factura.cobertura)">
+        {{ formatNumber(factura.cobertura, true) }}
+      </td>
       <!-- <td class="der" >{{ formatNumber(factura.total_servicio) }}</td> -->
-      <td :class="toColor(factura.status)"></td>
+      <!-- <td :class="toColor(factura.status)">{{ factura.status }}</td> -->
     </tr>
     <tr>
       <td>Total: {{ formatNumber(this.totales.facturas) }}</td>
@@ -39,9 +46,11 @@
       <!-- <td></td> -->
       <td></td>
       <td></td>
-      <td class="der">{{ formatNumber(this.totales.cobertura, true) }}</td>
+      <td :class="toColorNumber(this.totales.cobertura)" class="der">
+        {{ formatNumber(this.totales.cobertura, true) }}
+      </td>
       <!-- <td></td> -->
-      <td></td>
+      <!-- <td></td> -->
     </tr>
   </table>
 
@@ -115,6 +124,23 @@ export default {
     };
   },
   methods: {
+    diffDate(dateValue: Date) {
+      var NowMoment = moment().format("DD/MM/YYYY");
+      // var Date = "2022-06-07";
+      var Date = dateValue;
+
+      return moment().diff(moment(Date), "days");
+    },
+
+    newFormatDate(dateValue: Date) {
+      // let out = moment(dateValue).add(0, "h");
+      // return moment(out).format("DD/MM/YYYY");
+      moment.locale("es");
+      return moment(dateValue).calendar();
+      // .startOf("hour")
+      // .fromNow();
+    },
+
     toColor(type: string) {
       if (type == "1 - Recibido por Auditoría Interna") {
         return "valor1";
@@ -132,6 +158,42 @@ export default {
         return "valor7";
       } else if (type == "Todos") {
         return "Todos";
+      }
+    },
+
+    toColorDate(type: string) {
+      if (type >= "6") {
+        return "valor1";
+      } else if (type >= "5") {
+        return "valor2";
+      } else if (type >= "4") {
+        return "valor3";
+      } else if (type >= "3") {
+        return "valor4";
+      } else if (type >= "2") {
+        return "valor5";
+      } else if (type >= "1") {
+        return "valor6";
+      } else if (type >= "0") {
+        return "valor7";
+      }
+    },
+
+    toColorNumber(type: number) {
+      if (type >= 500000) {
+        return "valor1";
+      } else if (type >= 350000) {
+        return "valor2";
+      } else if (type >= 225000) {
+        return "valor3";
+      } else if (type >= 63000) {
+        return "valor4";
+      } else if (type >= 28000) {
+        return "valor5";
+      } else if (type >= 7000) {
+        return "valor6";
+      } else if (type >= 0) {
+        return "valor7";
       }
     },
 
@@ -239,52 +301,59 @@ export default {
 
 <style lang="css" scoped>
 .valor1 {
-  text-align: center;
-  background-color: rgb(255, 0, 0);
-  margin: 1px;
-  color: white;
+  /* text-align: center; */
+  /* background-color: rgb(255, 0, 0); */
+  /* margin: 1px; */
+  font-weight: bold;
+  color: rgb(255, 0, 0);
 }
 
 .valor2 {
-  text-align: center;
-  background-color: rgb(255, 64, 0);
-  margin: 1px;
-  color: white;
+  /* text-align: center; */
+  /* background-color: rgb(255, 64, 0); */
+  /* margin: 1px; */
+  font-weight: bold;
+  color: rgb(255, 64, 0);
 }
 
 .valor3 {
-  text-align: center;
-  background-color: rgb(255, 128, 0);
-  margin: 1px;
-  color: white;
+  /* text-align: center; */
+  /* background-color: rgb(255, 128, 0); */
+  /* margin: 1px; */
+  font-weight: bold;
+  color: rgb(255, 128, 0);
 }
 
 .valor4 {
-  text-align: center;
-  background-color: rgb(255, 192, 0);
-  margin: 1px;
-  color: white;
+  /* text-align: center; */
+  /* background-color: rgb(255, 192, 0); */
+  /* margin: 1px; */
+  font-weight: bold;
+  color: rgb(255, 192, 0);
 }
 
 .valor5 {
-  text-align: center;
-  background-color: rgb(171, 187, 26);
-  margin: 1px;
-  color: white;
+  /* text-align: center; */
+  /* background-color: rgb(171, 187, 26); */
+  /* margin: 1px; */
+  font-weight: bold;
+  color: rgb(171, 187, 26);
 }
 
 .valor6 {
-  text-align: center;
-  background-color: rgb(86, 182, 53);
-  margin: 1px;
-  color: white;
+  /* text-align: center; */
+  /* background-color: rgb(86, 182, 53); */
+  /* margin: 1px; */
+  font-weight: bold;
+  color: rgb(86, 182, 53);
 }
 
 .valor7 {
-  text-align: center;
-  background-color: rgb(0, 176, 80);
-  margin: 1px;
-  color: white;
+  /* text-align: center; */
+  /* background-color: rgb(0, 176, 80); */
+  /* margin: 1px; */
+  font-weight: bold;
+  color: rgb(0, 176, 80);
 }
 
 .bold {

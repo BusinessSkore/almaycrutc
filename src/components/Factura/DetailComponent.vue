@@ -439,8 +439,8 @@ export default defineComponent({
         if (typeof this.$route.params.id === "string") {
           this.loadFactura2(this.$route.params.id);
         }
-        this.player.src = this.song.src;
-        this.player.play();
+        // this.player.src = this.song.src;
+        // this.player.play();
       });
       // End pusher subscribe
     },
