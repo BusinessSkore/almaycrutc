@@ -44,8 +44,8 @@ export const eliminateFacturas = async (
 
 //Reportes----------------------------------------------------------------------------------------------------
 // Get Facturas Pendientes
-export const getMejPend = async (): Promise<AxiosResponse<Factura[]>> =>
-  await axios.get("/facturas/getMejPend");
+export const getfacturasCant = async (): Promise<AxiosResponse<Factura[]>> =>
+  await axios.get("/facturas/getGpedByStat");
 
 //Funciones----------------------------------------------------------------------------------------------------
 //Actualizar Un Registro

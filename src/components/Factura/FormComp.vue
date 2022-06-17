@@ -269,10 +269,10 @@ export default defineComponent({
           this.factura.cobertura = res.data.cobertura;
           this.factura.total_servicio = res.data.total_servicio;
 
-          this.factura.status = "Recibido por Reclamaciones Médicas";
+          this.factura.status = "4 - Recibido por Reclamaciones Médicas";
           this.factura.actividad = [];
           this.factura.actividad.push({
-            description: "Recibido por Reclamaciones Médicas",
+            description: "4 - Recibido por Reclamaciones Médicas",
             date: new Date(),
             user: this.$store.state.user.usuario
           });
@@ -319,8 +319,8 @@ export default defineComponent({
     },
 
     // defFields() {
-    // this.factura.status = "Recibido por Reclamaciones Médicas";
-    // this.actividad = "Recibido por Reclamaciones Médicas";
+    // this.factura.status = "4 - Recibido por Reclamaciones Médicas";
+    // this.actividad = "4 - Recibido por Reclamaciones Médicas";
     // this.factura.actividad.push(this.actividad);
     // },
 

@@ -83,15 +83,15 @@ export default {
   methods: {
     pusherSubscribe() {
       // Start pusher subscribe
-      var pusher = new Pusher("e939726f1ba193babdaf", {
+      var pusher = new Pusher("ec64cab5b5fa0b45d374", {
         cluster: "us2",
       });
 
       var channel = pusher.subscribe("my-channel");
       channel.bind("my-event", (data: any) => {
         this.loadFacturas2();
-        // this.player.src = this.song.src;
-        // this.player.play();
+        this.player.src = this.song.src;
+        this.player.play();
       });
       // End pusher subscribe
     },

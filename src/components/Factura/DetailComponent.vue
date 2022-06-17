@@ -51,7 +51,8 @@
             </div>
             <div>
               <p>
-                <span class="bold">Fecha: </span>{{ factura.fecha_ingreso }}
+                <span class="bold">Fecha: </span
+                >{{ formatDate2(factura.fecha_ingreso) }}
               </p>
             </div>
             <div>
@@ -80,12 +81,34 @@
                 >{{ formatNumber(factura.total_servicio) }}
               </p>
             </div>
-            <div>
+            <!-- <div>
               <p>
                 <span class="bold">Estatus: </span
-                ><span :class="toColor(factura.status)">{{ factura.status }}</span>
+                ><span :class="toColor(factura.status)">{{
+                  factura.status
+                }}</span>
               </p>
-            </div>
+            </div> -->
+
+            <!-- <div>
+              <label class="ta-l col-form-label col-form-label-sm" for="estatus"
+                >Estatus:</label
+              ><select
+                id="estatus"
+                type="estatus"
+                v-model="factura.status"
+                class="form-select"
+              >
+                <option selected>1 - Recibido por Auditoría Interna</option>
+                <option>2 - Verificado por Auditoría Interna</option>
+                <option>3 - Verificado por Auditoría Externa</option>
+                <option>4 - Recibido por Reclamaciones Médicas</option>
+                <option>5 - Verificado por Reclamaciones Médicas</option>
+                <option>6 - Cargado a Lote</option>
+                <option>7 - Enviado a la Aseguradora</option>
+              </select>
+            </div> -->
+
             <!-- <div>
 <p><span class="bold">No: </span>{{ factura.actividad }}</p>
             </div> -->
@@ -94,25 +117,69 @@
         </div>
         <br />
         <p><span class="bold">Actividades: </span></p>
+        <div class="grid-0">
+          <div>
+            <!-- <label class="ta-l col-form-label col-form-label-sm" for="estatus"
+              >Estatus:</label
+            > -->
+            <select
+              id="estatus"
+              type="estatus"
+              v-model="factura.status"
+              class="form-select"
+              @change="changeStatus()"
+            >
+              <option selected>1 - Recibido por Auditoría Interna</option>
+              <option>2 - Verificado por Auditoría Interna</option>
+              <option>3 - Verificado por Auditoría Externa</option>
+              <option>4 - Recibido por Reclamaciones Médicas</option>
+              <option>5 - Verificado por Reclamaciones Médicas</option>
+              <option>6 - Cargado a Lote</option>
+              <option>7 - Enviado a la Aseguradora</option>
+            </select>
+          </div>
+          <div>
+            <input
+              id="currentActivity"
+              type="currentActivity"
+              v-model="currentActivity"
+              class="form-control"
+            />
+          </div>
+          <div>
+            <button class="btn btn-success" @click.prevent="addActivity()">
+              <i class="fas fa-plus"></i> Agregar Actividad
+            </button>
+          </div>
+        </div>
 
         <table id="customers">
           <tr>
-            <th>Fecha</th>
+            <th>No.</th>
             <th>Actividad</th>
+            <th>Fecha</th>
             <th>Usuario</th>
+            <th></th>
           </tr>
           <tr v-for="(actividad, index) in factura.actividad" :key="index">
-            <td>{{ formatDate2(actividad.date) }}</td>
+            <td class="input-r">{{ index + 1 }}</td>
             <td>{{ actividad.description }}</td>
+            <td>{{ newFormatDate(actividad.date) }}</td>
             <td>{{ actividad.user }}</td>
+            <td>
+              <i
+                @click.prevent="deleteService(index, reclam)"
+                class="fas fa-minus-circle redOption"
+              ></i>
+            </td>
           </tr>
         </table>
 
         <br />
         <!-- <div class="grid"> -->
-        <button class="btn btn-success" @click.prevent="handleUpdate()">
+        <!-- <button class="btn btn-success" @click.prevent="handleUpdate()">
           <i class="fas fa-edit"></i> Actualizar
-        </button>
+        </button> -->
         <button class="btn btn-danger" @click.prevent="handleDelete()">
           <i class="fas fa-trash-alt"></i> Eliminar
         </button>
@@ -134,6 +201,7 @@ import {
 import { createMensaje } from "@/services/cuetasporcobrarcj/ChatService";
 import numeral from "numeral";
 import moment from "moment";
+import Pusher from "pusher-js";
 
 export default defineComponent({
   name: "factura-list",
@@ -142,6 +210,7 @@ export default defineComponent({
   },
   data() {
     return {
+      currentActivity: "",
       showAlert: false,
       cargando: false,
       clienteSelected: [],
@@ -151,20 +220,51 @@ export default defineComponent({
     };
   },
   methods: {
+    changeStatus() {
+      // alert("Change...");
+      this.currentActivity = this.factura.status;
+      this.addActivity();
+    },
+    deleteService(it: any) {
+      this.factura.actividad.splice(it, 1);
+
+      this.handleUpdate();
+    },
+
+    newFormatDate(dateValue: Date) {
+      // let out = moment(dateValue).add(0, "h");
+      // return moment(out).format("DD/MM/YYYY");
+      moment.locale("es");
+      return moment(dateValue).calendar();
+      // .startOf("hour")
+      // .fromNow();
+    },
+
+    async addActivity() {
+      this.factura.actividad.push({
+        description: this.currentActivity,
+        date: new Date(),
+        user: this.$store.state.user.usuario,
+      });
+
+      this.currentActivity = "";
+      await this.handleUpdate();
+      document.getElementById("currentActivity").focus();
+    },
     toColor(type: string) {
-      if (type == "Recibido por Auditoría Interna") {
+      if (type == "1 - Recibido por Auditoría Interna") {
         return "valor1";
-      } else if (type == "Verificado por Auditoría Interna") {
+      } else if (type == "2 - Verificado por Auditoría Interna") {
         return "valor2";
-      } else if (type == "Verificado por Auditoría Externa") {
+      } else if (type == "3 - Verificado por Auditoría Externa") {
         return "valor3";
-      } else if (type == "Recibido por Reclamaciones Médicas") {
+      } else if (type == "4 - Recibido por Reclamaciones Médicas") {
         return "valor4";
-      } else if (type == "Verificado por Reclamaciones Médicas") {
+      } else if (type == "5 - Verificado por Reclamaciones Médicas") {
         return "valor5";
-      } else if (type == "Cargado a Lote") {
+      } else if (type == "6 - Cargado a Lote") {
         return "valor6";
-      } else if (type == "Enviado a la Aseguradora") {
+      } else if (type == "7 - Enviado a la Aseguradora") {
         return "valor7";
       } else if (type == "Todos") {
         return "Todos";
@@ -279,31 +379,38 @@ export default defineComponent({
         const { data } = await getFactura(id);
         this.factura = data;
         this.estado = this.factura.estado;
-        this.fixTime();
+        // this.fixTime();
       } catch (error) {
         //console.error(error);
       }
       this.toggleLoading();
     },
+
+    async loadFactura2(id: string) {
+      try {
+        const { data } = await getFactura(id);
+        this.factura = data;
+        this.estado = this.factura.estado;
+        // this.fixTime();
+      } catch (error) {
+        //console.error(error);
+      }
+    },
+
     async handleUpdate() {
-      this.toggleLoading();
+      // this.toggleLoading();
       try {
         if (typeof this.$route.params.id === "string") {
           this.factura.userMod = this.$store.state.user.usuario;
           await updateFactura(this.$route.params.id, this.factura);
-          if (this.factura.literal == "B15") {
-            this.medicoSelected[0].compGuberAsig += 1;
-          } else {
-            this.medicoSelected[0].compNoGuberAsig += 1;
-          }
           this.addMessage();
-          this.$router.push("/facturas");
+          // this.$router.push("/facturas");
         }
       } catch (error) {
         //console.error(error);
       }
-      this.toggleLoading();
-      this.toggleAlert();
+      // this.toggleLoading();
+      // this.toggleAlert();
     },
     async handleDelete() {
       try {
@@ -320,16 +427,38 @@ export default defineComponent({
     toggleLoading() {
       this.cargando = !this.cargando;
     },
+
+    pusherSubscribe() {
+      // Start pusher subscribe
+      var pusher = new Pusher("ec64cab5b5fa0b45d374", {
+        cluster: "us2",
+      });
+
+      var channel = pusher.subscribe("my-channel");
+      channel.bind("my-event", (data: any) => {
+        if (typeof this.$route.params.id === "string") {
+          this.loadFactura2(this.$route.params.id);
+        }
+        this.player.src = this.song.src;
+        this.player.play();
+      });
+      // End pusher subscribe
+    },
   },
   mounted() {
     if (typeof this.$route.params.id === "string") {
       this.loadFactura(this.$route.params.id);
     }
+    this.pusherSubscribe();
   },
 });
 </script>
 
 <style lang="css" scoped>
+.redOption {
+  color: red;
+}
+
 /* Tabla */
 #customers {
   font-family: Arial, Helvetica, sans-serif;
@@ -443,6 +572,14 @@ th {
   width: 100%;
   max-width: 1500px;
   margin: 0px auto;
+}
+
+.grid-0 {
+  display: grid;
+  grid-auto-flow: dense;
+  grid-template-rows: auto auto;
+  gap: 3px;
+  grid-template-columns: repeat(auto-fit, minmax(33%, 1fr));
 }
 
 .grid {

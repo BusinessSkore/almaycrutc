@@ -44,13 +44,13 @@
 <script lang="ts">
 const filters = [
   "Todos",
-  "Recibido por Auditoría Interna",
-  "Verificado por Auditoría Interna",
-  "Verificado por Auditoría Externa",
-  "Recibido por Reclamaciones Médicas",
-  "Verificado por Reclamaciones Médicas",
-  "Cargado a Lote",
-  "Enviado a la Aseguradora",
+  "1 - Recibido por Auditoría Interna",
+  "2 - Verificado por Auditoría Interna",
+  "3 - Verificado por Auditoría Externa",
+  "4 - Recibido por Reclamaciones Médicas",
+  "5 - Verificado por Reclamaciones Médicas",
+  "6 - Cargado a Lote",
+  "7 - Enviado a la Aseguradora",
 ];
 
 export default {
@@ -66,19 +66,19 @@ export default {
 
   methods: {
     toColor(type: string) {
-      if (type == "Recibido por Auditoría Interna") {
+      if (type == "1 - Recibido por Auditoría Interna") {
         return "valor1";
-      } else if (type == "Verificado por Auditoría Interna") {
+      } else if (type == "2 - Verificado por Auditoría Interna") {
         return "valor2";
-      } else if (type == "Verificado por Auditoría Externa") {
+      } else if (type == "3 - Verificado por Auditoría Externa") {
         return "valor3";
-      } else if (type == "Recibido por Reclamaciones Médicas") {
+      } else if (type == "4 - Recibido por Reclamaciones Médicas") {
         return "valor4";
-      } else if (type == "Verificado por Reclamaciones Médicas") {
+      } else if (type == "5 - Verificado por Reclamaciones Médicas") {
         return "valor5";
-      } else if (type == "Cargado a Lote") {
+      } else if (type == "6 - Cargado a Lote") {
         return "valor6";
-      } else if (type == "Enviado a la Aseguradora") {
+      } else if (type == "7 - Enviado a la Aseguradora") {
         return "valor7";
       } else if (type == "Todos") {
         return "Todos";

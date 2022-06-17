@@ -141,7 +141,7 @@ export default {
 
     pusherSubscribe() {
       // Start pusher subscribe
-      var pusher = new Pusher("e939726f1ba193babdaf", {
+      var pusher = new Pusher("ec64cab5b5fa0b45d374", {
         cluster: "us2",
       });
 

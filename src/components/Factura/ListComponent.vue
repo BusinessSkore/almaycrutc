@@ -11,6 +11,7 @@
       <!-- <th>Cédula</th> -->
       <th>Cobertura</th>
       <!-- <th>Total</th> -->
+      <th></th>
     </tr>
     <tr
       v-for="(factura, index) in facturas"
@@ -27,6 +28,7 @@
       <!-- <td>{{ factura.rnc }}</td> -->
       <td class="der">{{ formatNumber(factura.cobertura, true) }}</td>
       <!-- <td class="der" >{{ formatNumber(factura.total_servicio) }}</td> -->
+      <td :class="toColor(factura.status)"></td>
     </tr>
     <tr>
       <td>Total: {{ formatNumber(this.totales.facturas) }}</td>
@@ -39,6 +41,7 @@
       <td></td>
       <td class="der">{{ formatNumber(this.totales.cobertura, true) }}</td>
       <!-- <td></td> -->
+      <td></td>
     </tr>
   </table>
 
@@ -57,7 +60,7 @@
         </tr>
       </thead>
       <tbody v-for="(factura, index) in facturas" :key="index">
-        <tr :class="toColor(factura.type)">
+        <tr :class="toColor2(factura.type)">
           <td class="bold">
             {{ factura.title }}
           </td>
@@ -112,6 +115,26 @@ export default {
     };
   },
   methods: {
+    toColor(type: string) {
+      if (type == "1 - Recibido por Auditoría Interna") {
+        return "valor1";
+      } else if (type == "2 - Verificado por Auditoría Interna") {
+        return "valor2";
+      } else if (type == "3 - Verificado por Auditoría Externa") {
+        return "valor3";
+      } else if (type == "4 - Recibido por Reclamaciones Médicas") {
+        return "valor4";
+      } else if (type == "5 - Verificado por Reclamaciones Médicas") {
+        return "valor5";
+      } else if (type == "6 - Cargado a Lote") {
+        return "valor6";
+      } else if (type == "7 - Enviado a la Aseguradora") {
+        return "valor7";
+      } else if (type == "Todos") {
+        return "Todos";
+      }
+    },
+
     getARS(id_ars: string) {
       switch (id_ars) {
         case "5":
@@ -168,7 +191,7 @@ export default {
       }
     },
 
-    toColor(type: string) {
+    toColor2(type: string) {
       if (type == "Error") {
         return "table-danger";
       } else if (type == "Función") {
@@ -215,6 +238,55 @@ export default {
 </script>
 
 <style lang="css" scoped>
+.valor1 {
+  text-align: center;
+  background-color: rgb(255, 0, 0);
+  margin: 1px;
+  color: white;
+}
+
+.valor2 {
+  text-align: center;
+  background-color: rgb(255, 64, 0);
+  margin: 1px;
+  color: white;
+}
+
+.valor3 {
+  text-align: center;
+  background-color: rgb(255, 128, 0);
+  margin: 1px;
+  color: white;
+}
+
+.valor4 {
+  text-align: center;
+  background-color: rgb(255, 192, 0);
+  margin: 1px;
+  color: white;
+}
+
+.valor5 {
+  text-align: center;
+  background-color: rgb(171, 187, 26);
+  margin: 1px;
+  color: white;
+}
+
+.valor6 {
+  text-align: center;
+  background-color: rgb(86, 182, 53);
+  margin: 1px;
+  color: white;
+}
+
+.valor7 {
+  text-align: center;
+  background-color: rgb(0, 176, 80);
+  margin: 1px;
+  color: white;
+}
+
 .bold {
   font-weight: bold;
 }
