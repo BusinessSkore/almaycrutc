@@ -90,8 +90,8 @@ export default {
       var channel = pusher.subscribe("my-channel");
       channel.bind("my-event", (data: any) => {
         this.loadFacturas2();
-        this.player.src = this.song.src;
-        this.player.play();
+        // this.player.src = this.song.src;
+        // this.player.play();
       });
       // End pusher subscribe
     },
@@ -320,7 +320,7 @@ h4 {
   position: fixed;
   top: 0;
   left: 0;
-  background: rgba(0, 0, 0, 0.5);
+  /* background: rgba(0, 0, 0, 0.1); */
   transition: all 500ms ease;
 }
 

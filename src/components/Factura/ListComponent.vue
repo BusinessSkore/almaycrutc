@@ -3,12 +3,12 @@
     <tr>
       <th>ID</th>
       <th>Fecha</th>
-      <th>Orígen</th>
+      <!-- <th>Orígen</th> -->
       <th>ARS</th>
-      <th>Autorización</th>
+      <!-- <th>Autorización</th> -->
       <th>Paciente</th>
-      <th>No. Afiliado</th>
-      <th>Cédula</th>
+      <!-- <th>No. Afiliado</th> -->
+      <!-- <th>Cédula</th> -->
       <th>Cobertura</th>
       <!-- <th>Total</th> -->
     </tr>
@@ -19,22 +19,22 @@
     >
       <td>{{ factura.idfact }}</td>
       <td>{{ formatDate(factura.fecha_ingreso) }}</td>
-      <td>{{ factura.tipo_factura }}</td>
-      <td>{{ factura.id_ars }}</td>
-      <td>{{ factura.nro_autorizacion_salida }}</td>
+      <!-- <td>{{ factura.tipo_factura }}</td> -->
+      <td>{{ getARS(factura.id_ars) }}</td>
+      <!-- <td>{{ factura.nro_autorizacion_salida }}</td> -->
       <td>{{ factura.nom }}</td>
-      <td>{{ factura.numero_afiliado }}</td>
-      <td>{{ factura.rnc }}</td>
+      <!-- <td>{{ factura.numero_afiliado }}</td> -->
+      <!-- <td>{{ factura.rnc }}</td> -->
       <td class="der">{{ formatNumber(factura.cobertura, true) }}</td>
       <!-- <td class="der" >{{ formatNumber(factura.total_servicio) }}</td> -->
     </tr>
     <tr>
       <td>Total: {{ formatNumber(this.totales.facturas) }}</td>
       <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
+      <!-- <td></td> -->
+      <!-- <td></td> -->
+      <!-- <td></td> -->
+      <!-- <td></td> -->
       <td></td>
       <td></td>
       <td class="der">{{ formatNumber(this.totales.cobertura, true) }}</td>
@@ -112,6 +112,53 @@ export default {
     };
   },
   methods: {
+    getARS(id_ars: string) {
+      switch (id_ars) {
+        case "5":
+          return "ARS CMD";
+        case "14":
+          return "MAPFRE SALUD ARS, S.A.";
+        case "8":
+          return "FUTURO";
+        case "12":
+          return "META SALUD";
+        case "23":
+          return "YUNEN";
+        case "17":
+          return "RESERVAS";
+        case "13":
+          return "MONUMENTAL";
+        case "4":
+          return "ASEMAP";
+        case "1":
+          return "ARS APS S A";
+        case "21":
+          return "SIMAG";
+        case "16":
+          return "RENACER";
+        case "59":
+          return "GRUPO MEDICO ASOCIADO";
+        case "24":
+          return "PRIMERA  ARS DE HUMANO";
+        case "22":
+          return "UNIVERSAL";
+        case "29":
+          return "ALBA GAS S.R.L.";
+        case "10":
+          return "HUMANO SEGUROS";
+        case "20":
+          return "SENASA CONTRIBUTIVO";
+        case "61":
+          return "SENASA SUBSIDIADO";
+        case "18":
+          return "SEMMA";
+        case "65":
+          return "IDOPPRIL";
+        default:
+          return "ARS Descripcion";
+      }
+    },
+
     async marcarListo(factura: Factura) {
       alert("Factura Lista.");
       try {
@@ -261,5 +308,10 @@ th {
   text-align: center;
   background-color: rgb(51, 163, 67);
   color: white;
+}
+
+td,
+th {
+  font-size: 75%;
 }
 </style>

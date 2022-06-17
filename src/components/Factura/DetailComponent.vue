@@ -1,5 +1,6 @@
 <template v-show="!cargando">
   <Navbar />
+  <!-- {{ this.factura.actividad }} -->
   <div v-if="cargando" class="spin">
     <img class="img" src="@/assets/images/logo.png" />
   </div>
@@ -28,159 +29,94 @@
               ><input
                 id="no"
                 type="number"
-                v-model="factura.no"
-                class="form-control"
-              />
+                v-model="factura.no }}</p>
             </div> -->
             <div>
-              <label class="ta-l col-form-label col-form-label-sm" for="idfact"
-                >Id:</label
-              ><input
-                id="idfact"
-                type="idfact"
-                v-model="factura.idfact"
-                class="form-control"
-              />
+              <p><span class="bold">No: </span>{{ factura.idfact }}</p>
             </div>
             <div>
-              <label class="ta-l col-form-label col-form-label-sm" for="id_ars"
-                >Id ARS:</label
-              ><input
-                id="id_ars"
-                type="id_ars"
-                v-model="factura.id_ars"
-                class="form-control"
-              />
+              <p><span class="bold">Id ARS: </span>{{ factura.id_ars }}</p>
             </div>
             <div>
-              <label class="ta-l col-form-label col-form-label-sm" for="nom"
-                >Paciente:</label
-              ><input
-                id="nom"
-                type="nom"
-                v-model="factura.nom"
-                class="form-control"
-              />
+              <p><span class="bold">ARS: </span>{{ getARS(factura.id_ars) }}</p>
             </div>
             <div>
-              <label
-                class="ta-l col-form-label col-form-label-sm"
-                for="nro_autorizacion_salida"
-                >Autorización:</label
-              ><input
-                id="nro_autorizacion_salida"
-                type="nro_autorizacion_salida"
-                v-model="factura.nro_autorizacion_salida"
-                class="form-control"
-              />
+              <p><span class="bold">Paciente: </span>{{ factura.nom }}</p>
             </div>
             <div>
-              <label
-                class="ta-l col-form-label col-form-label-sm"
-                for="fecha_ingreso"
-                >Fecha:</label
-              ><input
-                id="fecha_ingreso"
-                type="date"
-                v-model="factura.fecha_ingreso"
-                class="form-control"
-              />
+              <p>
+                <span class="bold">Autorización: </span
+                >{{ factura.nro_autorizacion_salida }}
+              </p>
             </div>
             <div>
-              <label
-                class="ta-l col-form-label col-form-label-sm"
-                for="numero_afiliado"
-                >Afiliado No.:</label
-              ><input
-                id="numero_afiliado"
-                type="numero_afiliado"
-                v-model="factura.numero_afiliado"
-                class="form-control"
-              />
+              <p>
+                <span class="bold">Fecha: </span>{{ factura.fecha_ingreso }}
+              </p>
             </div>
             <div>
-              <label class="ta-l col-form-label col-form-label-sm" for="rnc"
-                >Cédula:</label
-              ><input
-                id="rnc"
-                type="rnc"
-                v-model="factura.rnc"
-                class="form-control"
-              />
+              <p>
+                <span class="bold">Afiliado No.: </span
+                >{{ factura.numero_afiliado }}
+              </p>
             </div>
             <div>
-              <label
-                class="ta-l col-form-label col-form-label-sm"
-                for="tipo_factura"
-                >Orígen:</label
-              ><input
-                id="tipo_factura"
-                type="tipo_factura"
-                v-model="factura.tipo_factura"
-                class="form-control"
-              />
+              <p><span class="bold">Cédula: </span>{{ factura.rnc }}</p>
             </div>
             <div>
-              <label
-                class="ta-l col-form-label col-form-label-sm"
-                for="cobertura"
-                >Cobertura:</label
-              ><input
-                id="cobertura"
-                type="number"
-                v-model="factura.cobertura"
-                class="form-control"
-              />
+              <p>
+                <span class="bold">Orígen: </span>{{ factura.tipo_factura }}
+              </p>
             </div>
             <div>
-              <label
-                class="ta-l col-form-label col-form-label-sm"
-                for="total_servicio"
-                >Total:</label
-              ><input
-                id="total_servicio"
-                type="number"
-                v-model="factura.total_servicio"
-                class="form-control"
-              />
+              <p>
+                <span class="bold">Cobertura: </span
+                >{{ formatNumber(factura.cobertura) }}
+              </p>
             </div>
             <div>
-              <label class="ta-l col-form-label col-form-label-sm" for="status"
-                >Estatus:</label
-              ><input
-                id="status"
-                type="status"
-                v-model="factura.status"
-                class="form-control"
-              />
+              <p>
+                <span class="bold">Total: </span
+                >{{ formatNumber(factura.total_servicio) }}
+              </p>
+            </div>
+            <div>
+              <p>
+                <span class="bold">Estatus: </span
+                ><span :class="toColor(factura.status)">{{ factura.status }}</span>
+              </p>
             </div>
             <!-- <div>
-              <label
-                class="ta-l col-form-label col-form-label-sm"
-                for="actividad"
-                >Actividad:</label
-              ><input
-                id="actividad"
-                type="actividad"
-                v-model="factura.actividad"
-                class="form-control"
-              />
+<p><span class="bold">No: </span>{{ factura.actividad }}</p>
             </div> -->
           </div>
           <!-- End Fields -->
         </div>
-        <div class="grid">
-          <button
-            class="btn btn-success"
-            @click.prevent="handleUpdate()"
-            :disabled="!factura.title || !factura.description || !factura.type"
-          >
-            <i class="fas fa-edit"></i> Actualizar
-          </button>
-          <button class="btn btn-danger" @click.prevent="handleDelete()">
-            <i class="fas fa-trash-alt"></i> Eliminar
-          </button>
-        </div>
+        <br />
+        <p><span class="bold">Actividades: </span></p>
+
+        <table id="customers">
+          <tr>
+            <th>Fecha</th>
+            <th>Actividad</th>
+            <th>Usuario</th>
+          </tr>
+          <tr v-for="(actividad, index) in factura.actividad" :key="index">
+            <td>{{ formatDate2(actividad.date) }}</td>
+            <td>{{ actividad.description }}</td>
+            <td>{{ actividad.user }}</td>
+          </tr>
+        </table>
+
+        <br />
+        <!-- <div class="grid"> -->
+        <button class="btn btn-success" @click.prevent="handleUpdate()">
+          <i class="fas fa-edit"></i> Actualizar
+        </button>
+        <button class="btn btn-danger" @click.prevent="handleDelete()">
+          <i class="fas fa-trash-alt"></i> Eliminar
+        </button>
+        <!-- </div> -->
       </fieldset>
     </form>
   </div>
@@ -215,6 +151,71 @@ export default defineComponent({
     };
   },
   methods: {
+    toColor(type: string) {
+      if (type == "Recibido por Auditoría Interna") {
+        return "valor1";
+      } else if (type == "Verificado por Auditoría Interna") {
+        return "valor2";
+      } else if (type == "Verificado por Auditoría Externa") {
+        return "valor3";
+      } else if (type == "Recibido por Reclamaciones Médicas") {
+        return "valor4";
+      } else if (type == "Verificado por Reclamaciones Médicas") {
+        return "valor5";
+      } else if (type == "Cargado a Lote") {
+        return "valor6";
+      } else if (type == "Enviado a la Aseguradora") {
+        return "valor7";
+      } else if (type == "Todos") {
+        return "Todos";
+      }
+    },
+    getARS(id_ars: string) {
+      switch (id_ars) {
+        case "5":
+          return "ARS CMD";
+        case "14":
+          return "MAPFRE SALUD ARS, S.A.";
+        case "8":
+          return "FUTURO";
+        case "12":
+          return "META SALUD";
+        case "23":
+          return "YUNEN";
+        case "17":
+          return "RESERVAS";
+        case "13":
+          return "MONUMENTAL";
+        case "4":
+          return "ASEMAP";
+        case "1":
+          return "ARS APS S A";
+        case "21":
+          return "SIMAG";
+        case "16":
+          return "RENACER";
+        case "59":
+          return "GRUPO MEDICO ASOCIADO";
+        case "24":
+          return "PRIMERA  ARS DE HUMANO";
+        case "22":
+          return "UNIVERSAL";
+        case "29":
+          return "ALBA GAS S.R.L.";
+        case "10":
+          return "HUMANO SEGUROS";
+        case "20":
+          return "SENASA CONTRIBUTIVO";
+        case "61":
+          return "SENASA SUBSIDIADO";
+        case "18":
+          return "SEMMA";
+        case "65":
+          return "IDOPPRIL";
+        default:
+          return "ARS Descripcion";
+      }
+    },
     async addMessage() {
       try {
         const res = await createMensaje(this.message);
@@ -263,10 +264,13 @@ export default defineComponent({
       return moment(out).format("yyyy-MM-DTHH:mm");
     },
 
+    formatDate2(dateValue: Date) {
+      let out = moment(dateValue).add(0, "days");
+      return moment(out).format("D/MM/yyyy HH:mm");
+    },
+
     fixTime() {
-      this.factura.fechaProceso = this.formatDate(this.factura.fechaProceso);
-      this.factura.fechaEfectivo = this.formatDate(this.factura.fechaEfectivo);
-      this.factura.fechaVence = this.formatDate(this.factura.fechaVence);
+      this.factura.fecha_ingreso = this.formatDate2(this.factura.fecha_ingreso);
     },
 
     async loadFactura(id: string) {
@@ -326,6 +330,41 @@ export default defineComponent({
 </script>
 
 <style lang="css" scoped>
+/* Tabla */
+#customers {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#customers td,
+#customers th {
+  border: 1px solid #ddd;
+  padding: 3px;
+  cursor: pointer;
+}
+
+#customers tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+#customers tr:hover {
+  background-color: #ddd;
+}
+
+#customers th {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-align: center;
+  background-color: rgb(51, 163, 67);
+  color: white;
+}
+
+td,
+th {
+  font-size: 75%;
+}
+
 /* <!-------------------------------------------------- Menú --------------------------------------------------> */
 * {
   box-sizing: border-box;
@@ -411,7 +450,7 @@ export default defineComponent({
   grid-auto-flow: dense;
   grid-template-rows: auto auto;
   gap: 3px;
-  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(22rem, 1fr));
 }
 
 .grid-2 {
@@ -430,9 +469,10 @@ export default defineComponent({
 } */
 
 h6 {
-  color: rgb(5, 24, 250);
-  font-weight: bold;
+  color: white;
+  /* font-weight: bold; */
   text-align: center;
+  background-color: rgb(51, 163, 67);
 }
 
 h5 {
@@ -549,5 +589,62 @@ label {
   margin-top: 20px;
   margin-bottom: 20px;
   background-color: rgb(0, 255, 0);
+}
+
+.bold {
+  font-weight: bold;
+}
+
+p {
+  margin: 0;
+}
+
+.valor1 {
+  text-align: center;
+  background-color: rgb(255, 0, 0);
+  margin: 1px;
+  color: white;
+}
+
+.valor2 {
+  text-align: center;
+  background-color: rgb(255, 64, 0);
+  margin: 1px;
+  color: white;
+}
+
+.valor3 {
+  text-align: center;
+  background-color: rgb(255, 128, 0);
+  margin: 1px;
+  color: white;
+}
+
+.valor4 {
+  text-align: center;
+  background-color: rgb(255, 192, 0);
+  margin: 1px;
+  color: white;
+}
+
+.valor5 {
+  text-align: center;
+  background-color: rgb(171, 187, 26);
+  margin: 1px;
+  color: white;
+}
+
+.valor6 {
+  text-align: center;
+  background-color: rgb(86, 182, 53);
+  margin: 1px;
+  color: white;
+}
+
+.valor7 {
+  text-align: center;
+  background-color: rgb(0, 176, 80);
+  margin: 1px;
+  color: white;
 }
 </style>

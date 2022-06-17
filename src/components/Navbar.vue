@@ -45,17 +45,17 @@
           </li>
           <!--------------------------------------End Option-------------------------------------->
           <!-------------------------------------Start Option------------------------------------->
-          <li
+          <!-- <li
             v-if="this.$store.state.user.type == 'Power User'"
             class="nav-item"
           >
             <a class="nav-link" @click="this.$router.push(`/areas`)" href="#"
               >Áreas
             </a>
-          </li>
+          </li> -->
           <!--------------------------------------End Option-------------------------------------->
           <!-------------------------------------Start Option------------------------------------->
-          <li
+          <!-- <li
             v-if="
               this.$store.state.user.type == 'Power User' ||
                 this.$store.state.user.type == 'Administrador' ||
@@ -67,8 +67,8 @@
             <a class="nav-link" @click="this.$router.push(`/reportes`)" href="#"
               >Reportes
             </a>
-          </li>
-          <li
+          </li> -->
+          <!-- <li
             v-if="
               this.$store.state.user.type == 'Power User' ||
                 this.$store.state.user.type == 'Administrador' ||
@@ -83,7 +83,7 @@
               href="#"
               >Asignaciones
             </a>
-          </li>
+          </li> -->
           <!-------------------------------------Start Option------------------------------------->
           <li
             v-if="this.$store.state.user.type == 'Power User'"
@@ -179,9 +179,9 @@ export default defineComponent({
   font-size: 50%;
 }
 
-li{
+/* li{
   font-size: 75%;
-}
+} */
 
 /* .container-fluid{
   height: 10px;

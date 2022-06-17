@@ -68,8 +68,8 @@ export default {
 
   methods: {
     reproducir() {
-      // this.player.src = this.song.src;
-      // this.player.play();
+      // // this.player.src = this.song.src;
+      // // this.player.play();
       // alert("Actualizado...");
       // import myTrack from "@/assets/sounds/notification.mp3";
       // myTrack.currentTime = 0;
@@ -159,8 +159,8 @@ export default {
       var channel = pusher.subscribe("my-channel");
       channel.bind("my-event", (data: any) => {
         this.loadReportesByUser2();
-        this.player.src = this.song.src;
-        this.player.play();
+        // this.player.src = this.song.src;
+        // this.player.play();
       });
       // End pusher subscribe
     },
@@ -174,8 +174,8 @@ export default {
   },
 
   // created() {
-  //   this.player.src = this.song.src;
-  //   this.player.play();
+  //   // this.player.src = this.song.src;
+  //   // this.player.play();
   // },
 };
 </script>

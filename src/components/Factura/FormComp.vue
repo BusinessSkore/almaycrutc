@@ -1,5 +1,5 @@
 <template v-show="!cargando">
-  <!-- {{ this.factura }} -->
+  <!-- {{ this.factura.actividad }} -->
   <!-- {{ this.respuesta }} -->
   <!-- {{this.documento}} -->
   <Navbar />
@@ -270,9 +270,11 @@ export default defineComponent({
           this.factura.total_servicio = res.data.total_servicio;
 
           this.factura.status = "Recibido por Reclamaciones Médicas";
+          this.factura.actividad = [];
           this.factura.actividad.push({
             description: "Recibido por Reclamaciones Médicas",
             date: new Date(),
+            user: this.$store.state.user.usuario
           });
         } catch (error) {
           // console.error(error);
@@ -533,9 +535,10 @@ export default defineComponent({
 } */
 
 h6 {
-  color: rgb(5, 24, 250);
-  font-weight: bold;
+  color: white;
+  /* font-weight: bold; */
   text-align: center;
+  background-color: rgb(51, 163, 67) ;
 }
 
 h5 {
