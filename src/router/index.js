@@ -152,7 +152,10 @@ const routes = [
         name: "facturas",
         component: FacturaComponent,
         meta: {
-          roles: ["Power User"],
+          roles: [
+            "Power User",
+            "Administrador"
+          ],
         },
       },
       {
@@ -160,7 +163,10 @@ const routes = [
         name: "factura-details",
         component: FacturaDetailComponent,
         meta: {
-          roles: ["Power User"],
+          roles: [
+            "Power User",
+            "Administrador"
+          ],
         },
       },
       {
@@ -168,7 +174,10 @@ const routes = [
         name: "factura-details2",
         component: FacturaPrintComponent,
         meta: {
-          roles: ["Power User"],
+          roles: [
+            "Power User",
+            "Administrador"
+          ],
         },
       },
       {
@@ -176,7 +185,10 @@ const routes = [
         name: "facturas-form",
         component: FacturaFormComp,
         meta: {
-          roles: ["Power User"],
+          roles: [
+            "Power User",
+            "Administrador"
+          ],
         },
       },
 

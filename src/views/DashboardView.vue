@@ -54,47 +54,58 @@
               </div>
             </div>
             <!------------------------------------------ ***** ------------------------------------------>
-            <!------------------------------------------ Campo ------------------------------------------>
-            <div
-              v-show="!cargando"
-              v-if="
-                this.$store.state.user.type == 'Power User' ||
-                  this.$store.state.user.type == 'Administrador'
-              "
-              class="card bg-secondary"
-              style="max-width: 60rem;"
-            >
-              <div class="card-header">
-                <p>Cantidad de Facturas por Estatus</p>
-              </div>
-              <div class="card-body">
-                <table id="customers">
-                  <tr>
-                    <th>Estatus</th>
-                    <th>Cant.</th>
-                    <th>Total</th>
-                  </tr>
-                  <tr v-for="(item, index) in facturasCant" :key="index">
-                    <td :class="toColor(item._id.status)">
-                      {{ item._id.status }}
-                    </td>
-                    <td class="ta-r">{{ formatNumber(item.count) }} ({{ formatNumber((item.count / this.totales.facturas) * 100) }}%)</td>
-                    <td class="ta-r">
-                      {{ formatNumber(item.cobertura, true) }} ({{ formatNumber((item.cobertura / this.totales.cobertura) * 100) }}%)
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Total</td>
-                    <td class="ta-r">
-                      {{ formatNumber(this.totales.facturas) }}
-                    </td>
-                    <td class="ta-r">
-                      {{ formatNumber(this.totales.cobertura, true) }}
-                    </td>
-                  </tr>
-                </table>
+          </div>
+        </div>
+      </fieldset>
+      <!---------------------------------------- Finish Dashboard por Usuario ---------------------------------------->
+    </form>
+    <div
+      v-show="!cargando"
+      v-if="
+        this.$store.state.user.type == 'Power User' ||
+          this.$store.state.user.type == 'Administrador'
+      "
+      class="card bg-secondary"
+      style="max-width: 60rem;"
+    >
+      <!-- <div class="card-header">
+        <p>Cantidad de Facturas por Estatus</p>
+      </div> -->
+      <div class="card-body">
+        <p>Cantidad de Facturas por Estatus</p>
+        <table id="customers">
+          <tr>
+            <th>Estatus</th>
+            <th>Cant.</th>
+            <th>Total</th>
+          </tr>
+          <tr v-for="(item, index) in facturasCant" :key="index">
+            <td :class="toColor(item._id.status)">
+              {{ item._id.status }}
+            </td>
+            <td class="ta-r">
+              {{ formatNumber(item.count) }} ({{
+                formatNumber((item.count / this.totales.facturas) * 100)
+              }}%)
+            </td>
+            <td class="ta-r">
+              {{ formatNumber(item.cobertura, true) }} ({{
+                formatNumber((item.cobertura / this.totales.cobertura) * 100)
+              }}%)
+            </td>
+          </tr>
+          <tr>
+            <td>Total</td>
+            <td class="ta-r">
+              {{ formatNumber(this.totales.facturas) }}
+            </td>
+            <td class="ta-r">
+              {{ formatNumber(this.totales.cobertura, true) }}
+            </td>
+          </tr>
+        </table>
 
-                <!-- <p
+        <!-- <p
                   v-for="(item, index) in facturasCant"
                   :key="index"
                   class="card-text"
@@ -102,14 +113,8 @@
                   {{ item._id.status }} : {{ item.count }} :
                   {{ item.cobertura }}
                 </p> -->
-              </div>
-            </div>
-            <!------------------------------------------ ***** ------------------------------------------>
-          </div>
-        </div>
-      </fieldset>
-      <!---------------------------------------- Finish Dashboard por Usuario ---------------------------------------->
-    </form>
+      </div>
+    </div>
   </div>
 </template>
 
