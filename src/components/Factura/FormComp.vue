@@ -269,10 +269,10 @@ export default defineComponent({
           this.factura.cobertura = res.data.cobertura;
           this.factura.total_servicio = res.data.total_servicio;
 
-          this.factura.status = "4 - Recibido por Reclamaciones Médicas";
+          this.factura.status = this.$store.state.user.defaultStatus;
           this.factura.actividad = [];
           this.factura.actividad.push({
-            description: "4 - Recibido por Reclamaciones Médicas",
+            description: this.$store.state.user.defaultStatus,
             date: new Date(),
             user: this.$store.state.user.usuario
           });
@@ -319,7 +319,7 @@ export default defineComponent({
     },
 
     // defFields() {
-    // this.factura.status = "4 - Recibido por Reclamaciones Médicas";
+    // this.factura.status = this.$store.state.user.defaultStatus;
     // this.actividad = "4 - Recibido por Reclamaciones Médicas";
     // this.factura.actividad.push(this.actividad);
     // },
@@ -349,6 +349,7 @@ export default defineComponent({
     async saveFacturaa() {
       await this.loadOneFactura();
       try {
+        
         const res = await createFacturaa(this.servicio);
         // // console.log(res);
       } catch (error) {
@@ -369,6 +370,7 @@ export default defineComponent({
         } catch (error) {
           // // console.error(error);
         }
+        this.factura.status = this.$store.state.user.defaultStatus;
         this.factura.userReg = this.$store.state.user.usuario;
         const res = await createFactura(this.factura).then(
           (res) => {

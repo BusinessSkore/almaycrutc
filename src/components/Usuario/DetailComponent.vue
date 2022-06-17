@@ -68,6 +68,21 @@
             <!------------------------------------------ ***** ------------------------------------------>
             <!------------------------------------------ Campo ------------------------------------------>
             <div>
+              <label class="ta-l col-form-label col-form-label-sm" for="role"
+                >Estatus por Defecto:</label
+              ><select
+                id="role"
+                type="role"
+                v-model="currentUsuario.defaultStatus"
+                class="form-select"
+              >
+                <option>1 - Recibido por Auditoría Interna</option>
+                <option>4 - Recibido por Reclamaciones Médicas</option>
+              </select>
+            </div>
+            <!------------------------------------------ ***** ------------------------------------------>
+            <!------------------------------------------ Campo ------------------------------------------>
+            <div>
               <label class="ta-l col-form-label col-form-label-sm" for="grupo"
                 >Grupo:</label
               ><select

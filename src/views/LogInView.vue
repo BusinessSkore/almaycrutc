@@ -101,6 +101,7 @@ export default {
             this.$store.state.user.type = res.data.usuario.role;
             // alert(res.data.usuario.role)
             this.$store.state.user.usuario = res.data.usuario.nombre;
+            this.$store.state.user.defaultStatus = res.data.usuario.defaultStatus;
             this.$router.push("/dashboard");
           }
         },

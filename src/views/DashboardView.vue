@@ -83,12 +83,12 @@
             <td :class="toColor(item._id.status)">
               {{ item._id.status }}
             </td>
-            <td class="ta-r">
+            <td :class="toColor(item._id.status)" class="ta-r">
               {{ formatNumber(item.count) }} ({{
                 formatNumber((item.count / this.totales.facturas) * 100)
               }}%)
             </td>
-            <td class="ta-r">
+            <td :class="toColor(item._id.status)" class="ta-r">
               {{ formatNumber(item.cobertura, true) }} ({{
                 formatNumber((item.cobertura / this.totales.cobertura) * 100)
               }}%)
@@ -262,51 +262,58 @@ export default {
 <style lang="css" scoped>
 .valor1 {
   text-align: left;
-  background-color: rgb(255, 0, 0);
+  /* background-color: rgb(255, 0, 0); */
   margin: 1px;
-  color: white;
+  font-weight: bold;
+  color: rgb(255, 0, 0);
 }
 
 .valor2 {
   text-align: left;
-  background-color: rgb(255, 64, 0);
+  /* background-color: rgb(255, 64, 0); */
   margin: 1px;
-  color: white;
+  font-weight: bold;
+  color: rgb(255, 64, 0);
 }
 
 .valor3 {
   text-align: left;
-  background-color: rgb(255, 128, 0);
+  /* background-color: rgb(255, 128, 0); */
   margin: 1px;
-  color: white;
+  font-weight: bold;
+  color: rgb(255, 128, 0);
 }
 
 .valor4 {
   text-align: left;
-  background-color: rgb(255, 192, 0);
+  /* background-color: rgb(255, 192, 0); */
   margin: 1px;
-  color: white;
+  font-weight: bold;
+  color: rgb(255, 192, 0);
 }
 
 .valor5 {
   text-align: left;
-  background-color: rgb(171, 187, 26);
+  /* background-color: rgb(171, 187, 26); */
   margin: 1px;
-  color: white;
+  font-weight: bold;
+  color: rgb(171, 187, 26);
 }
 
 .valor6 {
   text-align: left;
-  background-color: rgb(86, 182, 53);
+  /* background-color: rgb(86, 182, 53); */
   margin: 1px;
-  color: white;
+  font-weight: bold;
+  color: rgb(86, 182, 53);
 }
 
 .valor7 {
   text-align: left;
-  background-color: rgb(0, 176, 80);
+  /* background-color: rgb(0, 176, 80); */
   margin: 1px;
-  color: white;
+  font-weight: bold;
+  color: rgb(0, 176, 80);
 }
 
 .ta-r {

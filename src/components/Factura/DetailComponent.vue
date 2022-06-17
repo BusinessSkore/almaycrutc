@@ -168,7 +168,7 @@
             <td>{{ actividad.user }}</td>
             <td>
               <i
-                @click.prevent="deleteService(index, reclam)"
+                @click.prevent="deleteService(index, actividad.user)"
                 class="fas fa-minus-circle redOption"
               ></i>
             </td>
@@ -225,10 +225,13 @@ export default defineComponent({
       this.currentActivity = this.factura.status;
       this.addActivity();
     },
-    deleteService(it: any) {
-      this.factura.actividad.splice(it, 1);
-
-      this.handleUpdate();
+    deleteService(it: any, user: string) {
+      if (user == this.$store.state.user.usuario) {
+        this.factura.actividad.splice(it, 1);
+        this.handleUpdate();
+      } else {
+        alert("No puede Eliminar una Actividad de Otro Usuario");
+      }
     },
 
     newFormatDate(dateValue: Date) {
@@ -241,14 +244,15 @@ export default defineComponent({
     },
 
     async addActivity() {
-      this.factura.actividad.push({
-        description: this.currentActivity,
-        date: new Date(),
-        user: this.$store.state.user.usuario,
-      });
-
-      this.currentActivity = "";
-      await this.handleUpdate();
+      if (this.currentActivity !== "") {
+        this.factura.actividad.push({
+          description: this.currentActivity,
+          date: new Date(),
+          user: this.$store.state.user.usuario,
+        });
+        this.currentActivity = "";
+        await this.handleUpdate();
+      }
       document.getElementById("currentActivity").focus();
     },
     toColor(type: string) {
