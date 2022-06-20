@@ -155,7 +155,8 @@ const routes = [
           roles: [
             "Power User",
             "Administrador",
-            "Encargado"
+            "Encargado",
+            "Agente"
           ],
         },
       },
@@ -167,7 +168,8 @@ const routes = [
           roles: [
             "Power User",
             "Administrador",
-            "Encargado"
+            "Encargado",
+            "Agente"
           ],
         },
       },

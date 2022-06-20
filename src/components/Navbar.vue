@@ -104,7 +104,8 @@
             v-if="
               this.$store.state.user.type == 'Power User' ||
                 this.$store.state.user.type == 'Administrador' ||
-                this.$store.state.user.type == 'Encargado'
+                this.$store.state.user.type == 'Encargado' ||
+                this.$store.state.user.type == 'Agente'
             "
           >
             <a
@@ -119,6 +120,11 @@
             >
             <div :class="{ show: this.showFactura }" class="dropdown-menu">
               <a
+                v-if="
+                  this.$store.state.user.type == 'Power User' ||
+                    this.$store.state.user.type == 'Administrador' ||
+                    this.$store.state.user.type == 'Encargado'
+                "
                 class="dropdown-item"
                 @click="this.$router.push(`/facturas/new`)"
                 href="#"
