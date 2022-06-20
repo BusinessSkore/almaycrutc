@@ -247,7 +247,7 @@ export default defineComponent({
   },
 
   methods: {
-    formatDateToFix(dateValue: Date, incTime: Boolean) {
+    formatDateToFix(dateValue: Date, incTime: boolean) {
       if (incTime == true) {
         let out = moment(dateValue).add(0, "days");
         return moment(out).format("yyyy-MM-DTHH:mm");
