@@ -13,7 +13,7 @@
           <div class="grid">
             <div>
               <label class="col-form-label col-form-label-sm mt-4" for="nombre"
-                >Nombre Completo</label
+                >Nombre y Apellido</label
               ><input
                 class="form-control"
                 type="text"

@@ -76,10 +76,10 @@
         <p>Cantidad de Facturas por Estatus</p>
       </div> -->
       <div class="card-body">
-        <p style="font-weight: bold">Cantidad de Facturas por Estatus</p>
+        <p style="font-weight: bold">Facturas por Ubicación</p>
         <table id="customers">
           <tr>
-            <th>Estatus</th>
+            <th>Ubicación</th>
             <th>Cant.</th>
             <th>Total</th>
           </tr>
@@ -119,6 +119,62 @@
                 </p> -->
       </div>
     </div>
+    <div
+      v-show="!cargando"
+      v-if="
+        this.$store.state.user.type == 'Power User' ||
+          this.$store.state.user.type == 'Administrador'
+      "
+      class="card bg-secondary"
+      style="max-width: 30rem;"
+    >
+      <!-- <div class="card-header">
+        <p>Cantidad de Facturas por Estatus</p>
+      </div> -->
+      <div class="card-body">
+        <p style="font-weight: bold">Facturas por Cliente</p>
+        <table id="customers">
+          <tr>
+            <th>Cliente</th>
+            <th>Cant.</th>
+            <th>Total</th>
+          </tr>
+          <tr v-for="(item, index) in factsGpedByCli" :key="index">
+            <td>
+              {{ getARS(item._id.status) }}
+            </td>
+            <td class="ta-r">
+              {{ formatNumber(item.count) }} ({{
+                formatNumber((item.count / this.totales.facturas2) * 100)
+              }}%)
+            </td>
+            <td class="ta-r">
+              {{ formatNumber(item.cobertura, true) }} ({{
+                formatNumber((item.cobertura / this.totales.cobertura2) * 100)
+              }}%)
+            </td>
+          </tr>
+          <tr style="font-weight: bold">
+            <td>Total: {{ this.totales.cantClientes }}</td>
+            <td class="ta-r">
+              {{ formatNumber(this.totales.facturas) }}
+            </td>
+            <td class="ta-r">
+              {{ formatNumber(this.totales.cobertura, true) }}
+            </td>
+          </tr>
+        </table>
+
+        <!-- <p
+                  v-for="(item, index) in facturasCant"
+                  :key="index"
+                  class="card-text"
+                >
+                  {{ item._id.status }} : {{ item.count }} :
+                  {{ item.cobertura }}
+                </p> -->
+      </div>
+    </div>
   </div>
 </template>
 
@@ -126,7 +182,10 @@
 import Navbar from "@/components/Navbar.vue";
 import { getMejPend } from "@/services/cuetasporcobrarcj/MejoraService";
 import { getUsuariosCant } from "@/services/cuetasporcobrarcj/UsuarioService";
-import { getfacturasCant } from "@/services/cuetasporcobrarcj/FacturaService";
+import {
+  getfacturasCant,
+  getfactsGpedByCli,
+} from "@/services/cuetasporcobrarcj/FacturaService";
 import numeral from "numeral";
 import Pusher from "pusher-js";
 export default {
@@ -139,6 +198,7 @@ export default {
     return {
       usuariosCant: [] as any,
       facturasCant: [] as any,
+      factsGpedByCli: [] as any,
       mejorasPend: [] as any,
       totales: {} as any,
       cargando: false,
@@ -146,6 +206,53 @@ export default {
   },
 
   methods: {
+    getARS(id_ars: string) {
+      switch (id_ars) {
+        case "5":
+          return "ARS CMD";
+        case "14":
+          return "MAPFRE SALUD ARS, S.A.";
+        case "8":
+          return "FUTURO";
+        case "12":
+          return "META SALUD";
+        case "23":
+          return "YUNEN";
+        case "17":
+          return "RESERVAS";
+        case "13":
+          return "MONUMENTAL";
+        case "4":
+          return "ASEMAP";
+        case "1":
+          return "ARS APS S A";
+        case "21":
+          return "SIMAG";
+        case "16":
+          return "RENACER";
+        case "59":
+          return "GRUPO MEDICO ASOCIADO";
+        case "24":
+          return "PRIMERA  ARS DE HUMANO";
+        case "22":
+          return "UNIVERSAL";
+        case "29":
+          return "ALBA GAS S.R.L.";
+        case "10":
+          return "HUMANO SEGUROS";
+        case "20":
+          return "SENASA CONTRIBUTIVO";
+        case "61":
+          return "SENASA SUBSIDIADO";
+        case "18":
+          return "SEMMA";
+        case "65":
+          return "IDOPPRIL";
+        default:
+          return "ARS Descripcion";
+      }
+    },
+
     toColor(type: string) {
       if (type == "1 - Recibido por Auditoría Interna") {
         return "valor1";
@@ -176,6 +283,18 @@ export default {
         (accum: any, item: any) => accum + item.cobertura,
         0
       );
+
+      this.totales.facturas2 = this.factsGpedByCli.reduce(
+        (accum: any, item: any) => accum + item.count,
+        0
+      );
+
+      this.totales.cobertura2 = this.factsGpedByCli.reduce(
+        (accum: any, item: any) => accum + item.cobertura,
+        0
+      );
+
+      this.totales.cantClientes = this.factsGpedByCli.length;
     },
 
     pusherSubscribe() {
@@ -187,6 +306,7 @@ export default {
       var channel = pusher.subscribe("my-channel");
       channel.bind("my-event", (data: any) => {
         this.loadfacturasCant2();
+        this.loadfactsGpedByCli2();
         // this.player.src = this.song.src;
         // this.player.play();
       });
@@ -238,6 +358,26 @@ export default {
       this.toggleLoading();
     },
 
+    async loadfactsGpedByCli() {
+      this.toggleLoading();
+      try {
+        const res = await getfactsGpedByCli();
+        this.factsGpedByCli = res.data;
+      } catch (error) {
+        // console.error(error);
+      }
+      this.toggleLoading();
+    },
+
+    async loadfactsGpedByCli2() {
+      try {
+        const res = await getfactsGpedByCli();
+        this.factsGpedByCli = res.data;
+      } catch (error) {
+        // console.error(error);
+      }
+    },
+
     async loadfacturasCant2() {
       // this.toggleLoading();
       try {
@@ -254,6 +394,7 @@ export default {
     this.loadMejorasPendientes();
     this.loadUsuariosCant();
     this.loadfacturasCant();
+    this.loadfactsGpedByCli();
     this.pusherSubscribe();
   },
 

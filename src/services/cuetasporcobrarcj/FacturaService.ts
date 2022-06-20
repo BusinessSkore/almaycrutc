@@ -10,7 +10,7 @@ export const createFacturaa = async (
 
 // Crear un Solo Registro
 export const createFactura = async (factura: Factura): Promise<AxiosResponse> =>
-await axios.post("/facturas/Save", factura);
+  await axios.post("/facturas/Save", factura);
 
 // Leer Todos los registros
 export const getFacturas = async (): Promise<AxiosResponse<Factura[]>> =>
@@ -25,11 +25,11 @@ export const getOneFactura = async (): Promise<AxiosResponse<Factura>> =>
   await axios.get("/facturas/GetOne");
 
 //Actualizar un Registro
-  export const updateFactura = async (
-    id: string,
-    newFactura: Factura
-  ): Promise<AxiosResponse<Factura>> =>
-    await axios.put(`/facturas/Update/${id}`, newFactura);
+export const updateFactura = async (
+  id: string,
+  newFactura: Factura
+): Promise<AxiosResponse<Factura>> =>
+  await axios.put(`/facturas/Update/${id}`, newFactura);
 
 //Actualizar todos los Registros
 
@@ -43,13 +43,15 @@ export const eliminateFacturas = async (
 ): Promise<AxiosResponse> => await axios.post("/facturas/delete", factura);
 
 //Reportes----------------------------------------------------------------------------------------------------
-// Get Facturas Pendientes
+// Get Facturas Agrupadas por Estatus
 export const getfacturasCant = async (): Promise<AxiosResponse<Factura[]>> =>
   await axios.get("/facturas/getGpedByStat");
+
+// Get Facturas Agrupadas por Cliente
+export const getfactsGpedByCli = async (): Promise<AxiosResponse<Factura[]>> =>
+  await axios.get("/facturas/getfactsGpedByCli");
 
 //Funciones----------------------------------------------------------------------------------------------------
 //Actualizar Un Registro
 export const updateOne = async (factura: Factura): Promise<AxiosResponse> =>
   await axios.post("/facturas/updateOne", factura);
-
-

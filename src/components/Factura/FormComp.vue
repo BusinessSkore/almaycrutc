@@ -79,10 +79,10 @@
                 <label
                   class="ta-l col-form-label col-form-label-sm"
                   for="fecha_ingreso"
-                  >Fecha:</label
+                  >Fecha / Hora:</label
                 ><input
                   id="fecha_ingreso"
-                  type="date"
+                  type="datetime-local"
                   v-model="factura.fecha_ingreso"
                   class="form-control"
                 />
@@ -182,8 +182,7 @@
                 !factura.numero_afiliado ||
                 !factura.rnc ||
                 !factura.tipo_factura ||
-                !factura.cobertura ||
-                !factura.total_servicio
+                !factura.cobertura
             "
           >
             Guardar
@@ -248,6 +247,23 @@ export default defineComponent({
   },
 
   methods: {
+    formatDateToFix(dateValue: Date, incTime: Boolean) {
+      if (incTime == true) {
+        let out = moment(dateValue).add(0, "days");
+        return moment(out).format("yyyy-MM-DTHH:mm");
+      } else {
+        let out = moment(dateValue).add(0, "days");
+        return moment(out).format("yyyy-MM-D");
+      }
+    },
+
+    fixTime() {
+      this.factura.fecha_ingreso = this.formatDateToFix(
+        this.factura.fecha_ingreso,
+        true
+      );
+    },
+
     async addMessage() {
       try {
         const res = await createMensaje(this.message);
@@ -284,14 +300,15 @@ export default defineComponent({
             date: new Date(),
             user: this.$store.state.user.usuario,
           });
+          this.fixTime();
         } catch (error) {
           // console.error(error);
         }
       }
       await this.toggleLoading();
-      if (this.factura.cobertura > 0) {
-        this.saveFactura();
-      } else {
+      if (this.factura.cobertura == 0) {
+        // this.saveFactura();
+        // alert("Factura Encontrada");
         alert("Factura no Encontrada");
         this.focus();
       }

@@ -386,7 +386,7 @@ export default defineComponent({
     },
 
     formatDate2(dateValue: Date) {
-      let out = moment(dateValue).add(0, "days");
+      let out = moment(dateValue).add(4, "h");
       return moment(out).format("D/MM/yyyy HH:mm");
     },
 

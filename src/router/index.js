@@ -82,12 +82,7 @@ const routes = [
         name: "Dashboard",
         component: Dashboard,
         meta: {
-          roles: [
-            "Power User",
-            "Administrador",
-            "Encargado",
-            "Agente",
-          ],
+          roles: ["Power User", "Administrador", "Encargado", "Agente"],
         },
       },
 
@@ -152,12 +147,7 @@ const routes = [
         name: "facturas",
         component: FacturaComponent,
         meta: {
-          roles: [
-            "Power User",
-            "Administrador",
-            "Encargado",
-            "Agente"
-          ],
+          roles: ["Power User", "Administrador", "Encargado", "Agente"],
         },
       },
       {
@@ -165,12 +155,7 @@ const routes = [
         name: "factura-details",
         component: FacturaDetailComponent,
         meta: {
-          roles: [
-            "Power User",
-            "Administrador",
-            "Encargado",
-            "Agente"
-          ],
+          roles: ["Power User", "Administrador", "Encargado", "Agente"],
         },
       },
       {
@@ -178,11 +163,7 @@ const routes = [
         name: "factura-details2",
         component: FacturaPrintComponent,
         meta: {
-          roles: [
-            "Power User",
-            "Administrador",
-            "Encargado"
-          ],
+          roles: ["Power User", "Administrador", "Encargado"],
         },
       },
       {
@@ -190,16 +171,11 @@ const routes = [
         name: "facturas-form",
         component: FacturaFormComp,
         meta: {
-          roles: [
-            "Power User",
-            "Administrador",
-            "Encargado"
-          ],
+          roles: ["Power User", "Administrador", "Encargado", "Agente"],
         },
       },
 
       // ----------------------------------------------------------------------------
-
 
       // Area --------------------------------------------------------------------
       {
@@ -253,12 +229,7 @@ const routes = [
         name: "reportes",
         component: ReporteComponent,
         meta: {
-          roles: [
-            "Power User",
-            "Administrador",
-            "Encargado",
-            "Agente",
-          ],
+          roles: ["Power User", "Administrador", "Encargado", "Agente"],
         },
       },
       {
@@ -266,12 +237,7 @@ const routes = [
         name: "reporte-details",
         component: ReporteDetailComponent,
         meta: {
-          roles: [
-            "Power User",
-            "Administrador",
-            "Encargado",
-            "Agente",
-          ],
+          roles: ["Power User", "Administrador", "Encargado", "Agente"],
         },
       },
       {
@@ -279,12 +245,7 @@ const routes = [
         name: "reporte-details2",
         component: ReportePrintComponent,
         meta: {
-          roles: [
-            "Power User",
-            "Administrador",
-            "Encargado",
-            "Agente",
-          ],
+          roles: ["Power User", "Administrador", "Encargado", "Agente"],
         },
       },
       {
@@ -292,12 +253,7 @@ const routes = [
         name: "reportes-form",
         component: ReporteFormComp,
         meta: {
-          roles: [
-            "Power User",
-            "Administrador",
-            "Encargado",
-            "Agente",
-          ],
+          roles: ["Power User", "Administrador", "Encargado", "Agente"],
         },
       },
 
@@ -309,12 +265,7 @@ const routes = [
         name: "reporte2s",
         component: Reporte2Component,
         meta: {
-          roles: [
-            "Power User",
-            "Administrador",
-            "Encargado",
-            "Agente",
-          ],
+          roles: ["Power User", "Administrador", "Encargado", "Agente"],
         },
       },
       {
@@ -322,12 +273,7 @@ const routes = [
         name: "reporte2-details",
         component: Reporte2DetailComponent,
         meta: {
-          roles: [
-            "Power User",
-            "Administrador",
-            "Encargado",
-            "Agente",
-          ],
+          roles: ["Power User", "Administrador", "Encargado", "Agente"],
         },
       },
       {
@@ -335,12 +281,7 @@ const routes = [
         name: "reporte2-details2",
         component: Reporte2PrintComponent,
         meta: {
-          roles: [
-            "Power User",
-            "Administrador",
-            "Encargado",
-            "Agente",
-          ],
+          roles: ["Power User", "Administrador", "Encargado", "Agente"],
         },
       },
       {
@@ -348,12 +289,7 @@ const routes = [
         name: "reporte2s-form",
         component: Reporte2FormComp,
         meta: {
-          roles: [
-            "Power User",
-            "Administrador",
-            "Encargado",
-            "Agente",
-          ],
+          roles: ["Power User", "Administrador", "Encargado", "Agente"],
         },
       },
 
@@ -364,12 +300,7 @@ const routes = [
         name: "Dashboard",
         component: Dashboard,
         meta: {
-          roles: [
-            "Power User",
-            "Administrador",
-            "Agente",
-            "Encargado",
-          ],
+          roles: ["Power User", "Administrador", "Agente", "Encargado"],
         },
       },
     ],
