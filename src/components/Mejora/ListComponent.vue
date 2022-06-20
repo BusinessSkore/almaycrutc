@@ -196,6 +196,6 @@ th {
   font-weight: bold;
   color: white;
   text-align: center;
-  background-color: red;
+  background-color: rgb(255, 85, 85);
 }
 </style>

@@ -1,111 +1,116 @@
 <template v-show="!cargando">
   <Navbar />
   <!-- {{ this.totales }} -->
-  <div v-if="cargando" class="spin">
-    <img class="img" src="@/assets/images/logo.png" />
-  </div>
-  <div v-show="!cargando" class="general">
-    <form>
-      <!---------------------------------------- Start Dashboard por Usuario ---------------------------------------->
-      <fieldset>
-        <!-- <h4>
+  <Transition>
+    <div v-if="cargando" class="spin">
+      <img class="img" src="@/assets/images/logo.png" />
+    </div>
+  </Transition>
+  <Transition>
+    <div v-show="!cargando" class="general">
+      <form>
+        <!---------------------------------------- Start Dashboard por Usuario ---------------------------------------->
+        <fieldset>
+          <!-- <h4>
           <i class="fas fa-file-spreadsheet" _mstvisible="2"></i> Dashboard
         </h4> -->
-        <div class="form-group">
-          <div class="grid">
-            <!------------------------------------------ Campo ------------------------------------------>
-            <div
-              v-show="!cargando"
-              v-if="this.$store.state.user.type == 'Power User'"
-              class="card bg-secondary"
-              style="max-width: 20rem;"
-            >
-              <div class="card-header">
-                <p>Cantidad de Mejoras por Estatus</p>
+          <div class="form-group">
+            <div class="grid">
+              <!------------------------------------------ Campo ------------------------------------------>
+              <div
+                v-show="!cargando"
+                v-if="this.$store.state.user.type == 'Power User'"
+                class="card bg-secondary"
+                style="max-width: 20rem;"
+              >
+                <div class="card-header">
+                  <p>Cantidad de Mejoras por Estatus</p>
+                </div>
+                <div class="card-body">
+                  <p
+                    v-for="(tipoMejora, index) in mejorasPend"
+                    :key="index"
+                    class="card-text"
+                  >
+                    {{ tipoMejora._id.estatus }} : {{ tipoMejora.count }}
+                  </p>
+                </div>
               </div>
-              <div class="card-body">
-                <p
-                  v-for="(tipoMejora, index) in mejorasPend"
-                  :key="index"
-                  class="card-text"
-                >
-                  {{ tipoMejora._id.estatus }} : {{ tipoMejora.count }}
-                </p>
-              </div>
-            </div>
 
-            <!------------------------------------------ ***** ------------------------------------------>
-            <!------------------------------------------ Campo ------------------------------------------>
-            <div
-              v-show="!cargando"
-              v-if="this.$store.state.user.type == 'Power User'"
-              class="card bg-secondary"
-              style="max-width: 20rem;"
-            >
-              <div class="card-header"><p>Cantidad de Usuarios por Rol</p></div>
-              <div class="card-body">
-                <p
-                  v-for="(item, index) in usuariosCant"
-                  :key="index"
-                  class="card-text"
-                >
-                  {{ item._id.role }} : {{ item.count }}
-                </p>
+              <!------------------------------------------ ***** ------------------------------------------>
+              <!------------------------------------------ Campo ------------------------------------------>
+              <div
+                v-show="!cargando"
+                v-if="this.$store.state.user.type == 'Power User'"
+                class="card bg-secondary"
+                style="max-width: 20rem;"
+              >
+                <div class="card-header">
+                  <p>Cantidad de Usuarios por Rol</p>
+                </div>
+                <div class="card-body">
+                  <p
+                    v-for="(item, index) in usuariosCant"
+                    :key="index"
+                    class="card-text"
+                  >
+                    {{ item._id.role }} : {{ item.count }}
+                  </p>
+                </div>
               </div>
+              <!------------------------------------------ ***** ------------------------------------------>
             </div>
-            <!------------------------------------------ ***** ------------------------------------------>
           </div>
-        </div>
-      </fieldset>
-      <!---------------------------------------- Finish Dashboard por Usuario ---------------------------------------->
-    </form>
-    <div
-      v-show="!cargando"
-      v-if="
-        this.$store.state.user.type == 'Power User' ||
-          this.$store.state.user.type == 'Administrador'
-      "
-      class="card bg-secondary"
-      style="max-width: 60rem;"
-    >
-      <!-- <div class="card-header">
+        </fieldset>
+        <!---------------------------------------- Finish Dashboard por Usuario ---------------------------------------->
+      </form>
+      <div
+        v-show="!cargando"
+        v-if="
+          this.$store.state.user.type == 'Power User' ||
+            this.$store.state.user.type == 'Administrador'
+        "
+        class="card bg-secondary"
+        style="max-width: 30rem;"
+      >
+        <!-- <div class="card-header">
         <p>Cantidad de Facturas por Estatus</p>
       </div> -->
-      <div class="card-body">
-        <p>Cantidad de Facturas por Estatus</p>
-        <table id="customers">
-          <tr>
-            <th>Estatus</th>
-            <th>Cant.</th>
-            <th>Total</th>
-          </tr>
-          <tr v-for="(item, index) in facturasCant" :key="index">
-            <td :class="toColor(item._id.status)">
-              {{ item._id.status }}
-            </td>
-            <td :class="toColor(item._id.status)" class="ta-r">
-              {{ formatNumber(item.count) }} ({{
-                formatNumber((item.count / this.totales.facturas) * 100)
-              }}%)
-            </td>
-            <td :class="toColor(item._id.status)" class="ta-r">
-              {{ formatNumber(item.cobertura, true) }} ({{
-                formatNumber((item.cobertura / this.totales.cobertura) * 100)
-              }}%)
-            </td>
-          </tr>
-          <tr>
-            <td>Total</td>
-            <td class="ta-r">
-              {{ formatNumber(this.totales.facturas) }}
-            </td>
-            <td class="ta-r">
-              {{ formatNumber(this.totales.cobertura, true) }}
-            </td>
-          </tr>
-        </table>
+        <div class="card-body">
+          <p style="font-weight: bold">Cantidad de Facturas por Estatus</p>
+          <table id="customers">
+            <tr>
+              <th>Estatus</th>
+              <th>Cant.</th>
+              <th>Total</th>
+            </tr>
+            <tr v-for="(item, index) in facturasCant" :key="index">
+              <td :class="toColor(item._id.status)">
+                {{ item._id.status }}
+              </td>
+              <td :class="toColor(item._id.status)" class="ta-r">
+                {{ formatNumber(item.count) }} ({{
+                  formatNumber((item.count / this.totales.facturas) * 100)
+                }}%)
+              </td>
+              <td :class="toColor(item._id.status)" class="ta-r">
+                {{ formatNumber(item.cobertura, true) }} ({{
+                  formatNumber((item.cobertura / this.totales.cobertura) * 100)
+                }}%)
+              </td>
+            </tr>
+            <tr style="font-weight: bold">
+              <td>Total</td>
+              <td class="ta-r">
+                {{ formatNumber(this.totales.facturas) }}
+              </td>
+              <td class="ta-r">
+                {{ formatNumber(this.totales.cobertura, true) }}
+              </td>
+            </tr>
+          </table>
 
-        <!-- <p
+          <!-- <p
                   v-for="(item, index) in facturasCant"
                   :key="index"
                   class="card-text"
@@ -113,9 +118,10 @@
                   {{ item._id.status }} : {{ item.count }} :
                   {{ item.cobertura }}
                 </p> -->
+        </div>
       </div>
     </div>
-  </div>
+  </Transition>
 </template>
 
 <script lang="ts">
@@ -260,6 +266,18 @@ export default {
 </script>
 
 <style lang="css" scoped>
+/* Start Transition */
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+}
+/* End Transition */
+
 .valor1 {
   text-align: left;
   /* background-color: rgb(255, 0, 0); */
@@ -330,7 +348,7 @@ export default {
 #customers th {
   border: 1px solid #ddd;
   padding: 3px;
-  cursor: pointer;
+  /* cursor: pointer; */
 }
 
 #customers tr:nth-child(even) {

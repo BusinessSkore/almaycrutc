@@ -1,7 +1,12 @@
 <template>
-  <div v-if="cargando" class="spin">
-    <img class="img" src="@/assets/images/logo.png" />
-  </div>
+  <!-- <button @click="arreglar()">Arreglar</button> -->
+  <!-- {{ this.usuario.email }} -->
+  <Transition>
+    <div v-if="cargando" class="spin">
+      <img class="img" src="@/assets/images/logo.png" />
+    </div>
+  </Transition>
+  <Transition>
   <div v-show="!cargando" class="general">
     <form>
       <fieldset>
@@ -55,6 +60,7 @@
       </fieldset>
     </form>
   </div>
+  </Transition>
 </template>
 
 <script lang="ts">
@@ -73,6 +79,10 @@ export default {
   },
 
   methods: {
+    arreglar() {
+      this.usuario.email = this.usuario.email.toLowerCase().trim();
+    },
+
     toggleLoading() {
       this.cargando = !this.cargando;
     },
@@ -90,6 +100,7 @@ export default {
       //   email: this.email,
       //   password: this.password,
       // };
+      this.arreglar();
       await loginUsuario(this.usuario).then(
         // axios.post("http://localhost:5000/login", user).then(
         (res) => {
@@ -101,7 +112,8 @@ export default {
             this.$store.state.user.type = res.data.usuario.role;
             // alert(res.data.usuario.role)
             this.$store.state.user.usuario = res.data.usuario.nombre;
-            this.$store.state.user.defaultStatus = res.data.usuario.defaultStatus;
+            this.$store.state.user.defaultStatus =
+              res.data.usuario.defaultStatus;
             this.$router.push("/dashboard");
           }
         },
@@ -117,6 +129,18 @@ export default {
 </script>
 
 <style lang="css" scoped>
+/* Start Transition */
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+}
+/* End Transition */
+
 * {
   margin: 0;
 }
@@ -146,12 +170,12 @@ form {
   text-align: center;
   margin-top: 20px;
   margin-bottom: 20px;
-  background-color: red;
+  background-color: rgb(255, 85, 85);
 }
 
 legend,
 .nav-link {
-  color: rgb(5, 24 ,250);
+  color: rgb(5, 24, 250);
   text-align: center;
   line-height: 1;
   margin: 0;

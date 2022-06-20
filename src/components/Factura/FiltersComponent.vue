@@ -2,15 +2,15 @@
   <!-- {{ this.filters }} -->
   <div class="gridEncontrar">
     <!-- Boton Agregar -->
-    <button
+    <!-- <button
       @click="this.$router.push(`/facturas/new`)"
       type="button"
       class="btn btn-outline-success"
     >
       <i class="fas fa-plus" _mstvisible="2"></i> Agregar Factura
-    </button>
+    </button> -->
     <!-- Campo de Búsqueda -->
-    <div>
+    <!-- <div>
       <div class="form-floating mb-3">
         <input
           id="search"
@@ -22,7 +22,7 @@
           @keypress.enter="search(term)"
         /><label for="buscar">Buscar por ID:</label>
       </div>
-    </div>
+    </div> -->
   </div>
   <div>
     <h6>Filtrar por Estatus</h6>

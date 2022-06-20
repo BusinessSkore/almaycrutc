@@ -61,8 +61,8 @@
                 class="form-select"
               >
                 <option>Administrador</option>
-                <option>Soporte Técnico</option>
-                <option>Usuario Final</option>
+                <option>Encargado</option>
+                <option>Agente</option>
               </select>
             </div>
             <!------------------------------------------ ***** ------------------------------------------>

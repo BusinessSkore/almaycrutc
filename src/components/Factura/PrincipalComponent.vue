@@ -1,28 +1,32 @@
 <template v-show="!cargando">
   <!-- Spinner -->
+  <Transition>
   <div v-if="cargando" class="spin">
     <img class="img" src="@/assets/images/logo.png" />
   </div>
+  </Transition>
   <Navbar />
   <!------------------------------------------------ General ------------------------------------------------->
+  <Transition>
   <div v-show="!cargando" class="general">
     <!-- Modal -->
-    <div v-if="showModal" class="modal">
-      <div class="contenedor">
-        <header>Menú</header>
-        <div class="contenido">
-          <label @click="this.showModalMethod()" for="btn-modal">X</label>
+    <Transition>
+      <div v-if="showModal" class="modal">
+        <div class="contenedor">
+          <header>Filtros</header>
           <div class="contenido">
-            <Filters
-              :filterFacturas="filterFacturas"
-              :search="search"
-              :filteredFacturas="filteredFacturas"
-            />
+            <label @click="this.showModalMethod()" for="btn-modal">X</label>
+            <div class="contenido">
+              <Filters
+                :filterFacturas="filterFacturas"
+                :search="search"
+                :filteredFacturas="filteredFacturas"
+              />
+            </div>
           </div>
         </div>
       </div>
-    </div>
-
+    </Transition>
     <!-- Cuerpo -->
     <div class="grid">
       <div class="facturas">
@@ -37,7 +41,7 @@
           <i
             style="cursor:pointer"
             @click="this.showModalMethod()"
-            class="fas fas fa-external-link-alt"
+            class="fas fa-filter"
             _mstvisible="2"
           ></i>
         </h4>
@@ -45,6 +49,7 @@
       </div>
     </div>
   </div>
+  </Transition>
   <!---------------------------------------------------------------------------------------------------------->
 </template>
 
@@ -145,12 +150,14 @@ export default {
     },
 
     async loadFacturas2() {
+      this.toggleLoading();
       try {
         const res = await getFacturas();
         this.facturas = res.data;
       } catch (error) {
         // console.error(error);
       }
+      this.toggleLoading();
     },
   },
 
@@ -326,7 +333,7 @@ h4 {
 
 .contenedor {
   width: 400px;
-  height: 400px;
+  height: 300;
   margin: auto;
   background: #fff;
   box-shadow: 1px 7px 25px rgba(0, 0, 0, 0.6);
@@ -352,4 +359,16 @@ h4 {
 .contenido {
   padding: 7px;
 }
+
+/* Start Transition */
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+}
+/* End Transition */
 </style>

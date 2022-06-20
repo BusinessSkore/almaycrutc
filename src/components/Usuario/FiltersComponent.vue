@@ -31,7 +31,7 @@
 </template>
 
 <script lang="ts">
-const filters = ["Todos", "Power User", "Administrador", "Soporte Técnico", "Usuario Final"];
+const filters = ["Todos", "Power User", "Administrador", "Agente", "Encargado"];
 
 export default {
   props: ["filterUsuarios", "search", "filteredUsuarios"],

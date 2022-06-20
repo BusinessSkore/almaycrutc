@@ -1,29 +1,32 @@
 <template v-show="!cargando">
   <Navbar />
   <!-- {{ this.factura.actividad }} -->
-  <div v-if="cargando" class="spin">
-    <img class="img" src="@/assets/images/logo.png" />
-  </div>
-  <div v-show="!cargando" class="general">
-    <div v-show="showAlert" class="alert alert-dismissible alert-success">
-      <button
-        @click="toggleAlert()"
-        type="button"
-        class="btn-close"
-        data-bs-dismiss="alert"
-      ></button>
-      <h4 class="alert-heading">
-        <i class="fas fa-check"></i> Factura Actualizada Exitosamente!
-      </h4>
+  <Transition>
+    <div v-if="cargando" class="spin">
+      <img class="img" src="@/assets/images/logo.png" />
     </div>
-    <form>
-      <fieldset>
-        <h6>Detalles de Factura</h6>
-        <div class="form-group">
-          <!-- <label class="form-label"><b>Datos Generales</b></label> -->
-          <!-- Start Fields -->
-          <div class="grid">
-            <!-- <div>
+  </Transition>
+  <Transition>
+    <div v-show="!cargando" class="general">
+      <div v-show="showAlert" class="alert alert-dismissible alert-success">
+        <button
+          @click="toggleAlert()"
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="alert"
+        ></button>
+        <h4 class="alert-heading">
+          <i class="fas fa-check"></i> Factura Actualizada Exitosamente!
+        </h4>
+      </div>
+      <form>
+        <fieldset>
+          <h6>Detalles de Factura</h6>
+          <div class="form-group">
+            <!-- <label class="form-label"><b>Datos Generales</b></label> -->
+            <!-- Start Fields -->
+            <div class="grid">
+              <!-- <div>
               <label class="ta-l col-form-label col-form-label-sm" for="no"
                 >No:</label
               ><input
@@ -31,57 +34,59 @@
                 type="number"
                 v-model="factura.no }}</p>
             </div> -->
-            <div>
-              <p><span class="bold">No: </span>{{ factura.idfact }}</p>
-            </div>
-            <div>
-              <p><span class="bold">Id ARS: </span>{{ factura.id_ars }}</p>
-            </div>
-            <div>
-              <p><span class="bold">ARS: </span>{{ getARS(factura.id_ars) }}</p>
-            </div>
-            <div>
-              <p><span class="bold">Paciente: </span>{{ factura.nom }}</p>
-            </div>
-            <div>
-              <p>
-                <span class="bold">Autorización: </span
-                >{{ factura.nro_autorizacion_salida }}
-              </p>
-            </div>
-            <div>
-              <p>
-                <span class="bold">Fecha: </span
-                >{{ formatDate2(factura.fecha_ingreso) }}
-              </p>
-            </div>
-            <div>
-              <p>
-                <span class="bold">Afiliado No.: </span
-                >{{ factura.numero_afiliado }}
-              </p>
-            </div>
-            <div>
-              <p><span class="bold">Cédula: </span>{{ factura.rnc }}</p>
-            </div>
-            <div>
-              <p>
-                <span class="bold">Orígen: </span>{{ factura.tipo_factura }}
-              </p>
-            </div>
-            <div>
-              <p>
-                <span class="bold">Cobertura: </span
-                >{{ formatNumber(factura.cobertura) }}
-              </p>
-            </div>
-            <div>
-              <p>
-                <span class="bold">Total: </span
-                >{{ formatNumber(factura.total_servicio) }}
-              </p>
-            </div>
-            <!-- <div>
+              <div>
+                <p><span class="bold">No: </span>{{ factura.idfact }}</p>
+              </div>
+              <div>
+                <p><span class="bold">Id ARS: </span>{{ factura.id_ars }}</p>
+              </div>
+              <div>
+                <p>
+                  <span class="bold">ARS: </span>{{ getARS(factura.id_ars) }}
+                </p>
+              </div>
+              <div>
+                <p><span class="bold">Paciente: </span>{{ factura.nom }}</p>
+              </div>
+              <div>
+                <p>
+                  <span class="bold">Autorización: </span
+                  >{{ factura.nro_autorizacion_salida }}
+                </p>
+              </div>
+              <div>
+                <p>
+                  <span class="bold">Fecha: </span
+                  >{{ formatDate2(factura.fecha_ingreso) }}
+                </p>
+              </div>
+              <div>
+                <p>
+                  <span class="bold">Afiliado No.: </span
+                  >{{ factura.numero_afiliado }}
+                </p>
+              </div>
+              <div>
+                <p><span class="bold">Cédula: </span>{{ factura.rnc }}</p>
+              </div>
+              <div>
+                <p>
+                  <span class="bold">Orígen: </span>{{ factura.tipo_factura }}
+                </p>
+              </div>
+              <div>
+                <p>
+                  <span class="bold">Cobertura: </span
+                  >{{ formatNumber(factura.cobertura) }}
+                </p>
+              </div>
+              <div>
+                <p>
+                  <span class="bold">Total: </span
+                  >{{ formatNumber(factura.total_servicio) }}
+                </p>
+              </div>
+              <!-- <div>
               <p>
                 <span class="bold">Estatus: </span
                 ><span :class="toColor(factura.status)">{{
@@ -90,7 +95,7 @@
               </p>
             </div> -->
 
-            <!-- <div>
+              <!-- <div>
               <label class="ta-l col-form-label col-form-label-sm" for="estatus"
                 >Estatus:</label
               ><select
@@ -109,84 +114,90 @@
               </select>
             </div> -->
 
-            <!-- <div>
+              <!-- <div>
 <p><span class="bold">No: </span>{{ factura.actividad }}</p>
             </div> -->
+            </div>
+            <!-- End Fields -->
           </div>
-          <!-- End Fields -->
-        </div>
-        <br />
-        <p><span class="bold">Actividades: </span></p>
-        <div class="grid-0">
-          <div>
-            <!-- <label class="ta-l col-form-label col-form-label-sm" for="estatus"
+          <br />
+          <p><span class="bold">Actividades: </span></p>
+          <div class="grid-0">
+            <div>
+              <!-- <label class="ta-l col-form-label col-form-label-sm" for="estatus"
               >Estatus:</label
             > -->
-            <select
-              id="estatus"
-              type="estatus"
-              v-model="factura.status"
-              class="form-select"
-              @change="changeStatus()"
-            >
-              <option selected>1 - Recibido por Auditoría Interna</option>
-              <option>2 - Verificado por Auditoría Interna</option>
-              <option>3 - Verificado por Auditoría Externa</option>
-              <option>4 - Recibido por Reclamaciones Médicas</option>
-              <option>5 - Verificado por Reclamaciones Médicas</option>
-              <option>6 - Cargado a Lote</option>
-              <option>7 - Enviado a la Aseguradora</option>
-            </select>
+              <select
+                id="estatus"
+                type="estatus"
+                v-model="factura.status"
+                class="form-select"
+                @change="changeStatus()"
+              >
+                <option selected>1 - Recibido por Auditoría Interna</option>
+                <option>2 - Verificado por Auditoría Interna</option>
+                <option>3 - Verificado por Auditoría Externa</option>
+                <option>4 - Recibido por Reclamaciones Médicas</option>
+                <option>5 - Verificado por Reclamaciones Médicas</option>
+                <option>6 - Cargado a Lote</option>
+                <option>7 - Enviado a la Aseguradora</option>
+              </select>
+            </div>
+            <div>
+              <input
+                id="currentActivity"
+                type="currentActivity"
+                v-model="currentActivity"
+                class="form-control"
+              />
+            </div>
+            <div>
+              <button class="btn btn-success" @click.prevent="addActivity()">
+                <i class="fas fa-plus"></i> Agregar Actividad
+              </button>
+            </div>
           </div>
-          <div>
-            <input
-              id="currentActivity"
-              type="currentActivity"
-              v-model="currentActivity"
-              class="form-control"
-            />
-          </div>
-          <div>
-            <button class="btn btn-success" @click.prevent="addActivity()">
-              <i class="fas fa-plus"></i> Agregar Actividad
-            </button>
-          </div>
-        </div>
-
-        <table id="customers">
-          <tr>
-            <th>No.</th>
-            <th>Actividad</th>
-            <th>Fecha</th>
-            <th>Usuario</th>
-            <th></th>
-          </tr>
-          <tr v-for="(actividad, index) in factura.actividad" :key="index">
-            <td class="input-r">{{ index + 1 }}</td>
-            <td>{{ actividad.description }}</td>
-            <td>{{ newFormatDate(actividad.date) }}</td>
-            <td>{{ actividad.user }}</td>
-            <td>
-              <i
-                @click.prevent="deleteService(index, actividad.user)"
-                class="fas fa-minus-circle redOption"
-              ></i>
-            </td>
-          </tr>
-        </table>
-
-        <br />
-        <!-- <div class="grid"> -->
-        <!-- <button class="btn btn-success" @click.prevent="handleUpdate()">
+          <Transition>
+            <table id="customers">
+              <tr>
+                <th>No.</th>
+                <th>Actividad</th>
+                <th>Fecha</th>
+                <th>Usuario</th>
+                <th></th>
+              </tr>
+              <tr v-for="(actividad, index) in factura.actividad" :key="index">
+                <td class="input-r">{{ index + 1 }}</td>
+                <td>{{ actividad.description }}</td>
+                <td>{{ newFormatDate(actividad.date) }}</td>
+                <td>{{ actividad.user }}</td>
+                <td>
+                  <i
+                    @click.prevent="deleteService(index, actividad.user)"
+                    style="cursor:pointer"
+                    class="fas fa-minus-circle redOption"
+                  ></i>
+                </td>
+              </tr>
+            </table>
+          </Transition>
+          <br />
+          <!-- <div class="grid"> -->
+          <!-- <button class="btn btn-success" @click.prevent="handleUpdate()">
           <i class="fas fa-edit"></i> Actualizar
         </button> -->
-        <button class="btn btn-danger" @click.prevent="handleDelete()">
-          <i class="fas fa-trash-alt"></i> Eliminar
-        </button>
-        <!-- </div> -->
-      </fieldset>
-    </form>
-  </div>
+          <button
+            v-if="showDelete"
+            class="btn btn-danger"
+            @click.prevent="handleDelete()"
+          >
+            <i class="fas fa-trash-alt"></i> Eliminar
+          </button>
+          <!-- </div> -->
+        </fieldset>
+      </form>
+    </div>
+  </Transition>
 </template>
 
 <script lang="ts">
@@ -210,6 +221,7 @@ export default defineComponent({
   },
   data() {
     return {
+      showDelete: false,
       currentActivity: "",
       showAlert: false,
       cargando: false,
@@ -220,6 +232,11 @@ export default defineComponent({
     };
   },
   methods: {
+    showDeleteMethod() {
+      if (this.$store.state.user.type == "Power User") {
+        this.showDelete = true;
+      }
+    },
     changeStatus() {
       // alert("Change...");
       this.currentActivity = this.factura.status;
@@ -450,6 +467,7 @@ export default defineComponent({
     },
   },
   mounted() {
+    this.showDeleteMethod();
     if (typeof this.$route.params.id === "string") {
       this.loadFactura(this.$route.params.id);
     }
@@ -459,6 +477,18 @@ export default defineComponent({
 </script>
 
 <style lang="css" scoped>
+/* Start Transition */
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+}
+/* End Transition */
+
 .redOption {
   color: red;
 }
@@ -474,7 +504,7 @@ export default defineComponent({
 #customers th {
   border: 1px solid #ddd;
   padding: 3px;
-  cursor: pointer;
+  /* cursor: pointer; */
 }
 
 #customers tr:nth-child(even) {
@@ -583,7 +613,7 @@ th {
   grid-auto-flow: dense;
   grid-template-rows: auto auto;
   gap: 3px;
-  grid-template-columns: repeat(auto-fit, minmax(33%, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
 }
 
 .grid {
@@ -738,6 +768,7 @@ label {
 
 p {
   margin: 0;
+  font-size: 75%;
 }
 
 .valor1 {

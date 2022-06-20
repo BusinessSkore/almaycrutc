@@ -3,19 +3,22 @@
   <!-- {{ this.respuesta }} -->
   <!-- {{this.documento}} -->
   <Navbar />
-  <div v-if="cargando" class="spin">
-    <img class="img" src="@/assets/images/logo.png" />
-  </div>
-  <div v-show="!cargando" class="general">
-    <h6 :class="isError(error)">{{ error }}</h6>
-    <form>
-      <fieldset>
-        <h6>Nueva Factura</h6>
-        <div class="form-group">
-          <!-- <label class="form-label"><b>Datos Generales</b></label> -->
-          <!-- Start Fields -->
-          <div class="grid">
-            <!-- <div>
+  <Transition>
+    <div v-if="cargando" class="spin">
+      <img class="img" src="@/assets/images/logo.png" />
+    </div>
+  </Transition>
+  <Transition>
+    <div v-show="!cargando" class="general">
+      <h6 :class="isError(error)">{{ error }}</h6>
+      <form>
+        <fieldset>
+          <h6>Nueva Factura</h6>
+          <div class="form-group">
+            <!-- <label class="form-label"><b>Datos Generales</b></label> -->
+            <!-- Start Fields -->
+            <div class="grid">
+              <!-- <div>
               <label class="ta-l col-form-label col-form-label-sm" for="no"
                 >No:</label
               ><input
@@ -25,120 +28,124 @@
                 class="form-control"
               />
             </div> -->
-            <div>
-              <label class="ta-l col-form-label col-form-label-sm" for="idfact"
-                >Id:</label
-              ><input
-                id="idfact"
-                type="idfact"
-                v-model="factura.idfact"
-                class="form-control"
-                @keypress.enter="getFactura()"
-              />
-            </div>
-            <div>
-              <label class="ta-l col-form-label col-form-label-sm" for="id_ars"
-                >Id ARS:</label
-              ><input
-                id="id_ars"
-                type="id_ars"
-                v-model="factura.id_ars"
-                class="form-control"
-              />
-            </div>
-            <div>
-              <label class="ta-l col-form-label col-form-label-sm" for="nom"
-                >Paciente:</label
-              ><input
-                id="nom"
-                type="nom"
-                v-model="factura.nom"
-                class="form-control"
-              />
-            </div>
-            <div>
-              <label
-                class="ta-l col-form-label col-form-label-sm"
-                for="nro_autorizacion_salida"
-                >Autorización:</label
-              ><input
-                id="nro_autorizacion_salida"
-                type="nro_autorizacion_salida"
-                v-model="factura.nro_autorizacion_salida"
-                class="form-control"
-              />
-            </div>
-            <div>
-              <label
-                class="ta-l col-form-label col-form-label-sm"
-                for="fecha_ingreso"
-                >Fecha:</label
-              ><input
-                id="fecha_ingreso"
-                type="date"
-                v-model="factura.fecha_ingreso"
-                class="form-control"
-              />
-            </div>
-            <div>
-              <label
-                class="ta-l col-form-label col-form-label-sm"
-                for="numero_afiliado"
-                >Afiliado No.:</label
-              ><input
-                id="numero_afiliado"
-                type="numero_afiliado"
-                v-model="factura.numero_afiliado"
-                class="form-control"
-              />
-            </div>
-            <div>
-              <label class="ta-l col-form-label col-form-label-sm" for="rnc"
-                >Cédula:</label
-              ><input
-                id="rnc"
-                type="rnc"
-                v-model="factura.rnc"
-                class="form-control"
-              />
-            </div>
-            <div>
-              <label
-                class="ta-l col-form-label col-form-label-sm"
-                for="tipo_factura"
-                >Orígen:</label
-              ><input
-                id="tipo_factura"
-                type="tipo_factura"
-                v-model="factura.tipo_factura"
-                class="form-control"
-              />
-            </div>
-            <div>
-              <label
-                class="ta-l col-form-label col-form-label-sm"
-                for="cobertura"
-                >Cobertura:</label
-              ><input
-                id="cobertura"
-                type="number"
-                v-model="factura.cobertura"
-                class="form-control"
-              />
-            </div>
-            <div>
-              <label
-                class="ta-l col-form-label col-form-label-sm"
-                for="total_servicio"
-                >Total:</label
-              ><input
-                id="total_servicio"
-                type="number"
-                v-model="factura.total_servicio"
-                class="form-control"
-              />
-            </div>
-            <!-- <div>
+              <div>
+                <label
+                  class="ta-l col-form-label col-form-label-sm"
+                  for="idfact"
+                  >Id:</label
+                ><input
+                  id="idfact"
+                  type="idfact"
+                  v-model="factura.idfact"
+                  class="form-control"
+                  @keypress.enter="getFactura()"
+                />
+              </div>
+              <div>
+                <label
+                  class="ta-l col-form-label col-form-label-sm"
+                  for="id_ars"
+                  >Id ARS:</label
+                ><input
+                  id="id_ars"
+                  type="id_ars"
+                  v-model="factura.id_ars"
+                  class="form-control"
+                />
+              </div>
+              <div>
+                <label class="ta-l col-form-label col-form-label-sm" for="nom"
+                  >Paciente:</label
+                ><input
+                  id="nom"
+                  type="nom"
+                  v-model="factura.nom"
+                  class="form-control"
+                />
+              </div>
+              <div>
+                <label
+                  class="ta-l col-form-label col-form-label-sm"
+                  for="nro_autorizacion_salida"
+                  >Autorización:</label
+                ><input
+                  id="nro_autorizacion_salida"
+                  type="nro_autorizacion_salida"
+                  v-model="factura.nro_autorizacion_salida"
+                  class="form-control"
+                />
+              </div>
+              <div>
+                <label
+                  class="ta-l col-form-label col-form-label-sm"
+                  for="fecha_ingreso"
+                  >Fecha:</label
+                ><input
+                  id="fecha_ingreso"
+                  type="date"
+                  v-model="factura.fecha_ingreso"
+                  class="form-control"
+                />
+              </div>
+              <div>
+                <label
+                  class="ta-l col-form-label col-form-label-sm"
+                  for="numero_afiliado"
+                  >Afiliado No.:</label
+                ><input
+                  id="numero_afiliado"
+                  type="numero_afiliado"
+                  v-model="factura.numero_afiliado"
+                  class="form-control"
+                />
+              </div>
+              <div>
+                <label class="ta-l col-form-label col-form-label-sm" for="rnc"
+                  >Cédula:</label
+                ><input
+                  id="rnc"
+                  type="rnc"
+                  v-model="factura.rnc"
+                  class="form-control"
+                />
+              </div>
+              <div>
+                <label
+                  class="ta-l col-form-label col-form-label-sm"
+                  for="tipo_factura"
+                  >Orígen:</label
+                ><input
+                  id="tipo_factura"
+                  type="tipo_factura"
+                  v-model="factura.tipo_factura"
+                  class="form-control"
+                />
+              </div>
+              <div>
+                <label
+                  class="ta-l col-form-label col-form-label-sm"
+                  for="cobertura"
+                  >Cobertura:</label
+                ><input
+                  id="cobertura"
+                  type="number"
+                  v-model="factura.cobertura"
+                  class="form-control"
+                />
+              </div>
+              <div>
+                <label
+                  class="ta-l col-form-label col-form-label-sm"
+                  for="total_servicio"
+                  >Total:</label
+                ><input
+                  id="total_servicio"
+                  type="number"
+                  v-model="factura.total_servicio"
+                  class="form-control"
+                />
+              </div>
+              <!-- <div>
               <label class="ta-l col-form-label col-form-label-sm" for="status"
                 >Estatus:</label
               ><input
@@ -148,7 +155,7 @@
                 class="form-control"
               />
             </div> -->
-            <!-- <div>
+              <!-- <div>
               <label
                 class="ta-l col-form-label col-form-label-sm"
                 for="actividad"
@@ -160,30 +167,31 @@
                 class="form-control"
               />
             </div> -->
+            </div>
+            <!-- End Fields -->
           </div>
-          <!-- End Fields -->
-        </div>
-        <button
-          class="btn btn-primary"
-          @click.prevent="saveFactura()"
-          :disabled="
-            !factura.idfact ||
-              !factura.id_ars ||
-              !factura.nom ||
-              !factura.nro_autorizacion_salida ||
-              !factura.fecha_ingreso ||
-              !factura.numero_afiliado ||
-              !factura.rnc ||
-              !factura.tipo_factura ||
-              !factura.cobertura ||
-              !factura.total_servicio
-          "
-        >
-          Guardar
-        </button>
-      </fieldset>
-    </form>
-  </div>
+          <button
+            class="btn btn-primary"
+            @click.prevent="saveFactura()"
+            :disabled="
+              !factura.idfact ||
+                !factura.id_ars ||
+                !factura.nom ||
+                !factura.nro_autorizacion_salida ||
+                !factura.fecha_ingreso ||
+                !factura.numero_afiliado ||
+                !factura.rnc ||
+                !factura.tipo_factura ||
+                !factura.cobertura ||
+                !factura.total_servicio
+            "
+          >
+            Guardar
+          </button>
+        </fieldset>
+      </form>
+    </div>
+  </Transition>
 </template>
 
 <script lang="ts">
@@ -274,7 +282,7 @@ export default defineComponent({
           this.factura.actividad.push({
             description: this.$store.state.user.defaultStatus,
             date: new Date(),
-            user: this.$store.state.user.usuario
+            user: this.$store.state.user.usuario,
           });
         } catch (error) {
           // console.error(error);
@@ -349,7 +357,6 @@ export default defineComponent({
     async saveFacturaa() {
       await this.loadOneFactura();
       try {
-        
         const res = await createFacturaa(this.servicio);
         // // console.log(res);
       } catch (error) {
@@ -433,6 +440,18 @@ export default defineComponent({
 </script>
 
 <style lang="css" scoped>
+/* Start Transition */
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+}
+/* End Transition */
+
 /* <!-------------------------------------------------- Menú --------------------------------------------------> */
 * {
   box-sizing: border-box;
@@ -540,7 +559,7 @@ h6 {
   color: white;
   /* font-weight: bold; */
   text-align: center;
-  background-color: rgb(51, 163, 67) ;
+  background-color: rgb(51, 163, 67);
 }
 
 h5 {

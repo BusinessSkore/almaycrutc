@@ -99,24 +99,34 @@ export default {
   },
 
   methods: {
+    arreglar() {
+      this.usuario.email = this.usuario.email.toLowerCase().trim();
+    },
+
     toggleLoading() {
       this.cargando = !this.cargando;
     },
+
     async signup() {
-      this.toggleLoading();
-      const resp = await registerUsuario(this.usuario).then(
-        (res) => {
-          this.error = "";
-          this.$router.push("/");
-          this.resp = resp;
-          this.respuesta = res;
-        },
-        (err) => {
-          // console.log(err.response);
-          this.error = err.response.data.error;
-        }
-      );
-      this.toggleLoading();
+      if (this.usuario.password.length >= 8) {
+        this.toggleLoading();
+        this.arreglar();
+        const resp = await registerUsuario(this.usuario).then(
+          (res) => {
+            this.error = "";
+            this.$router.push("/");
+            this.resp = resp;
+            this.respuesta = res;
+          },
+          (err) => {
+            // console.log(err.response);
+            this.error = err.response.data.error;
+          }
+        );
+        this.toggleLoading();
+      } else {
+        alert("La contraseña debe tener 8 caracteres mínimo");
+      }
     },
 
     // login() {
@@ -159,12 +169,12 @@ form {
   text-align: center;
   margin-top: 20px;
   margin-bottom: 20px;
-  background-color: red;
+  background-color: rgb(255, 85, 85);
 }
 
 legend,
 .nav-link {
-  color: rgb(5, 24 ,250);
+  color: rgb(5, 24, 250);
   text-align: center;
   line-height: 1;
   margin: 0;
@@ -257,7 +267,7 @@ img {
   animation: 1.5s linear infinite spinner;
   animation-play-state: inherit;
   border: solid 5px #cfd0d1;
-  border-bottom-color: rgb(5, 24 ,250);
+  border-bottom-color: rgb(5, 24, 250);
   border-radius: 50%;
   content: "";
   height: 90px;

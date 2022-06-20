@@ -428,11 +428,15 @@ th {
   width: 100%;
 }
 
-#customers td,
-#customers th {
+#customers td {
   border: 1px solid #ddd;
   padding: 3px;
   cursor: pointer;
+}
+
+#customers th {
+  border: 1px solid #ddd;
+  padding: 3px;
 }
 
 #customers tr:nth-child(even) {

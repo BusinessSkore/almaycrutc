@@ -85,8 +85,8 @@ const routes = [
           roles: [
             "Power User",
             "Administrador",
-            "Soporte Técnico",
-            "Usuario Final",
+            "Encargado",
+            "Agente",
           ],
         },
       },
@@ -154,7 +154,8 @@ const routes = [
         meta: {
           roles: [
             "Power User",
-            "Administrador"
+            "Administrador",
+            "Encargado"
           ],
         },
       },
@@ -165,7 +166,8 @@ const routes = [
         meta: {
           roles: [
             "Power User",
-            "Administrador"
+            "Administrador",
+            "Encargado"
           ],
         },
       },
@@ -176,7 +178,8 @@ const routes = [
         meta: {
           roles: [
             "Power User",
-            "Administrador"
+            "Administrador",
+            "Encargado"
           ],
         },
       },
@@ -187,7 +190,8 @@ const routes = [
         meta: {
           roles: [
             "Power User",
-            "Administrador"
+            "Administrador",
+            "Encargado"
           ],
         },
       },
@@ -250,8 +254,8 @@ const routes = [
           roles: [
             "Power User",
             "Administrador",
-            "Usuario Final",
-            "Soporte Técnico",
+            "Encargado",
+            "Agente",
           ],
         },
       },
@@ -263,8 +267,8 @@ const routes = [
           roles: [
             "Power User",
             "Administrador",
-            "Usuario Final",
-            "Soporte Técnico",
+            "Encargado",
+            "Agente",
           ],
         },
       },
@@ -276,8 +280,8 @@ const routes = [
           roles: [
             "Power User",
             "Administrador",
-            "Usuario Final",
-            "Soporte Técnico",
+            "Encargado",
+            "Agente",
           ],
         },
       },
@@ -289,8 +293,8 @@ const routes = [
           roles: [
             "Power User",
             "Administrador",
-            "Usuario Final",
-            "Soporte Técnico",
+            "Encargado",
+            "Agente",
           ],
         },
       },
@@ -306,8 +310,8 @@ const routes = [
           roles: [
             "Power User",
             "Administrador",
-            "Usuario Final",
-            "Soporte Técnico",
+            "Encargado",
+            "Agente",
           ],
         },
       },
@@ -319,8 +323,8 @@ const routes = [
           roles: [
             "Power User",
             "Administrador",
-            "Usuario Final",
-            "Soporte Técnico",
+            "Encargado",
+            "Agente",
           ],
         },
       },
@@ -332,8 +336,8 @@ const routes = [
           roles: [
             "Power User",
             "Administrador",
-            "Usuario Final",
-            "Soporte Técnico",
+            "Encargado",
+            "Agente",
           ],
         },
       },
@@ -345,8 +349,8 @@ const routes = [
           roles: [
             "Power User",
             "Administrador",
-            "Usuario Final",
-            "Soporte Técnico",
+            "Encargado",
+            "Agente",
           ],
         },
       },
@@ -361,8 +365,8 @@ const routes = [
           roles: [
             "Power User",
             "Administrador",
-            "Soporte Técnico",
-            "Usuario Final",
+            "Agente",
+            "Encargado",
           ],
         },
       },

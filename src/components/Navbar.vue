@@ -59,8 +59,8 @@
             v-if="
               this.$store.state.user.type == 'Power User' ||
                 this.$store.state.user.type == 'Administrador' ||
-                this.$store.state.user.type == 'Usuario Final' ||
-                this.$store.state.user.type == 'Soporte Técnico'
+                this.$store.state.user.type == 'Encargado' ||
+                this.$store.state.user.type == 'Agente'
             "
             class="nav-item"
           >
@@ -72,8 +72,8 @@
             v-if="
               this.$store.state.user.type == 'Power User' ||
                 this.$store.state.user.type == 'Administrador' ||
-                this.$store.state.user.type == 'Usuario Final' ||
-                this.$store.state.user.type == 'Soporte Técnico'
+                this.$store.state.user.type == 'Encargado' ||
+                this.$store.state.user.type == 'Agente'
             "
             class="nav-item"
           >
@@ -85,17 +85,55 @@
             </a>
           </li> -->
           <!-------------------------------------Start Option------------------------------------->
-          <li
+          <!-- <li
             v-if="
               this.$store.state.user.type == 'Power User' ||
-                this.$store.state.user.type == 'Administrador'
+                this.$store.state.user.type == 'Administrador' ||
+                this.$store.state.user.type == 'Encargado'
             "
             class="nav-item"
           >
             <a class="nav-link" @click="this.$router.push(`/facturas`)" href="#"
               >Facturas
             </a>
+          </li> -->
+
+          <!-------------------------------------Menu Option------------------------------------->
+          <li
+            class="nav-item dropdown"
+            v-if="
+              this.$store.state.user.type == 'Power User' ||
+                this.$store.state.user.type == 'Administrador' ||
+                this.$store.state.user.type == 'Encargado'
+            "
+          >
+            <a
+              class="nav-link dropdown-toggle"
+              data-bs-toggle="dropdown"
+              href="#"
+              role="button"
+              aria-haspopup="true"
+              aria-expanded="false"
+              @click="tshowFactura()"
+              >Facturas</a
+            >
+            <div :class="{ show: this.showFactura }" class="dropdown-menu">
+              <a
+                class="dropdown-item"
+                @click="this.$router.push(`/facturas/new`)"
+                href="#"
+                ><i class="fas fa-plus"></i> Recibir Factura</a
+              >
+              <a
+                @click="this.$router.push(`/facturas`)"
+                class="dropdown-item"
+                href="#"
+                ><i class="fas fa-list"></i> Listado de Facturas</a
+              >
+            </div>
           </li>
+          <!-------------------------------------***********------------------------------------->
+
           <!--------------------------------------End Option-------------------------------------->
           <!-- <li
             v-if="
@@ -119,8 +157,8 @@
               v-if="
                 this.$store.state.user.type == 'Power User' ||
                   this.$store.state.user.type == 'Administrador' ||
-                  this.$store.state.user.type == 'Soporte Técnico' ||
-                  this.$store.state.user.type == 'Usuario Final'
+                  this.$store.state.user.type == 'Agente' ||
+                  this.$store.state.user.type == 'Encargado'
               "
             >
               <a
@@ -158,17 +196,24 @@ export default defineComponent({
     return {
       showMenu: false,
       showName: false,
+      showFactura: false,
     };
   },
 
   methods: {
-    tglName() {
-      this.showName = !this.showName;
-    },
-
     tglMenu() {
       this.showMenu = !this.showMenu;
     },
+
+    tshowFactura() {
+      (this.showName = false), (this.showFactura = !this.showFactura);
+    },
+
+    tglName() {
+      this.showName = !this.showName;
+      this.showFactura = false;
+    },
+
     salir() {
       this.$router.push("/");
       this.$store.dispatch("logoutAction");
