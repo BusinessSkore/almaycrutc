@@ -1,5 +1,8 @@
 <template v-show="!cargando">
   <Navbar />
+  <!-- {{ this.factura.actividad }}<br />
+  {{ this.showInComentary }}<br /><br />
+  {{ this.currentEdition }} -->
   <!-- {{ this.factura.actividad }} -->
   <Transition>
     <div v-if="cargando" class="spin">
@@ -8,6 +11,53 @@
   </Transition>
   <Transition>
     <div v-show="!cargando" class="general">
+      <Transition>
+        <div v-if="showModal" class="modal">
+          <div class="contenedor">
+            <header>Comentarios</header>
+            <div class="contenido">
+              <label @click="this.showModalMethod()" for="btn-modal">X</label>
+              <div class="contenido">
+                <div>
+                  <p>Actividad</p>
+                  <input
+                    id="actividad"
+                    type="actividad"
+                    v-model="currentEdition.description"
+                    class="form-control"
+                  />
+                </div>
+                <div>
+                  <p>Detalles</p>
+                  <textarea
+                    rows="12"
+                    id="showInComentary"
+                    type="showInComentary"
+                    v-model="currentEdition.detalles"
+                    class="form-control"
+                  />
+                </div>
+                <button
+                  v-if="showDelete"
+                  class="btn btn-success"
+                  @click.prevent="actualizar()"
+                >
+                  <i class="fas fa-check"></i> Actualizar
+                </button>
+                &nbsp;
+                <button
+                  v-if="showDelete"
+                  class="btn btn-danger"
+                  @click.prevent="cancelar()"
+                >
+                  <i class="fas fa-undo"></i> Cancelar
+                </button>
+                <!-- {{ this.showInComentary }} -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </Transition>
       <div v-show="showAlert" class="alert alert-dismissible alert-success">
         <button
           @click="toggleAlert()"
@@ -57,7 +107,10 @@
               <div>
                 <p>
                   <span class="bold">Fecha: </span
-                  >{{ formatDate2(factura.fecha_ingreso) }}
+                  >{{ formatDate2(factura.fecha_ingreso) }} ({{
+                    diffDate(factura.fecha_ingreso)
+                  }}
+                  días)
                 </p>
               </div>
               <div>
@@ -177,6 +230,12 @@
                     style="cursor:pointer"
                     class="fas fa-minus-circle redOption"
                   ></i>
+                  &nbsp;
+                  <i
+                    @click.prevent="editService(index, actividad)"
+                    style="cursor:pointer"
+                    class="fas fa-edit greenOption"
+                  ></i>
                 </td>
               </tr>
             </table>
@@ -221,6 +280,9 @@ export default defineComponent({
   },
   data() {
     return {
+      currentEdition: {} as any,
+      showInComentary: "",
+      showModal: false,
       showDelete: false,
       currentActivity: "",
       showAlert: false,
@@ -232,6 +294,30 @@ export default defineComponent({
     };
   },
   methods: {
+    cancelar() {
+      if (typeof this.$route.params.id === "string") {
+        this.loadFactura(this.$route.params.id);
+      }
+      this.showModalMethod();
+    },
+
+    actualizar() {
+      this.handleUpdate();
+      this.showModalMethod();
+    },
+
+    showModalMethod() {
+      this.showModal = !this.showModal;
+    },
+
+    diffDate(dateValue: Date) {
+      var NowMoment = moment().format("DD/MM/YYYY");
+      // var Date = "2022-06-07";
+      var Date = dateValue;
+
+      return moment().diff(moment(Date), "days");
+    },
+
     showDeleteMethod() {
       if (this.$store.state.user.type == "Power User") {
         this.showDelete = true;
@@ -251,6 +337,17 @@ export default defineComponent({
       }
     },
 
+    editService(index: number, actividad: any) {
+      if (actividad.user == this.$store.state.user.usuario) {
+        this.currentEdition = actividad;
+        this.showModalMethod();
+        // this.factura.actividad.splice(it, 1);
+        // this.handleUpdate();
+      } else {
+        alert("No puede Editar una Actividad de Otro Usuario");
+      }
+    },
+
     newFormatDate(dateValue: Date) {
       // let out = moment(dateValue).add(0, "h");
       // return moment(out).format("DD/MM/YYYY");
@@ -266,6 +363,7 @@ export default defineComponent({
           description: this.currentActivity,
           date: new Date(),
           user: this.$store.state.user.usuario,
+          detalles: "",
         });
         this.currentActivity = "";
         await this.handleUpdate();
@@ -491,6 +589,10 @@ export default defineComponent({
 
 .redOption {
   color: red;
+}
+
+.greenOption {
+  color: green;
 }
 
 /* Tabla */
@@ -819,4 +921,49 @@ p {
   margin: 1px;
   color: white;
 }
+
+/* Modal */
+.modal {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  /* background: rgba(0, 0, 0, 0.1); */
+  transition: all 500ms ease;
+}
+
+.contenedor {
+  width: 700px;
+  height: 300;
+  margin: auto;
+  background: #fff;
+  box-shadow: 1px 7px 25px rgba(0, 0, 0, 0.6);
+  transition: all 500ms ease;
+  position: relative;
+}
+
+.contenedor header {
+  padding: 10px;
+  background: rgb(51, 163, 67);
+  color: #fff;
+}
+
+.contenedor label {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  color: #fff;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.contenido {
+  padding: 7px;
+}
+
+/* End Modal */
 </style>

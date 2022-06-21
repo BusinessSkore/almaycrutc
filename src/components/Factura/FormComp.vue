@@ -1,4 +1,5 @@
 <template v-show="!cargando">
+  <!-- {{this.factura}} -->
   <!-- {{ this.factura.actividad }} -->
   <!-- {{ this.respuesta }} -->
   <!-- {{this.documento}} -->
@@ -250,10 +251,10 @@ export default defineComponent({
     formatDateToFix(dateValue: Date, incTime: boolean) {
       if (incTime == true) {
         let out = moment(dateValue).add(0, "days");
-        return moment(out).format("yyyy-MM-DTHH:mm");
+        return moment(out).format("yyyy-MM-DDTHH:mm");
       } else {
         let out = moment(dateValue).add(0, "days");
-        return moment(out).format("yyyy-MM-D");
+        return moment(out).format("yyyy-MM-DD");
       }
     },
 
@@ -299,19 +300,20 @@ export default defineComponent({
             description: this.$store.state.user.defaultStatus,
             date: new Date(),
             user: this.$store.state.user.usuario,
+            detalles: "",
           });
+
           this.fixTime();
+          this.error = "";
         } catch (error) {
           // console.error(error);
         }
       }
       await this.toggleLoading();
-      if (this.factura.cobertura == 0) {
-        // this.saveFactura();
-        // alert("Factura Encontrada");
-        alert("Factura no Encontrada");
-        this.focus();
+      if (this.factura.rnc == "") {
+        this.factura.rnc = "-";
       }
+      this.focus();
     },
 
     isError(message: string) {

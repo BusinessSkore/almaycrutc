@@ -360,6 +360,8 @@ h4 {
   padding: 7px;
 }
 
+/* End Modal */
+
 /* Start Transition */
 .v-enter-active,
 .v-leave-active {
