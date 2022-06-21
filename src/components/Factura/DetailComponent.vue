@@ -14,7 +14,7 @@
       <Transition>
         <div v-if="showModal" class="modal">
           <div class="contenedor">
-            <header>Comentarios</header>
+            <header>Detalles</header>
             <div class="contenido">
               <label @click="this.showModalMethod()" for="btn-modal">X</label>
               <div class="contenido">
@@ -58,6 +58,42 @@
           </div>
         </div>
       </Transition>
+
+      <Transition>
+        <div v-if="showModal2" class="modal">
+          <div class="contenedor">
+            <header>Detalles</header>
+            <div class="contenido">
+              <label @click="this.showModalMethod2()" for="btn-modal">X</label>
+              <div class="contenido">
+                <div>
+                  <p>Actividad</p>
+                  <input
+                    disabled
+                    id="actividad"
+                    type="actividad"
+                    v-model="currentEdition.description"
+                    class="form-control"
+                  />
+                </div>
+                <div>
+                  <p>Detalles</p>
+                  <textarea
+                    disabled
+                    rows="12"
+                    id="showInComentary"
+                    type="showInComentary"
+                    v-model="currentEdition.detalles"
+                    class="form-control"
+                  />
+                </div>
+                <!-- {{ this.showInComentary }} -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </Transition>
+
       <div v-show="showAlert" class="alert alert-dismissible alert-success">
         <button
           @click="toggleAlert()"
@@ -283,6 +319,7 @@ export default defineComponent({
       currentEdition: {} as any,
       showInComentary: "",
       showModal: false,
+      showModal2: false,
       showDelete: false,
       currentActivity: "",
       showAlert: false,
@@ -308,6 +345,10 @@ export default defineComponent({
 
     showModalMethod() {
       this.showModal = !this.showModal;
+    },
+
+    showModalMethod2() {
+      this.showModal2 = !this.showModal2;
     },
 
     diffDate(dateValue: Date) {
@@ -344,8 +385,14 @@ export default defineComponent({
         // this.factura.actividad.splice(it, 1);
         // this.handleUpdate();
       } else {
-        alert("No puede Editar una Actividad de Otro Usuario");
+        this.currentEdition = actividad;
+        this.showModalMethod2();
       }
+    },
+
+    showDetails(index: number, actividad: any) {
+      this.currentEdition = actividad;
+      this.showModalMethod2();
     },
 
     newFormatDate(dateValue: Date) {
