@@ -38,7 +38,6 @@
                   />
                 </div>
                 <button
-                  v-if="showDelete"
                   class="btn btn-success"
                   @click.prevent="actualizar()"
                 >
@@ -46,7 +45,6 @@
                 </button>
                 &nbsp;
                 <button
-                  v-if="showDelete"
                   class="btn btn-danger"
                   @click.prevent="cancelar()"
                 >
