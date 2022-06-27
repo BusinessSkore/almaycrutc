@@ -1,64 +1,64 @@
 <template v-show="!cargando">
   <!-- Spinner -->
   <Transition>
-  <div v-if="cargando" class="spin">
-    <img class="img" src="@/assets/images/logo.png" />
-  </div>
+    <div v-if="cargando" class="spin">
+      <img class="img" src="@/assets/images/logo.png" />
+    </div>
   </Transition>
   <Navbar />
   <!------------------------------------------------ General ------------------------------------------------->
   <Transition>
-  <div v-show="!cargando" class="general">
-    <!-- Modal -->
-    <Transition>
-      <div v-if="showModal" class="modal">
-        <div class="contenedor">
-          <header>Filtros</header>
-          <div class="contenido">
-            <label @click="this.showModalMethod()" for="btn-modal">X</label>
+    <div v-show="!cargando" class="general">
+      <!-- Modal -->
+      <Transition>
+        <div v-if="showModal" class="modal">
+          <div class="contenedor">
+            <header>Filtros</header>
             <div class="contenido">
-              <Filters
-                :filterFacturas="filterFacturas"
-                :search="search"
-                :filteredFacturas="filteredFacturas"
-              />
+              <label @click="this.showModalMethod()" for="btn-modal">X</label>
+              <div class="contenido">
+                <Filters
+                  :filterVitolas="filterVitolas"
+                  :search="search"
+                  :filteredVitolas="filteredVitolas"
+                />
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </Transition>
-    <!-- Cuerpo -->
-    <div class="grid">
-      <div class="facturas">
-        <!-- <label
+      </Transition>
+      <!-- Cuerpo -->
+      <div class="grid">
+        <div class="vitolas">
+          <!-- <label
           style="cursor:pointer"
           @click="this.showModalMethod()"
           for="btn-modal"
           >Opciones</label
         > -->
-        <h4>
-          Listado de Facturas
-          <i
-            style="cursor:pointer"
-            @click="this.showModalMethod()"
-            class="fas fa-filter"
-            _mstvisible="2"
-          ></i>
-        </h4>
-        <ListadoComponent :facturas="facturas" v-show="!cargando" />
+          <h4>
+            Listado de Vitolas
+            <i
+              style="cursor:pointer"
+              @click="this.$router.push(`/vitolas/new`)"
+              class="fas fa-plus"
+              _mstvisible="2"
+            ></i>
+          </h4>
+          <ListadoComponent :vitolas="vitolas" v-show="!cargando" />
+        </div>
       </div>
     </div>
-  </div>
   </Transition>
   <!---------------------------------------------------------------------------------------------------------->
 </template>
 
 <script lang="ts">
-import Filters from "@/components/Factura/FiltersComponent.vue";
-import ListadoComponent from "@/components/Factura/ListComponent.vue";
+import Filters from "@/components/Vitola/FiltersComponent.vue";
+import ListadoComponent from "@/components/Vitola/ListComponent.vue";
 import Navbar from "@/components/Navbar.vue";
-import { Factura } from "@/interfaces/Factura";
-import { getFacturas } from "@/services/almaycru/FacturaService";
+import { Vitola } from "@/interfaces/Vitola";
+import { getVitolas } from "@/services/almaycru/Vitola";
 import Pusher from "pusher-js";
 
 export default {
@@ -79,7 +79,7 @@ export default {
       player: new Audio(),
       showModal: false,
       cargando: false,
-      facturas: [] as Factura[],
+      vitolas: [] as Vitola[],
       str: "",
       type: "",
     };
@@ -94,7 +94,7 @@ export default {
 
       var channel = pusher.subscribe("my-channel");
       channel.bind("my-event", (data: any) => {
-        this.loadFacturas2();
+        this.loadVitolas2();
         // this.player.src = this.song.src;
         // this.player.play();
       });
@@ -108,16 +108,16 @@ export default {
     toggleLoading() {
       this.cargando = !this.cargando;
     },
-    async filterFacturas(catName: string) {
+    async filterVitolas(catName: string) {
       try {
-        const res = await getFacturas();
-        this.facturas = res.data;
+        const res = await getVitolas();
+        this.vitolas = res.data;
       } catch (error) {
         // console.error(error);
       }
       if (catName !== "Todos") {
-        this.facturas = this.facturas.filter((factura: Factura) => {
-          return factura.status === catName;
+        this.vitolas = this.vitolas.filter((vitola: Vitola) => {
+          return vitola.tamano === catName;
         });
       }
     },
@@ -125,35 +125,35 @@ export default {
     async search(term: string) {
       this.toggleLoading();
       try {
-        const res = await getFacturas();
-        this.facturas = res.data;
+        const res = await getVitolas();
+        this.vitolas = res.data;
       } catch (error) {
         // console.error(error);
       }
       if (term !== "Todos") {
-        this.facturas = this.facturas.filter((factura: Factura) => {
-          return factura.idfact.toLowerCase().includes(term.toLowerCase());
+        this.vitolas = this.vitolas.filter((vitola: Vitola) => {
+          return vitola.descripcion.toLowerCase().includes(term.toLowerCase());
         });
       }
       this.toggleLoading();
     },
 
-    async loadFacturas() {
+    async loadVitolas() {
       this.toggleLoading();
       try {
-        const res = await getFacturas();
-        this.facturas = res.data;
+        const res = await getVitolas();
+        this.vitolas = res.data;
       } catch (error) {
         // console.error(error);
       }
       this.toggleLoading();
     },
 
-    async loadFacturas2() {
+    async loadVitolas2() {
       this.toggleLoading();
       try {
-        const res = await getFacturas();
-        this.facturas = res.data;
+        const res = await getVitolas();
+        this.vitolas = res.data;
       } catch (error) {
         // console.error(error);
       }
@@ -162,7 +162,7 @@ export default {
   },
 
   mounted() {
-    this.loadFacturas();
+    this.loadVitolas();
     this.pusherSubscribe();
   },
 };
@@ -219,7 +219,7 @@ export default {
   gap: 1em;
   grid-template-areas:
     "filters filters filters filters filters filters filters"
-    "facturas facturas facturas facturas facturas facturas facturas";
+    "vitolas vitolas vitolas vitolas vitolas vitolas vitolas";
 }
 
 .grid .filters {
@@ -229,8 +229,8 @@ export default {
   border-radius: 7px;
 }
 
-.grid .facturas {
-  grid-area: facturas;
+.grid .vitolas {
+  grid-area: vitolas;
   /* background-color: rgb(255, 255, 255); */
   /* box-shadow: 2px 2px 10px rgb(199, 199, 199); */
   /* border-radius: 7px; */

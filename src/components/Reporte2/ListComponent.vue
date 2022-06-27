@@ -73,9 +73,9 @@
 <script lang="ts">
 import numeral from "numeral";
 import moment from "moment";
-import { updateOne, updateReporte } from "@/services/cuetasporcobrarcj/ReporteService";
+import { updateOne, updateReporte } from "@/services/almaycru/ReporteService";
 import { Reporte } from "@/interfaces/Reporte";
-import { createMensaje } from "@/services/cuetasporcobrarcj/ChatService";
+import { createMensaje } from "@/services/almaycru/ChatService";
 
 export default {
   props: ["reportes"],

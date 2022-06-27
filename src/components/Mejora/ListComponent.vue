@@ -66,7 +66,7 @@
 <script lang="ts">
 import numeral from "numeral";
 import moment from "moment";
-import { updateOne } from "@/services/cuetasporcobrarcj/MejoraService";
+import { updateOne } from "@/services/almaycru/MejoraService";
 import { Mejora } from "@/interfaces/Mejora";
 
 export default {
@@ -181,7 +181,7 @@ th {
 }
 
 .mith {
-  background-color: rgb(5, 24, 250);
+  background-color: rgb(0, 0, 0);
 }
 
 .cwhite {

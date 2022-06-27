@@ -1,188 +1,90 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-    <div class="container-fluid">
-      <a class="navbar-brand" @click="this.$router.push(`/dashboard`)" href="#"
-        >CxC ARS <span class="version">V 1.0</span></a
-      >
-      <button
-        @click="tglMenu()"
-        class="navbar-toggler"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#navbarColor01"
-        aria-controls="navbarColor01"
-        aria-expanded="true"
-        aria-label="Toggle navigation"
-      >
-        <span class="navbar-toggler-icon"></span>
-      </button>
+  <nav>
+    <div class="content">
+      <nav :class="navMenuClas">
+        <label class="equis" @click="this.hamburger()" for="btn-modal">X</label>
 
-      <div
-        :class="{ show: this.showMenu }"
-        class="collapse navbar-collapse"
-        id="navbarColor01"
-      >
-        <ul class="navbar-nav me-auto">
-          <!-------------------------------------Start Option------------------------------------->
-          <li
-            v-if="this.$store.state.user.type == 'Power User'"
-            class="nav-item"
-          >
-            <a class="nav-link" @click="this.$router.push(`/usuarios`)" href="#"
-              >Usuarios
-              <span class="visually-hidden">(current)</span>
-            </a>
-          </li>
-          <!--------------------------------------End Option-------------------------------------->
-          <!-------------------------------------Start Option------------------------------------->
-          <li
-            v-if="this.$store.state.user.type == 'Power User'"
-            class="nav-item"
-          >
-            <a class="nav-link" @click="this.$router.push(`/mejoras`)" href="#"
-              >Mejoras
-            </a>
-          </li>
-          <!--------------------------------------End Option-------------------------------------->
-          <!-------------------------------------Start Option------------------------------------->
-          <!-- <li
-            v-if="this.$store.state.user.type == 'Power User'"
-            class="nav-item"
-          >
-            <a class="nav-link" @click="this.$router.push(`/areas`)" href="#"
-              >Áreas
-            </a>
-          </li> -->
-          <!--------------------------------------End Option-------------------------------------->
-          <!-------------------------------------Start Option------------------------------------->
-          <!-- <li
-            v-if="
-              this.$store.state.user.type == 'Power User' ||
-                this.$store.state.user.type == 'Administrador' ||
-                this.$store.state.user.type == 'Encargado' ||
-                this.$store.state.user.type == 'Agente'
-            "
-            class="nav-item"
-          >
-            <a class="nav-link" @click="this.$router.push(`/reportes`)" href="#"
-              >Reportes
-            </a>
-          </li> -->
-          <!-- <li
-            v-if="
-              this.$store.state.user.type == 'Power User' ||
-                this.$store.state.user.type == 'Administrador' ||
-                this.$store.state.user.type == 'Encargado' ||
-                this.$store.state.user.type == 'Agente'
-            "
-            class="nav-item"
-          >
-            <a
-              class="nav-link"
-              @click="this.$router.push(`/reporte2s`)"
-              href="#"
-              >Asignaciones
-            </a>
-          </li> -->
-          <!-------------------------------------Start Option------------------------------------->
-          <!-- <li
-            v-if="
-              this.$store.state.user.type == 'Power User' ||
-                this.$store.state.user.type == 'Administrador' ||
-                this.$store.state.user.type == 'Encargado'
-            "
-            class="nav-item"
-          >
-            <a class="nav-link" @click="this.$router.push(`/facturas`)" href="#"
-              >Facturas
-            </a>
-          </li> -->
+        <label
+          class="closeSesion"
+          @click="this.hamburger('Cerrar Sesión')"
+          for="btn-modal"
+          ><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</label
+        >
 
-          <!-------------------------------------Menu Option------------------------------------->
-          <li
-            class="nav-item dropdown"
-            v-if="
-              this.$store.state.user.type == 'Power User' ||
-                this.$store.state.user.type == 'Administrador' ||
-                this.$store.state.user.type == 'Encargado' ||
-                this.$store.state.user.type == 'Agente'
-            "
-          >
-            <a
-              class="nav-link dropdown-toggle"
-              data-bs-toggle="dropdown"
-              href="#"
-              role="button"
-              aria-haspopup="true"
-              aria-expanded="false"
-              @click="tshowFactura()"
-              >Facturas</a
-            >
-            <div :class="{ show: this.showFactura }" class="dropdown-menu">
-              <a
-                class="dropdown-item"
-                @click="this.$router.push(`/facturas/new`)"
-                href="#"
-                ><i class="fas fa-plus"></i> Recibir Factura</a
-              >
-              <a
-                @click="this.$router.push(`/facturas`)"
-                class="dropdown-item"
-                href="#"
-                ><i class="fas fa-list"></i> Listado de Facturas</a
-              >
-            </div>
-          </li>
-          <!-------------------------------------***********------------------------------------->
+        <label class="name" @click="this.hamburger()" for="btn-modal"
+          ><i class="fas fa-user"></i>
+          {{ this.$store.state.user.usuario }}</label
+        >
+        <div class="line"></div>
+        <!-- Start Option -->
+        <a
+          v-if="this.$store.state.user.type == 'Power User'"
+          class="navbar-option"
+          @click="this.hamburger('Mejoras')"
+          href="#"
+          ><i class="fas fa-check"></i> Mejoras</a
+        >
+        <!-- End Option -->
+        <!-- Start Option -->
+        <a
+          v-if="this.$store.state.user.type == 'Power User'"
+          class="navbar-option"
+          @click="this.hamburger('Usuarios')"
+          href="#"
+          ><i class="fas fa-users"></i> Usuarios</a
+        >
+        <!-- End Option -->
+        <!-- Start Option -->
+        <a
+          v-if="
+            this.$store.state.user.type == 'Power User' ||
+              this.$store.state.user.type == 'Administrador'
+          "
+          class="navbar-option"
+          @click="this.hamburger('Dashboard')"
+          href="#"
+          ><i class="fas fa-columns"></i> Dashboard</a
+        >
+        <!-- End Option -->
+        <!-- Start Option -->
+        <a
+          v-if="
+            this.$store.state.user.type == 'Power User' ||
+              this.$store.state.user.type == 'Administrador'
+          "
+          class="navbar-option"
+          @click="this.hamburger('Vitolas')"
+          href="#"
+          ><i class="fas fa-ruler"></i> Vitolas</a
+        >
+        <!-- End Option -->
+        <!-- Start Option -->
+        <!-- <a
+          v-if="
+            this.$store.state.user.type == 'Power User' ||
+              this.$store.state.user.type == 'Administrador'
+          "
+          class="navbar-option"
+          @click="this.hamburger('Cerrar Sesión')"
+          href="#"
+          ><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a
+        > -->
+        <!-- End Option -->
+      </nav>
 
-          <!--------------------------------------End Option-------------------------------------->
-          <!-- <li
-            v-if="
-              this.$store.state.user.type == 'Power User' ||
-                this.$store.state.user.type == 'Administrador'
-            "
-            class="nav-item"
+      <nav>
+        <div class="mycontainer">
+          <a
+            class="item navbar-brand"
+            @click="this.$router.push(`/dashboard`)"
+            href="#"
+            >Alma & Cru <span class="version">V 1.0</span></a
           >
-            <a class="nav-link" @click="this.$router.push(`/chat`)" href="#"
-              >Chat
-            </a>
-          </li> -->
-          <!--------------------------------------End Option-------------------------------------->
-        </ul>
-
-        <!--------------------------------------User Name --------------------------------------->
-        <div class="d-flex">
-          <ul class="navbar-nav me-auto">
-            <li
-              class="nav-item dropdown"
-              v-if="
-                this.$store.state.user.type == 'Power User' ||
-                  this.$store.state.user.type == 'Administrador' ||
-                  this.$store.state.user.type == 'Agente' ||
-                  this.$store.state.user.type == 'Encargado'
-              "
-            >
-              <a
-                class="nav-link dropdown-toggle blue"
-                data-bs-toggle="dropdown"
-                href="#"
-                role="button"
-                aria-haspopup="true"
-                aria-expanded="false"
-                @click="tglName()"
-                >{{ this.$store.state.user.usuario }} ({{
-                  this.$store.state.user.type
-                }})</a
-              >
-              <div :class="{ show: this.showName }" class="dropdown-menu">
-                <a class="dropdown-item" @click="salir()" href="#"
-                  ><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a
-                >
-              </div>
-            </li>
-          </ul>
+          <a class="item navbar-brand" @click="hamburger()" href="#"
+            ><i class="item fas fa-ellipsis-v"></i
+          ></a>
         </div>
-      </div>
+      </nav>
     </div>
   </nav>
 </template>
@@ -198,10 +100,36 @@ export default defineComponent({
       showMenu: false,
       showName: false,
       showFactura: false,
+      navMenuClas: ["menu-navegacion"],
     };
   },
 
   methods: {
+    hamburger(texto: string) {
+      switch (texto) {
+        case "Mejoras":
+          this.$router.push("/mejoras");
+          break;
+        case "Usuarios":
+          this.$router.push("/usuarios");
+          break;
+        case "Dashboard":
+          this.$router.push("/dashboard");
+          break;
+        case "Vitolas":
+          this.$router.push("/vitolas");
+          break;
+        case "Cerrar Sesión":
+          this.salir();
+          break;
+      }
+      if (this.navMenuClas.length == 1) {
+        this.navMenuClas.push("spread");
+      } else {
+        this.navMenuClas.pop();
+      }
+    },
+
     tglMenu() {
       this.showMenu = !this.showMenu;
     },
@@ -224,15 +152,108 @@ export default defineComponent({
 </script>
 
 <style scoped>
+a {
+  color: rgb(147, 147, 147);
+}
+.line {
+  width: 100%;
+  /* max-width: 1200px; */
+  margin: 0 auto;
+  height: 2px;
+  background: rgb(147, 147, 147);
+  /* margin-bottom: 60px; */
+}
+
+.mycontainer {
+  /* height: 40px; */
+  background-color: black;
+  /* padding: 5px; */
+
+  display: flex;
+  justify-content: space-between;
+}
+
+.navbar-brand {
+  color: white;
+  font-family: "Agency FB";
+  margin-left: 5px;
+}
+
+.navbar-option {
+  color: white;
+  /* font-family: "Agency FB Bold"; */
+  text-decoration: none;
+}
+
 .version {
   font-size: 50%;
 }
 
-/* li{
+li {
   font-size: 75%;
-} */
+}
 
-/* .container-fluid{
-  height: 10px;
-}*/
+/* Menú Lateral */
+
+.menu-navegacion {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 20vw;
+  height: 100%;
+  background-image: linear-gradient(180deg, rgb(0, 0, 0) 0%, rgb(0, 0, 0) 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: left;
+  transition: transform 0.3s ease-in-out;
+  transform: translate(110%);
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.5);
+  z-index: 100;
+  padding-left: 10px;
+  padding-top: 70px;
+}
+
+.spread {
+  transform: translate(0);
+}
+
+.equis {
+  position: absolute;
+  top: 20px;
+  right: 10px;
+  color: #fff;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.name {
+  position: absolute;
+  top: 40px;
+  right: 10px;
+  color: #fff;
+  font-size: 18px;
+}
+
+.closeSesion {
+  position: absolute;
+  bottom: 0;
+  right: 10px;
+  color: #fff;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+/* Responsiveness */
+@media screen and (max-width: 800px) {
+  .menu-navegacion {
+    width: 50vw;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .menu-navegacion {
+    width: 65vw;
+  }
+}
 </style>

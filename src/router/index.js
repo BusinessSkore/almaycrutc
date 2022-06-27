@@ -49,6 +49,13 @@ import Reporte2PrintComponent from "../components/Reporte2/PrintComponent.vue";
 import Reporte2FormComp from "../components/Reporte2/FormComp.vue";
 // ----------------------------------------------------------------------------
 
+// Vitola -------------------------------------------------------------------
+import VitolaComponent from "../components/Vitola/PrincipalComponent.vue";
+import VitolaDetailComponent from "../components/Vitola/DetailComponent.vue";
+import VitolaPrintComponent from "../components/Vitola/PrintComponent.vue";
+import VitolaFormComp from "../components/Vitola/FormComp.vue";
+// ----------------------------------------------------------------------------
+
 // Chat -------------------------------------------------------------------
 import ChatComponent from "../components/ChatComponent.vue";
 // ----------------------------------------------------------------------------
@@ -288,6 +295,43 @@ const routes = [
         path: "/reporte2s/new",
         name: "reporte2s-form",
         component: Reporte2FormComp,
+        meta: {
+          roles: ["Power User", "Administrador", "Encargado", "Agente"],
+        },
+      },
+
+      // ----------------------------------------------------------------------------
+
+
+      // Vitola --------------------------------------------------------------------
+      {
+        path: "/vitolas",
+        name: "vitolas",
+        component: VitolaComponent,
+        meta: {
+          roles: ["Power User", "Administrador", "Encargado", "Agente"],
+        },
+      },
+      {
+        path: "/vitolas/:id",
+        name: "vitola-details",
+        component: VitolaDetailComponent,
+        meta: {
+          roles: ["Power User", "Administrador", "Encargado", "Agente"],
+        },
+      },
+      {
+        path: "/vitolas2/:id",
+        name: "vitola-details2",
+        component: VitolaPrintComponent,
+        meta: {
+          roles: ["Power User", "Administrador", "Encargado"],
+        },
+      },
+      {
+        path: "/vitolas/new",
+        name: "vitolas-form",
+        component: VitolaFormComp,
         meta: {
           roles: ["Power User", "Administrador", "Encargado", "Agente"],
         },

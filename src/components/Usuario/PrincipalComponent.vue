@@ -29,7 +29,7 @@ import Filters from "@/components/Usuario/FiltersComponent.vue";
 import UsuariosComponent from "@/components/Usuario/ListComponent.vue";
 import Navbar from "@/components/Navbar.vue";
 import { Usuario } from "@/interfaces/Usuario";
-import { getUsuarios } from "@/services/cuetasporcobrarcj/UsuarioService";
+import { getUsuarios } from "@/services/almaycru/UsuarioService";
 
 export default {
   name: "App",
@@ -112,7 +112,7 @@ export default {
   animation: 1.5s linear infinite spinner;
   animation-play-state: inherit;
   border: solid 5px #cfd0d1;
-  border-bottom-color: rgb(5, 24, 250);
+  border-bottom-color: rgb(0, 0, 0);
   border-radius: 50%;
   content: "";
   height: 90px;
@@ -166,7 +166,7 @@ export default {
 }
 
 h4 {
-  background-color: rgb(51, 163, 67);
+  background-color: rgb(147, 147, 147);
   /* border-radius: 7px; */
   color: white;
   text-align: center;

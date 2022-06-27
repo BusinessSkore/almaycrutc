@@ -37,10 +37,10 @@ import Filters from "@/components/Reporte/FiltersComponent.vue";
 import ListadoComponent from "@/components/Reporte2/ListComponent.vue";
 import Navbar from "@/components/Navbar.vue";
 import { Reporte } from "@/interfaces/Reporte";
-import { getReportes, getReportesByUser2 } from "@/services/cuetasporcobrarcj/ReporteService";
+import { getReportes, getReportesByUser2 } from "@/services/almaycru/ReporteService";
 import { Usuario } from "@/interfaces/Usuario";
 import Pusher from "pusher-js";
-import { createMensaje } from "@/services/cuetasporcobrarcj/ChatService";
+import { createMensaje } from "@/services/almaycru/ChatService";
 
 export default {
   name: "App",
@@ -152,7 +152,7 @@ export default {
 
     pusherSubscribe() {
       // Start pusher subscribe
-      var pusher = new Pusher("ec64cab5b5fa0b45d374", {
+      var pusher = new Pusher("d7b50b87118775ed0b11", {
         cluster: "us2",
       });
 
@@ -198,7 +198,7 @@ export default {
   animation: 1.5s linear infinite spinner;
   animation-play-state: inherit;
   border: solid 5px #cfd0d1;
-  border-bottom-color: rgb(5, 24, 250);
+  border-bottom-color: rgb(0, 0, 0);
   border-radius: 50%;
   content: "";
   height: 90px;

@@ -97,7 +97,7 @@ import {
   deleteFactura,
   getFactura,
   updateFactura,
-} from "@/services/cuetasporcobrarcj/FacturaService";
+} from "@/services/almaycru/FacturaService";
 import numeral from "numeral";
 import moment from "moment";
 
@@ -291,7 +291,7 @@ body {
 
 .h5 {
   font-size: 90%;
-  color: rgb(51, 163, 67);
+  color: rgb(147, 147, 147);
   font-weight: bold;
   text-align: center;
 }

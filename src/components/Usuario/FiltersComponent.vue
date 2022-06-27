@@ -65,7 +65,7 @@ export default {
 
 .gridposts > p:hover {
   text-align: center;
-  background-color: rgb(51, 163, 67);
+  background-color: rgb(147, 147, 147);
   box-shadow: 2px 2px 10px rgb(199, 199, 199);
   margin: 1px;
   color: white;

@@ -99,7 +99,7 @@ import {
   deleteMejora,
   getMejora,
   updateMejora,
-} from "@/services/cuetasporcobrarcj/MejoraService";
+} from "@/services/almaycru/MejoraService";
 import numeral from "numeral";
 import moment from "moment";
 
@@ -251,14 +251,14 @@ export default defineComponent({
 } */
 
 h6 {
-  color: rgb(5, 24, 250);
+  color: rgb(0, 0, 0);
   font-weight: bold;
   text-align: center;
 }
 
 h5 {
   font-size: 90%;
-  color: rgb(51, 163, 67);
+  color: rgb(147, 147, 147);
   font-weight: bold;
   text-align: center;
 }
@@ -272,7 +272,7 @@ form {
 }
 
 legend {
-  color: rgb(5, 24, 250);
+  color: rgb(0, 0, 0);
   text-align: center;
 }
 
@@ -308,7 +308,7 @@ label {
 }
 
 /* button {
-  background-color: rgb(51, 163, 67);
+  background-color: rgb(147, 147, 147);
   color: white;
   width: 100%;
   border-radius: 4px;
@@ -329,7 +329,7 @@ label {
   animation: 1.5s linear infinite spinner;
   animation-play-state: inherit;
   border: solid 5px #cfd0d1;
-  border-bottom-color: rgb(5, 24, 250);
+  border-bottom-color: rgb(0, 0, 0);
   border-radius: 50%;
   content: "";
   height: 90px;

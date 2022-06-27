@@ -145,9 +145,9 @@
 
 <script lang="ts">
 import Navbar from "@/components/Navbar.vue";
-import { createMensaje } from "@/services/cuetasporcobrarcj/ChatService";
+import { createMensaje } from "@/services/almaycru/ChatService";
 import { defineComponent } from "vue";
-import { getUsuarios } from "@/services/cuetasporcobrarcj/UsuarioService";
+import { getUsuarios } from "@/services/almaycru/UsuarioService";
 import { Reporte } from "@/interfaces/Reporte";
 import { Usuario } from "@/interfaces/Usuario";
 import {
@@ -155,7 +155,7 @@ import {
   deleteReporte,
   getReporte,
   updateReporte,
-} from "@/services/cuetasporcobrarcj/ReporteService";
+} from "@/services/almaycru/ReporteService";
 import numeral from "numeral";
 import moment from "moment";
 
@@ -346,14 +346,14 @@ export default defineComponent({
 } */
 
 h6 {
-  color: rgb(5, 24, 250);
+  color: rgb(0, 0, 0);
   font-weight: bold;
   text-align: center;
 }
 
 h5 {
   font-size: 90%;
-  color: rgb(51, 163, 67);
+  color: rgb(147, 147, 147);
   font-weight: bold;
   text-align: center;
 }
@@ -367,7 +367,7 @@ form {
 }
 
 legend {
-  color: rgb(5, 24, 250);
+  color: rgb(0, 0, 0);
   text-align: center;
 }
 
@@ -405,7 +405,7 @@ label {
 }
 
 /* button {
-  background-color: rgb(51, 163, 67);
+  background-color: rgb(147, 147, 147);
   color: white;
   width: 100%;
   border-radius: 4px;
@@ -426,7 +426,7 @@ label {
   animation: 1.5s linear infinite spinner;
   animation-play-state: inherit;
   border: solid 5px #cfd0d1;
-  border-bottom-color: rgb(5, 24, 250);
+  border-bottom-color: rgb(0, 0, 0);
   border-radius: 50%;
   content: "";
   height: 90px;

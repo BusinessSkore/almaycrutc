@@ -1,122 +1,45 @@
 <template>
-  <table v-if="this.totales.facturas" id="customers">
+  <table v-if="this.totales.vitolas" id="customers">
     <tr>
-      <th>ID</th>
-      <th>Fecha</th>
-      <!-- <th>Orígen</th> -->
-      <th>ARS</th>
-      <!-- <th>Autorización</th> -->
-      <th>Paciente</th>
-      <!-- <th>No. Afiliado</th> -->
-      <!-- <th>Cédula</th> -->
-      <th>Cobertura</th>
-      <!-- <th>Total</th> -->
-      <!-- <th></th> -->
+      <th>Tamaño</th>
+      <th>Tipo</th>
+      <th>Pago</th>
     </tr>
     <tr
-      v-for="(factura, index) in facturas"
+      v-for="(vitola, index) in vitolas"
       :key="index"
-      @click="this.$router.push(`/facturas/${factura._id}`)"
+      @click="this.$router.push(`/vitolas/${vitola._id}`)"
     >
-      <td :class="toColor(factura.status)">{{ factura.idfact }}</td>
-      <td :class="toColorDate(diffDate(factura.fecha_ingreso))">
-        {{ formatDate(factura.createdAt) }} ({{
-          diffDate(factura.fecha_ingreso)
-        }}
-        días)
+      <td>
+        {{ vitola.tamano }}
       </td>
-      <!-- <td>{{ factura.tipo_factura }}</td> -->
-      <td>{{ getARS(factura.id_ars) }}</td>
-      <!-- <td>{{ factura.nro_autorizacion_salida }}</td> -->
-      <td>{{ factura.nom }}</td>
-      <!-- <td>{{ factura.numero_afiliado }}</td> -->
-      <!-- <td>{{ factura.rnc }}</td> -->
-      <td class="der" :class="toColorNumber(factura.cobertura)">
-        {{ formatNumber(factura.cobertura, true) }}
+      <td>
+        {{ vitola.tipo }}
       </td>
-      <!-- <td class="der" >{{ formatNumber(factura.total_servicio) }}</td> -->
-      <!-- <td :class="toColor(factura.status)">{{ factura.status }}</td> -->
+      <td class="der">
+        {{ formatNumber(vitola.pago, true) }}
+      </td>
     </tr>
     <tr>
-      <td>Total: {{ formatNumber(this.totales.facturas) }}</td>
-      <td></td>
-      <!-- <td></td> -->
-      <!-- <td></td> -->
-      <!-- <td></td> -->
-      <!-- <td></td> -->
+      <td>Total: {{ formatNumber(this.totales.vitolas) }}</td>
       <td></td>
       <td></td>
-      <td :class="toColorNumber(this.totales.cobertura)" class="der">
-        {{ formatNumber(this.totales.cobertura, true) }}
-      </td>
-      <!-- <td></td> -->
-      <!-- <td></td> -->
     </tr>
   </table>
 
-  <h6 class="noRegist" v-if="!this.totales.facturas">
+  <h6 class="noRegist" v-if="!this.totales.vitolas">
     No se Encontraron Registros.
   </h6>
-
-  <!-- <div class="gridlistafacturas">
-    <table class="table table-hover">
-      <thead v-if="this.totales.facturas">
-        <tr class="mith">
-          <th class="cwhite">Título</th>
-          <th class="cwhite">Descripción</th>
-          <th class="cwhite"></th>
-          <th class="cwhite"></th>
-        </tr>
-      </thead>
-      <tbody v-for="(factura, index) in facturas" :key="index">
-        <tr :class="toColor2(factura.type)">
-          <td class="bold">
-            {{ factura.title }}
-          </td>
-          <td class="bold">
-            {{ factura.description }}
-          </td>
-          <td class="bold">
-            <i
-              style="cursor: pointer"
-              @click="this.$router.push(`/facturas/${factura._id}`)"
-              class="fas fa-edit"
-            ></i>
-          </td>
-          <td class="bold">
-            <i
-              style="cursor: pointer"
-              @click="marcarListo(factura)"
-              class="fas fa-check"
-            ></i>
-          </td>
-        </tr>
-      </tbody>
-      <tbody>
-        <h6 class="noRegist" v-if="!this.totales.facturas">
-          No se encontraron registros.
-        </h6>
-        <tr v-if="this.totales.facturas">
-          <td class="bold izq bold">
-            Total: {{ formatNumber2(this.totales.facturas) }}
-          </td>
-          <td class="bold der"></td>
-          <td class="bold der"></td>
-          <td class="bold der"></td>
-        </tr>
-      </tbody>
-    </table>
-  </div> -->
 </template>
 
 <script lang="ts">
 import numeral from "numeral";
 import moment from "moment";
-import { updateOne } from "@/services/almaycru/FacturaService";
-import { Factura } from "@/interfaces/Factura";
+import { updateOne } from "@/services/almaycru/Vitola";
+import { Vitola } from "@/interfaces/Vitola";
 
 export default {
-  props: ["facturas"],
+  props: ["vitolas"],
   data() {
     return {
       data: false,
@@ -142,22 +65,10 @@ export default {
     },
 
     toColor(type: string) {
-      if (type == "1 - Recibido por Auditoría Interna") {
+      if (type == "Masculino") {
         return "valor1";
-      } else if (type == "2 - Verificado por Auditoría Interna") {
+      } else if (type == "Femenino") {
         return "valor2";
-      } else if (type == "3 - Verificado por Auditoría Externa") {
-        return "valor3";
-      } else if (type == "4 - Recibido por Reclamaciones Médicas") {
-        return "valor4";
-      } else if (type == "5 - Verificado por Reclamaciones Médicas") {
-        return "valor5";
-      } else if (type == "6 - Cargado a Lote") {
-        return "valor6";
-      } else if (type == "7 - Enviado a la Aseguradora") {
-        return "valor7";
-      } else if (type == "Todos") {
-        return "Todos";
       }
     },
 
@@ -244,10 +155,10 @@ export default {
       }
     },
 
-    async marcarListo(factura: Factura) {
-      alert("Factura Lista.");
+    async marcarListo(vitola: Vitola) {
+      alert("Vitola Lista.");
       try {
-        const res = await updateOne(factura);
+        const res = await updateOne(vitola);
       } catch (error) {
         // console.error(error);
       }
@@ -258,13 +169,13 @@ export default {
         return "table-danger";
       } else if (type == "Función") {
         return "table-success";
-      } else if (type == "Factura") {
+      } else if (type == "Vitola") {
         return "table-warning";
       }
     },
     valorTotal() {
-      this.totales.facturas = this.facturas.length;
-      this.totales.cobertura = this.facturas.reduce(
+      this.totales.vitolas = this.vitolas.length;
+      this.totales.cobertura = this.vitolas.reduce(
         (accum: any, item: any) => accum + item.cobertura,
         0
       );
@@ -287,7 +198,7 @@ export default {
     },
 
     formatDate(dateValue: Date) {
-      let out = moment(dateValue).add(4, "h");
+      let out = moment(dateValue).add(0, "h");
       return moment(out).format("D/MM/yyyy HH:mm");
     },
   },
@@ -305,7 +216,7 @@ export default {
   /* background-color: rgb(255, 0, 0); */
   /* margin: 1px; */
   font-weight: bold;
-  color: rgb(255, 0, 0);
+  color: rgb(120, 120, 255);
 }
 
 .valor2 {
@@ -313,7 +224,7 @@ export default {
   /* background-color: rgb(255, 64, 0); */
   /* margin: 1px; */
   font-weight: bold;
-  color: rgb(255, 64, 0);
+  color: pink;
 }
 
 .valor3 {
@@ -360,7 +271,7 @@ export default {
   font-weight: bold;
 }
 
-.gridlistafacturas {
+.gridlistavitolas {
   display: grid;
   grid-auto-flow: dense;
   grid-template-rows: auto auto;

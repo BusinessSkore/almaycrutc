@@ -5,11 +5,11 @@
     <div class="grid-layout">
       <div class="caja c0"></div>
       <div class="caja c1">
-        <h4 class="bold">{{ this.area.medico }}</h4>
-        <h5>{{ this.area.direccion }}</h5>
+        <h4 class="bold">{{ this.vitola.medico }}</h4>
+        <h5>{{ this.vitola.direccion }}</h5>
         <!-- <h5>
           <span class="bold">RNC / Cédula: </span>
-          <span>{{ this.area.rncMedico }}</span>
+          <span>{{ this.vitola.rncMedico }}</span>
         </h5> -->
         <h5>
           <span class="bold">Teléfono: </span>
@@ -21,32 +21,32 @@
         </h5>
       </div>
       <div class="caja c2">
-        <h3 class="bold">Factura<br /></h3>
+        <h3 class="bold">Vitola<br /></h3>
         <h5>
           <span class="bold">No: </span>
-          <span>{{ formatSecuence(area.no) }}</span>
+          <span>{{ formatSecuence(vitola.no) }}</span>
         </h5>
         <!-- <h5>
           <span class="bold">NCF: </span>
         </h5> -->
         <h5>
           <span class="bold">Fecha: </span>
-          <span>{{ formatDate(this.area.fechaProceso) }}</span>
+          <span>{{ formatDate(this.vitola.fechaProceso) }}</span>
         </h5>
         <!-- <h5>
           <span class="bold">Vencimiento: </span>
-          <span>{{ formatDate(this.area.vencimiento) }}</span>
+          <span>{{ formatDate(this.vitola.vencimiento) }}</span>
         </h5> -->
       </div>
       <div class="caja c7"></div>
       <div class="caja c3">
         <!-- <h5>
           <span class="bold">RNC Cliente: </span>
-          <span>{{ this.area.rncCliente }}</span>
+          <span>{{ this.vitola.rncCliente }}</span>
         </h5> -->
         <h5>
           <span class="bold">Cliente: </span>
-          <span>{{ this.area.descCliente }}</span>
+          <span>{{ this.vitola.descCliente }}</span>
         </h5>
       </div>
       <div class="caja c4">
@@ -56,9 +56,9 @@
             <th>Valor</th>
           </tr>
           <tr>
-            <td class="t izq">{{ this.area.descServicios }}</td>
+            <td class="t izq">{{ this.vitola.descServicios }}</td>
             <td class="t der">
-              {{ formatNumber(this.area.prefactura) }}
+              {{ formatNumber(this.vitola.previtola) }}
             </td>
           </tr>
         </table>
@@ -75,11 +75,11 @@
         </div>
       </div>
       <div class="caja c6">
-        <h6>{{ formatNumber(this.area.prefactura) }}</h6>
-        <h6>{{ formatNumber(this.area.descuento) }}</h6>
-        <h6>{{ formatNumber(this.area.descuento) }}</h6>
+        <h6>{{ formatNumber(this.vitola.previtola) }}</h6>
+        <h6>{{ formatNumber(this.vitola.descuento) }}</h6>
+        <h6>{{ formatNumber(this.vitola.descuento) }}</h6>
         <h6 class="bold">
-          {{ formatNumber(this.area.prefactura) }}
+          {{ formatNumber(this.vitola.previtola) }}
         </h6>
         <div class="firma">
           <p>____________________________</p>
@@ -92,21 +92,21 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { Area } from "@/interfaces/Area";
+import { Vitola } from "@/interfaces/Vitola";
 import {
-  deleteArea,
-  getArea,
-  updateArea,
-} from "@/services/almaycru/AreaService";
+  deleteVitola,
+  getVitola,
+  updateVitola,
+} from "@/services/almaycru/Vitola";
 import numeral from "numeral";
 import moment from "moment";
 
 export default defineComponent({
-  name: "area-list",
+  name: "vitola-list",
   data() {
     return {
       cargando: false,
-      area: {} as Area,
+      vitola: {} as Vitola,
     };
   },
   methods: {
@@ -130,11 +130,11 @@ export default defineComponent({
       let out = moment(dateValue).add(0, "hours");
       return moment(out).format("DD/MM/YYYY");
     },
-    async loadArea(id: string) {
+    async loadVitola(id: string) {
       this.toggleLoading();
       try {
-        const { data } = await getArea(id);
-        this.area = data;
+        const { data } = await getVitola(id);
+        this.vitola = data;
       } catch (error) {
         //console.error(error);
       }
@@ -142,18 +142,18 @@ export default defineComponent({
       this.toPrint();
 
       if (this.$store.state.ids.length == 0) {
-        this.$router.push(`/areas/${this.area._id}`);
+        this.$router.push(`/vitolas/${this.vitola._id}`);
       } else {
-        this.$router.push(`/areaslot/new`);
+        this.$router.push(`/vitolaslot/new`);
       }
 
-      // this.$router.push(`/areas/${this.area._id}`);
+      // this.$router.push(`/vitolas/${this.vitola._id}`);
     },
     async handleUpdate() {
       try {
         if (typeof this.$route.params.id === "string") {
-          await updateArea(this.$route.params.id, this.area);
-          this.$router.push("/areas");
+          await updateVitola(this.$route.params.id, this.vitola);
+          this.$router.push("/vitolas");
         }
       } catch (error) {
         //console.error(error);
@@ -162,8 +162,8 @@ export default defineComponent({
     async handleDelete() {
       try {
         if (typeof this.$route.params.id === "string") {
-          deleteArea(this.$route.params.id);
-          this.$router.push("/areas");
+          deleteVitola(this.$route.params.id);
+          this.$router.push("/vitolas");
         }
       } catch (error) {
         //console.error(error);
@@ -172,7 +172,7 @@ export default defineComponent({
   },
   mounted() {
     if (typeof this.$route.params.id === "string") {
-      this.loadArea(this.$route.params.id);
+      this.loadVitola(this.$route.params.id);
     }
   },
 

@@ -3,11 +3,11 @@
   <div class="gridEncontrar">
     <!-- Boton Agregar -->
     <!-- <button
-      @click="this.$router.push(`/facturas/new`)"
+      @click="this.$router.push(`/vitolas/new`)"
       type="button"
       class="btn btn-outline-success"
     >
-      <i class="fas fa-plus" _mstvisible="2"></i> Agregar Factura
+      <i class="fas fa-plus" _mstvisible="2"></i> Agregar Vitola
     </button> -->
     <!-- Campo de Búsqueda -->
     <!-- <div>
@@ -33,7 +33,7 @@
         style="cursor: pointer"
         v-for="filter in filters"
         :key="filter"
-        @click="() => filterFacturas(filter)"
+        @click="() => filterVitolas(filter)"
       >
         {{ filter }}
       </p>
@@ -54,7 +54,7 @@ const filters = [
 ];
 
 export default {
-  props: ["filterFacturas", "search", "filteredFacturas"],
+  props: ["filterVitolas", "search", "filteredVitolas"],
 
   data() {
     return {
@@ -113,7 +113,7 @@ h6 {
 
 /* Esquema de Colores Claros */
 
-.facturado {
+.vitolado {
   text-align: center;
   background-color: rgb(248, 105, 107);
   margin: 1px;

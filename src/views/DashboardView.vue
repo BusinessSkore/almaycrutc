@@ -1,69 +1,69 @@
 <template v-show="!cargando">
-  <Navbar />
-  <!-- {{ this.totales }} -->
-  <Transition>
-    <div v-if="cargando" class="spin">
-      <img class="img" src="@/assets/images/logo.png" />
-    </div>
-  </Transition>
-  <div v-show="!cargando" class="general">
-    <form>
-      <!---------------------------------------- Start Dashboard por Usuario ---------------------------------------->
-      <fieldset>
-        <!-- <h4>
+  <div>
+    <Navbar />
+    <Transition>
+      <div v-if="cargando" class="spin">
+        <img class="img" src="@/assets/images/logo.png" />
+      </div>
+    </Transition>
+    <div v-show="!cargando" class="general">
+      <form>
+        <!---------------------------------------- Start Dashboard por Usuario ---------------------------------------->
+        <fieldset>
+          <!-- <h4>
           <i class="fas fa-file-spreadsheet" _mstvisible="2"></i> Dashboard
         </h4> -->
-        <div class="form-group">
-          <div class="grid">
-            <!------------------------------------------ Campo ------------------------------------------>
-            <div
-              v-show="!cargando"
-              v-if="this.$store.state.user.type == 'Power User'"
-              class="card bg-secondary"
-              style="max-width: 20rem;"
-            >
-              <div class="card-header">
-                <p>Cantidad de Mejoras por Estatus</p>
+          <div class="form-group">
+            <div class="grid">
+              <!------------------------------------------ Campo ------------------------------------------>
+              <div
+                v-show="!cargando"
+                v-if="this.$store.state.user.type == 'Power User'"
+                class="card bg-secondary"
+                style="max-width: 20rem;"
+              >
+                <div class="card-header">
+                  <p>Cantidad de Usuarios por Rol</p>
+                </div>
+                <div class="card-body">
+                  <p
+                    v-for="(item, index) in usuariosCant"
+                    :key="index"
+                    class="card-text"
+                  >
+                    {{ item._id.role }} : {{ item.count }}
+                  </p>
+                </div>
               </div>
-              <div class="card-body">
-                <p
-                  v-for="(tipoMejora, index) in mejorasPend"
-                  :key="index"
-                  class="card-text"
-                >
-                  {{ tipoMejora._id.estatus }} : {{ tipoMejora.count }}
-                </p>
+              <!------------------------------------------ ***** ------------------------------------------>
+              <!------------------------------------------ Campo ------------------------------------------>
+              <div
+                v-show="!cargando"
+                v-if="this.$store.state.user.type == 'Power User'"
+                class="card bg-secondary"
+                style="max-width: 20rem;"
+              >
+                <div class="card-header">
+                  <p>Cantidad de Mejoras por Estatus</p>
+                </div>
+                <div class="card-body">
+                  <p
+                    v-for="(tipoMejora, index) in mejorasPend"
+                    :key="index"
+                    class="card-text"
+                  >
+                    {{ tipoMejora._id.estatus }} : {{ tipoMejora.count }}
+                  </p>
+                </div>
               </div>
-            </div>
 
-            <!------------------------------------------ ***** ------------------------------------------>
-            <!------------------------------------------ Campo ------------------------------------------>
-            <div
-              v-show="!cargando"
-              v-if="this.$store.state.user.type == 'Power User'"
-              class="card bg-secondary"
-              style="max-width: 20rem;"
-            >
-              <div class="card-header">
-                <p>Cantidad de Usuarios por Rol</p>
-              </div>
-              <div class="card-body">
-                <p
-                  v-for="(item, index) in usuariosCant"
-                  :key="index"
-                  class="card-text"
-                >
-                  {{ item._id.role }} : {{ item.count }}
-                </p>
-              </div>
+              <!------------------------------------------ ***** ------------------------------------------>
             </div>
-            <!------------------------------------------ ***** ------------------------------------------>
           </div>
-        </div>
-      </fieldset>
-      <!---------------------------------------- Finish Dashboard por Usuario ---------------------------------------->
-    </form>
-    <div
+        </fieldset>
+        <!---------------------------------------- Finish Dashboard por Usuario ---------------------------------------->
+      </form>
+      <!-- <div
       v-show="!cargando"
       v-if="
         this.$store.state.user.type == 'Power User' ||
@@ -71,11 +71,11 @@
       "
       class="card bg-secondary"
       style="max-width: 30rem;"
-    >
+    > -->
       <!-- <div class="card-header">
         <p>Cantidad de Facturas por Estatus</p>
       </div> -->
-      <div class="card-body">
+      <!-- <div class="card-body">
         <p style="font-weight: bold">Facturas por Ubicación</p>
         <table id="customers">
           <tr>
@@ -108,30 +108,21 @@
             </td>
           </tr>
         </table>
-
-        <!-- <p
-                  v-for="(item, index) in facturasCant"
-                  :key="index"
-                  class="card-text"
-                >
-                  {{ item._id.status }} : {{ item.count }} :
-                  {{ item.cobertura }}
-                </p> -->
-      </div>
-    </div>
-    <div
-      v-show="!cargando"
-      v-if="
-        this.$store.state.user.type == 'Power User' ||
-          this.$store.state.user.type == 'Administrador'
-      "
-      class="card bg-secondary"
-      style="max-width: 30rem;"
-    >
-      <!-- <div class="card-header">
+      </div> -->
+      <!-- </div> -->
+      <div
+        v-show="!cargando"
+        v-if="
+          this.$store.state.user.type == 'Power User' ||
+            this.$store.state.user.type == 'Administrador'
+        "
+        class="card bg-secondary"
+        style="max-width: 30rem;"
+      >
+        <!-- <div class="card-header">
         <p>Cantidad de Facturas por Estatus</p>
       </div> -->
-      <div class="card-body">
+        <!-- <div class="card-body">
         <p style="font-weight: bold">Facturas por Cliente</p>
         <table id="customers">
           <tr>
@@ -164,15 +155,7 @@
             </td>
           </tr>
         </table>
-
-        <!-- <p
-                  v-for="(item, index) in facturasCant"
-                  :key="index"
-                  class="card-text"
-                >
-                  {{ item._id.status }} : {{ item.count }} :
-                  {{ item.cobertura }}
-                </p> -->
+      </div> -->
       </div>
     </div>
   </div>
@@ -180,12 +163,12 @@
 
 <script lang="ts">
 import Navbar from "@/components/Navbar.vue";
-import { getMejPend } from "@/services/cuetasporcobrarcj/MejoraService";
-import { getUsuariosCant } from "@/services/cuetasporcobrarcj/UsuarioService";
+import { getMejPend } from "@/services/almaycru/MejoraService";
+import { getUsuariosCant } from "@/services/almaycru/UsuarioService";
 import {
   getfacturasCant,
   getfactsGpedByCli,
-} from "@/services/cuetasporcobrarcj/FacturaService";
+} from "@/services/almaycru/FacturaService";
 import numeral from "numeral";
 import Pusher from "pusher-js";
 export default {
@@ -299,7 +282,7 @@ export default {
 
     pusherSubscribe() {
       // Start pusher subscribe
-      var pusher = new Pusher("ec64cab5b5fa0b45d374", {
+      var pusher = new Pusher("d7b50b87118775ed0b11", {
         cluster: "us2",
       });
 
@@ -502,7 +485,7 @@ export default {
   padding-top: 8px;
   padding-bottom: 8px;
   text-align: center;
-  background-color: rgb(51, 163, 67);
+  background-color: rgb(147, 147, 147);
   color: white;
 }
 
@@ -559,7 +542,7 @@ h4 {
   animation: 1.5s linear infinite spinner;
   animation-play-state: inherit;
   border: solid 5px #cfd0d1;
-  border-bottom-color: rgb(5, 24, 250);
+  border-bottom-color: rgb(0, 0, 0);
   border-radius: 50%;
   content: "";
   height: 90px;

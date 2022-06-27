@@ -178,12 +178,12 @@
 import Navbar from "@/components/Navbar.vue";
 import { defineComponent } from "vue";
 import { Usuario } from "@/interfaces/Usuario";
-import { getUsuarios } from "@/services/cuetasporcobrarcj/UsuarioService";
+import { getUsuarios } from "@/services/almaycru/UsuarioService";
 import {
   deleteUsuario,
   getUsuario,
   updateUsuario,
-} from "@/services/cuetasporcobrarcj/UsuarioService";
+} from "@/services/almaycru/UsuarioService";
 import numeral from "numeral";
 
 export default defineComponent({
@@ -279,7 +279,7 @@ export default defineComponent({
   animation: 1.5s linear infinite spinner;
   animation-play-state: inherit;
   border: solid 5px #cfd0d1;
-  border-bottom-color: rgb(5, 24, 250);
+  border-bottom-color: rgb(0, 0, 0);
   border-radius: 50%;
   content: "";
   height: 90px;
@@ -340,7 +340,7 @@ form {
 }
 
 legend {
-  color: rgb(5, 24, 250);
+  color: rgb(0, 0, 0);
   text-align: center;
 }
 
@@ -376,7 +376,7 @@ label {
 }
 
 button {
-  background-color: rgb(51, 163, 67);
+  background-color: rgb(147, 147, 147);
   color: white;
   width: 100%;
   border-radius: 4px;

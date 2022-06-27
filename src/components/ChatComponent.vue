@@ -52,7 +52,7 @@
 
 <script lang="ts">
 import Navbar from "@/components/Navbar.vue";
-import { createMensaje } from "@/services/cuetasporcobrarcj/ChatService";
+import { createMensaje } from "@/services/almaycru/ChatService";
 import Pusher from "pusher-js";
 
 export default {
@@ -83,7 +83,7 @@ export default {
 
   mounted() {
     // Start pusher subscribe
-    var pusher = new Pusher("ec64cab5b5fa0b45d374", {
+    var pusher = new Pusher("d7b50b87118775ed0b11", {
       cluster: "us2",
     });
 
@@ -114,7 +114,7 @@ export default {
   animation: 1.5s linear infinite spinner;
   animation-play-state: inherit;
   border: solid 5px #cfd0d1;
-  border-bottom-color: rgb(5, 24, 250);
+  border-bottom-color: rgb(0, 0, 0);
   border-radius: 50%;
   content: "";
   height: 90px;
