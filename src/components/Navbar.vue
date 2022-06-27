@@ -78,7 +78,9 @@
             class="item navbar-brand"
             @click="this.$router.push(`/dashboard`)"
             href="#"
-            >Alma & Cru <span class="version">V 1.0</span></a
+          >
+            <img class="localIMG" src="@/assets/images/logo.png" /> Alma & Cru
+            <span class="version">V 1.0</span></a
           >
           <a class="item navbar-brand" @click="hamburger()" href="#"
             ><i class="item fas fa-ellipsis-v"></i
@@ -152,9 +154,18 @@ export default defineComponent({
 </script>
 
 <style scoped>
-a {
-  color: rgb(147, 147, 147);
+img {
+  /* display: block; */
+  /* margin-left: auto; */
+  /* margin-right: auto; */
+  width: 25px;
+  /* margin-bottom: 10px; */
 }
+
+.navbar-option {
+  margin: 7px;
+}
+
 .line {
   width: 100%;
   /* max-width: 1200px; */
@@ -232,7 +243,7 @@ li {
   top: 40px;
   right: 10px;
   color: #fff;
-  font-size: 18px;
+  font-size: 15px;
 }
 
 .closeSesion {

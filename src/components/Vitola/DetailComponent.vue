@@ -14,7 +14,7 @@
       <form>
         <fieldset>
           <h6>Detalles de Vitola</h6>
-          <label class="form-label"><b>Datos del Vitola</b></label>
+          <label class="form-label"><b>Datos de la Vitola</b></label>
           <div class="form-group">
             <!-- <label class="form-label"><b>Datos Generales</b></label> -->
             <!-- Start Fields -->
