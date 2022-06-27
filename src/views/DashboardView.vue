@@ -376,9 +376,9 @@ export default {
   mounted() {
     this.loadMejorasPendientes();
     this.loadUsuariosCant();
-    this.loadfacturasCant();
-    this.loadfactsGpedByCli();
-    this.pusherSubscribe();
+    // this.loadfacturasCant();
+    // this.loadfactsGpedByCli();
+    // this.pusherSubscribe();
   },
 
   updated() {

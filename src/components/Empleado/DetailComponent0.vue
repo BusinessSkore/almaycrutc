@@ -11,45 +11,104 @@
         <h6 :class="isError(error)">{{ error }}</h6>
         <form>
           <fieldset>
-            <h6>Nueva Funcion</h6>
-            <label class="form-label"><b>Datos de la Funcion</b></label>
+            <h6>Nuevo Empleado</h6>
+            <label class="form-label"><b>Datos de la Empleado</b></label>
             <div class="form-group">
               <div class="grid">
                 <!-- Start Fields -->
                 <div>
                   <label
                     class="ta-l col-form-label col-form-label-sm"
-                    for="descripcion"
-                    >Descripción:</label
+                    for="cedula"
+                    >Cédula:</label
                   ><input
-                    id="descripcion"
-                    type="descripcion"
-                    v-model="funcion.descripcion"
+                    id="cedula"
+                    type="cedula"
+                    v-model="empleado.cedula"
                     class="form-control"
                   />
                 </div>
+                <div>
+                  <label
+                    class="ta-l col-form-label col-form-label-sm"
+                    for="nombre"
+                    >Nombre:</label
+                  ><input
+                    id="nombre"
+                    type="nombre"
+                    v-model="empleado.nombre"
+                    class="form-control"
+                  />
+                </div>
+                <div>
+                  <label
+                    class="ta-l col-form-label col-form-label-sm"
+                    for="funcion"
+                    >Función:</label
+                  ><input
+                    id="funcion"
+                    type="funcion"
+                    v-model="empleado.funcion"
+                    class="form-control"
+                  />
+                </div>
+                <div>
+                  <label
+                    class="ta-l col-form-label col-form-label-sm"
+                    for="modalidad"
+                    >Modalidad:</label
+                  ><input
+                    id="modalidad"
+                    type="modalidad"
+                    v-model="empleado.modalidad"
+                    class="form-control"
+                  />
+                </div>
+                <div>
+                  <label
+                    class="ta-l col-form-label col-form-label-sm"
+                    for="sueldo"
+                    >Sueldo:</label
+                  ><input
+                    id="sueldo"
+                    type="number"
+                    v-model="empleado.sueldo"
+                    class="form-control"
+                  />
+                </div>
+
                 <!-- End Fields -->
               </div>
             </div>
 
+            <!-- <button
+              class="btn btn-success"
+              @click.prevent="saveEmpleado()"
+              :disabled="!empleado.descripcion"
+            >
+              <i class="fas fa-save"></i> Guardar
+            </button> -->
+
             <button
               class="btn btn-success"
-              @click.prevent="saveFuncion()"
-              :disabled="!funcion.descripcion"
+              @click.prevent="handleUpdate()"
+              :disabled="
+                !empleado.cedula ||
+                  !empleado.nombre ||
+                  !empleado.funcion ||
+                  !empleado.modalidad
+              "
             >
               <i class="fas fa-save"></i> Guardar
             </button>
-            <!-- <button class="btn btn-success" @click.prevent="handleUpdate()">
-            <i class="fas fa-edit"></i> Actualizar
-          </button> -->
 
-            <!-- <button
-            v-if="showDelete"
-            class="btn btn-danger"
-            @click.prevent="handleDelete()"
-          >
-            <i class="fas fa-trash-alt"></i> Eliminar
-          </button> -->
+            <button
+              v-if="showDelete"
+              class="btn btn-danger"
+              @click.prevent="handleDelete()"
+            >
+              <i class="fas fa-trash-alt"></i> Eliminar
+            </button>
           </fieldset>
         </form>
       </div>
@@ -60,23 +119,23 @@
 <script lang="ts">
 import Navbar from "@/components/Navbar.vue";
 import { defineComponent } from "vue";
-import { Funcion } from "@/interfaces/Funcion";
+import { Empleado } from "@/interfaces/Empleado";
 import {
-  createFuncion,
-  eliminateFuncions,
-  createFunciona,
-  getOneFuncion,
-  deleteFuncion,
-  getFuncion,
-  updateFuncion,
-} from "@/services/almaycru/Funcion";
+  createEmpleado,
+  eliminateEmpleados,
+  createEmpleadoa,
+  getOneEmpleado,
+  deleteEmpleado,
+  getEmpleado,
+  updateEmpleado,
+} from "@/services/almaycru/Empleado";
 import { createMensaje } from "@/services/almaycru/ChatService";
 import numeral from "numeral";
 import moment from "moment";
 import Pusher from "pusher-js";
 
 export default defineComponent({
-  name: "funcions-form",
+  name: "empleados-form",
   components: {
     Navbar,
   },
@@ -96,8 +155,8 @@ export default defineComponent({
       showAlert: false,
       loadedAfiliado: {},
       cargando: false,
-      funcion: {} as Funcion,
-      oneFuncion: {} as Funcion,
+      empleado: {} as Empleado,
+      oneEmpleado: {} as Empleado,
       one: {},
       nextNo: Number,
       medicoSelected: [],
@@ -113,13 +172,14 @@ export default defineComponent({
   },
 
   mounted() {
-    this.funcion.no = 1;
+    // this.empleado.no = 1;
     // this.defFields();
 
-    // this.showDeleteMethod();
-    // if (typeof this.$route.params.id === "string") {
-    //   this.loadFuncion(this.$route.params.id);
-    // }
+    this.showDeleteMethod();
+
+    if (typeof this.$route.params.id === "string") {
+      this.loadEmpleado(this.$route.params.id);
+    }
 
     // this.pusherSubscribe();
 
@@ -127,26 +187,26 @@ export default defineComponent({
   },
 
   methods: {
-        async loadFuncion(id: string) {
+    async loadEmpleado(id: string) {
       this.toggleLoading();
       try {
-        const { data } = await getFuncion(id);
-        this.funcion = data;
+        const { data } = await getEmpleado(id);
+        this.empleado = data;
         // this.fixTime();
       } catch (error) {
         //console.error(error);
       }
       this.toggleLoading();
     },
-    
+
     async handleUpdate() {
       // this.toggleLoading();
       try {
         if (typeof this.$route.params.id === "string") {
-          this.funcion.userMod = this.$store.state.user.usuario;
-          await updateFuncion(this.$route.params.id, this.funcion);
+          this.empleado.userMod = this.$store.state.user.usuario;
+          await updateEmpleado(this.$route.params.id, this.empleado);
           this.addMessage();
-          this.$router.push("/funcions");
+          this.$router.push("/empleados");
         }
       } catch (error) {
         //console.error(error);
@@ -156,14 +216,16 @@ export default defineComponent({
     },
 
     async handleDelete() {
-      try {
-        if (typeof this.$route.params.id === "string") {
-          await deleteFuncion(this.$route.params.id);
-          this.addMessage();
-          this.$router.push("/funcions");
+      if (confirm("Está Seguro que desea Eliminar Este Empleado?")) {
+        try {
+          if (typeof this.$route.params.id === "string") {
+            await deleteEmpleado(this.$route.params.id);
+            this.addMessage();
+            this.$router.push("/empleados");
+          }
+        } catch (error) {
+          //console.error(error);
         }
-      } catch (error) {
-        //console.error(error);
       }
     },
 
@@ -176,7 +238,7 @@ export default defineComponent({
       var channel = pusher.subscribe("my-channel");
       channel.bind("my-event", (data: any) => {
         if (typeof this.$route.params.id === "string") {
-          this.loadFuncion2(this.$route.params.id);
+          this.loadEmpleado2(this.$route.params.id);
         }
         // this.player.src = this.song.src;
         // this.player.play();
@@ -210,7 +272,7 @@ export default defineComponent({
       } else {
         years = edad;
       }
-      this.funcion.edaddelfuncion = years;
+      this.empleado.edaddelempleado = years;
     },
 
     formatDateToFix(dateValue: Date, incTime: boolean) {
@@ -224,8 +286,8 @@ export default defineComponent({
     },
 
     fixTime() {
-      this.funcion.fecha_ingreso = this.formatDateToFix(
-        this.funcion.fecha_ingreso,
+      this.empleado.fecha_ingreso = this.formatDateToFix(
+        this.empleado.fecha_ingreso,
         true
       );
     },
@@ -238,30 +300,30 @@ export default defineComponent({
       }
     },
 
-    // async getFuncion() {
+    // async getEmpleado() {
     //   this.toggleLoading();
-    //   this.documento.idfact = this.funcion.idfact;
+    //   this.documento.idfact = this.empleado.idfact;
     //   if (this.documento) {
     //     try {
-    //       const res = await getFuncion(this.documento);
-    //       // const res = await getFuncions();
-    //       // this.funcion = res.data;
+    //       const res = await getEmpleado(this.documento);
+    //       // const res = await getEmpleados();
+    //       // this.empleado = res.data;
     //       // Asignar Campos Seleccionandolos
-    //       this.funcion.idfact = res.data.idfact;
-    //       this.funcion.id_ars = res.data.id_ars;
-    //       this.funcion.nom = res.data.nom;
-    //       this.funcion.nro_autorizacion_salida =
+    //       this.empleado.idfact = res.data.idfact;
+    //       this.empleado.id_ars = res.data.id_ars;
+    //       this.empleado.nom = res.data.nom;
+    //       this.empleado.nro_autorizacion_salida =
     //         res.data.nro_autorizacion_salida;
-    //       this.funcion.fecha_ingreso = res.data.fecha_ingreso;
-    //       this.funcion.numero_afiliado = res.data.numero_afiliado;
-    //       this.funcion.rnc = res.data.rnc;
-    //       this.funcion.tipo_funcion = res.data.tipo_funcion;
-    //       this.funcion.cobertura = res.data.cobertura;
-    //       this.funcion.total_servicio = res.data.total_servicio;
+    //       this.empleado.fecha_ingreso = res.data.fecha_ingreso;
+    //       this.empleado.numero_afiliado = res.data.numero_afiliado;
+    //       this.empleado.rnc = res.data.rnc;
+    //       this.empleado.tipo_empleado = res.data.tipo_empleado;
+    //       this.empleado.cobertura = res.data.cobertura;
+    //       this.empleado.total_servicio = res.data.total_servicio;
 
-    //       this.funcion.status = this.$store.state.user.defaultStatus;
-    //       this.funcion.actividad = [];
-    //       this.funcion.actividad.push({
+    //       this.empleado.status = this.$store.state.user.defaultStatus;
+    //       this.empleado.actividad = [];
+    //       this.empleado.actividad.push({
     //         description: this.$store.state.user.defaultStatus,
     //         date: new Date(),
     //         user: this.$store.state.user.usuario,
@@ -273,20 +335,18 @@ export default defineComponent({
     //     }
     //   }
     //   await this.toggleLoading();
-    //   if (this.funcion.cobertura == 0) {
-    //     // this.saveFuncion();
-    //     // alert("Funcion Encontrada");
-    //     alert("Funcion no Encontrada");
+    //   if (this.empleado.cobertura == 0) {
+    //     // this.saveEmpleado();
+    //     // alert("Empleado Encontrada");
+    //     alert("Empleado no Encontrada");
     //     this.focus();
     //   }
     // },
 
     isError(message: string) {
-      if (message == "Funcion Registrada Exitosamente") {
+      if (message == "Empleado Registrado Exitosamente") {
         return "success";
-      } else if (
-        message == "Ya Existe una Funcion Registrada con esta Descripción"
-      ) {
+      } else {
         return "error";
       }
     },
@@ -294,9 +354,9 @@ export default defineComponent({
     toggleAlert() {
       this.showAlert = !this.showAlert;
     },
-    calcFuncion() {
-      (this.funcion.retension = this.funcion.bruto * 0.1),
-        (this.funcion.neto = this.funcion.bruto * 0.9);
+    calcEmpleado() {
+      (this.empleado.retension = this.empleado.bruto * 0.1),
+        (this.empleado.neto = this.empleado.bruto * 0.9);
     },
     formatNumber(value: number) {
       return numeral(value).format("00000000");
@@ -313,16 +373,16 @@ export default defineComponent({
     },
 
     // defFields() {
-    // this.funcion.status = this.$store.state.user.defaultStatus;
+    // this.empleado.status = this.$store.state.user.defaultStatus;
     // this.actividad = "4 - Recibido por Reclamaciones Médicas";
-    // this.funcion.actividad.push(this.actividad);
+    // this.empleado.actividad.push(this.actividad);
     // },
 
-    async loadOneFuncion() {
+    async loadOneEmpleado() {
       try {
-        const res = await getOneFuncion();
-        this.oneFuncion = res.data;
-        this.one = this.oneFuncion[0];
+        const res = await getOneEmpleado();
+        this.oneEmpleado = res.data;
+        this.one = this.oneEmpleado[0];
         if (typeof this.one.no === "number") {
           this.nextNo = this.one.no + 1;
         } else {
@@ -332,40 +392,40 @@ export default defineComponent({
         if (this.nextNo == null) {
           this.nextNo = 0;
         }
-        this.funcion.no = this.nextNo;
-        this.funcion.principal = this.nextNo;
-        this.funcion.principal = this.nextNo;
+        this.empleado.no = this.nextNo;
+        this.empleado.principal = this.nextNo;
+        this.empleado.principal = this.nextNo;
       } catch (error) {
         // console.error(error);
       }
     },
 
-    async saveFunciona() {
-      await this.loadOneFuncion();
+    async saveEmpleadoa() {
+      await this.loadOneEmpleado();
       try {
-        const res = await createFunciona(this.servicio);
+        const res = await createEmpleadoa(this.servicio);
         // // console.log(res);
       } catch (error) {
         // // console.error(error);
       }
     },
 
-    async saveFuncion() {
+    async saveEmpleado() {
       this.toggleLoading();
       try {
         try {
-          const res = await getOneFuncion();
-          this.oneFuncion = res.data;
-          this.one = this.oneFuncion[0];
+          const res = await getOneEmpleado();
+          this.oneEmpleado = res.data;
+          this.one = this.oneEmpleado[0];
           this.nextNo = this.one.no + 1;
-          this.funcion.no = this.nextNo;
-          this.funcion.principal = this.nextNo;
+          this.empleado.no = this.nextNo;
+          this.empleado.principal = this.nextNo;
         } catch (error) {
           // // console.error(error);
         }
-        this.funcion.status = this.$store.state.user.defaultStatus;
-        this.funcion.userReg = this.$store.state.user.usuario;
-        const res = await createFuncion(this.funcion).then(
+        this.empleado.status = this.$store.state.user.defaultStatus;
+        this.empleado.userReg = this.$store.state.user.usuario;
+        const res = await createEmpleado(this.empleado).then(
           (res) => {
             this.error = this.respuesta = res.data.title;
             // this.$router.push("/");
@@ -378,20 +438,20 @@ export default defineComponent({
             this.error = err.response.data.error;
           }
         );
-        // this.$router.push("/funcions/");
+        // this.$router.push("/empleados/");
       } catch (error) {
         // // console.error(error);
       }
       await this.toggleLoading();
       await this.definingFields();
       // await this.defFields();
-      document.getElementById("descripcion").focus();
+      document.getElementById("cedula").focus();
       this.toggleAlert();
     },
 
-    async deleteAllFuncions() {
+    async deleteAllEmpleados() {
       try {
-        const res = await eliminateFuncions(this.funcion);
+        const res = await eliminateEmpleados(this.empleado);
         // // console.log(res);
       } catch (error) {
         // // console.error(error);
@@ -399,7 +459,7 @@ export default defineComponent({
     },
 
     definingFields() {
-      this.funcion.descripcion = "";
+      this.empleado.descripcion = "";
     },
 
     toggleLoading() {
@@ -407,7 +467,7 @@ export default defineComponent({
     },
 
     focus() {
-      document.getElementById("descripcion").focus();
+      document.getElementById("cedula").focus();
     },
   },
 });

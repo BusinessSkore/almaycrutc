@@ -125,7 +125,8 @@ export default defineComponent({
     if (typeof this.$route.params.id === "string") {
       this.loadFuncion(this.$route.params.id);
     }
-    this.pusherSubscribe();
+
+    // this.pusherSubscribe();
 
     this.focus();
   },

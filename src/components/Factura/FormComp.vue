@@ -208,7 +208,7 @@ import {
 import {
   APIgetFactura,
   getFacturas,
-} from "@/services/datasamicj/FacturaService";
+} from "@/services/odoo/FacturaService";
 import { createMensaje } from "@/services/almaycru/ChatService";
 import numeral from "numeral";
 import moment from "moment";

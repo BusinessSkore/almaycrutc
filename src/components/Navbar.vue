@@ -11,6 +11,8 @@
           ><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</label
         >
 
+        <label class="versionNumber"><span class="version">V 1.1</span></label>
+
         <label class="name" @click="this.hamburger()" for="btn-modal"
           ><i class="fas fa-user"></i>
           {{ this.$store.state.user.usuario }}</label
@@ -70,6 +72,18 @@
           ><i class="fas fa-cog"></i> Funciones</a
         >
         <!-- End Option -->
+        <!-- Start Option -->
+        <a
+          v-if="
+            this.$store.state.user.type == 'Power User' ||
+              this.$store.state.user.type == 'Administrador'
+          "
+          class="navbar-option"
+          @click="this.hamburger('Empleados')"
+          href="#"
+          ><i class="fas fa-user-circle"></i> Empleados</a
+        >
+        <!-- End Option -->
 
         <!-- Start Option -->
         <!-- <a
@@ -92,9 +106,8 @@
             @click="this.$router.push(`/dashboard`)"
             href="#"
           >
-            <img class="localIMG" src="@/assets/images/logo.png" /> Alma & Cru
-            <span class="version">V 1.0</span></a
-          >
+            <img class="localIMG" src="@/assets/images/logoN.png" /> Alma & Cru
+          </a>
           <a class="item navbar-brand2" @click="hamburger()" href="#"
             ><i class="item fas fa-ellipsis-v"></i
           ></a>
@@ -122,6 +135,9 @@ export default defineComponent({
   methods: {
     hamburger(texto: string) {
       switch (texto) {
+        case "Empleados":
+          this.$router.push("/empleados");
+          break;
         case "Funciones":
           this.$router.push("/funcions");
           break;
@@ -275,6 +291,15 @@ li {
   color: #fff;
   font-size: 15px;
   cursor: pointer;
+}
+
+.versionNumber {
+  position: absolute;
+  bottom: 0;
+  left: 10px;
+  color: #fff;
+  /* font-size: 15px; */
+  /* cursor: pointer; */
 }
 
 /* Responsiveness */

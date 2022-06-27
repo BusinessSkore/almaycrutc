@@ -63,6 +63,13 @@ import FuncionPrintComponent from "../components/Funcion/PrintComponent.vue";
 import FuncionFormComp from "../components/Funcion/FormComp.vue";
 // ----------------------------------------------------------------------------
 
+// Empleado -------------------------------------------------------------------
+import EmpleadoComponent from "../components/Empleado/PrincipalComponent.vue";
+import EmpleadoDetailComponent from "../components/Empleado/DetailComponent.vue";
+import EmpleadoPrintComponent from "../components/Empleado/PrintComponent.vue";
+import EmpleadoFormComp from "../components/Empleado/FormComp.vue";
+// ----------------------------------------------------------------------------
+
 // Chat -------------------------------------------------------------------
 import ChatComponent from "../components/ChatComponent.vue";
 // ----------------------------------------------------------------------------
@@ -374,6 +381,42 @@ const routes = [
         path: "/funcions/new",
         name: "funcions-form",
         component: FuncionFormComp,
+        meta: {
+          roles: ["Power User", "Administrador"],
+        },
+      },
+
+      // ----------------------------------------------------------------------------
+
+      // Empleado --------------------------------------------------------------------
+      {
+        path: "/empleados",
+        name: "empleados",
+        component: EmpleadoComponent,
+        meta: {
+          roles: ["Power User", "Administrador"],
+        },
+      },
+      {
+        path: "/empleados/:id",
+        name: "empleado-details",
+        component: EmpleadoDetailComponent,
+        meta: {
+          roles: ["Power User", "Administrador"],
+        },
+      },
+      {
+        path: "/empleados2/:id",
+        name: "empleado-details2",
+        component: EmpleadoPrintComponent,
+        meta: {
+          roles: ["Power User", "Administrador"],
+        },
+      },
+      {
+        path: "/empleados/new",
+        name: "empleados-form",
+        component: EmpleadoFormComp,
         meta: {
           roles: ["Power User", "Administrador"],
         },
