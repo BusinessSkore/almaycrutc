@@ -1,120 +1,82 @@
 <template v-show="!cargando">
-  <!-- {{ this.vitola.actividad }} -->
-  <!-- {{ this.respuesta }} -->
-  <!-- {{this.documento}} -->
-  <Navbar />
-  <Transition>
-    <div v-if="cargando" class="spin">
-      <img class="img" src="@/assets/images/logo.png" />
-    </div>
-  </Transition>
-  <Transition>
-    <div v-show="!cargando" class="general">
-      <h6 :class="isError(error)">{{ error }}</h6>
-      <form>
-        <fieldset>
-          <h6>Detalles de Vitola</h6>
-          <label class="form-label"><b>Datos de la Vitola</b></label>
-          <div class="form-group">
-            <!-- <label class="form-label"><b>Datos Generales</b></label> -->
-            <!-- Start Fields -->
-            <div class="grid">
-              <div>
-                <label
-                  class="ta-l col-form-label col-form-label-sm"
-                  for="tamano"
-                  >Tamaño:</label
-                ><input
-                  id="tamano"
-                  type="tamano"
-                  v-model="vitola.tamano"
-                  class="form-control"
-                />
+  <div>
+    <Navbar />
+    <Transition>
+      <div v-if="cargando" class="spin">
+        <img class="img" src="@/assets/images/logo.png" />
+      </div>
+    </Transition>
+    <Transition>
+      <div v-show="!cargando" class="general">
+        <h6 :class="isError(error)">{{ error }}</h6>
+        <form>
+          <fieldset>
+            <h6>Nueva Funcion</h6>
+            <label class="form-label"><b>Datos de la Funcion</b></label>
+            <div class="form-group">
+              <div class="grid">
+                <!-- Start Fields -->
+                <div>
+                  <label
+                    class="ta-l col-form-label col-form-label-sm"
+                    for="descripcion"
+                    >Descripción:</label
+                  ><input
+                    id="descripcion"
+                    type="descripcion"
+                    v-model="funcion.descripcion"
+                    class="form-control"
+                  />
+                </div>
+                <!-- End Fields -->
               </div>
-              <div>
-                <label class="ta-l col-form-label col-form-label-sm" for="tipo"
-                  >Tipo:</label
-                ><input
-                  id="tipo"
-                  type="tipo"
-                  v-model="vitola.tipo"
-                  class="form-control"
-                />
-              </div>
-              <div>
-                <label class="ta-l col-form-label col-form-label-sm" for="pago"
-                  >Pago:</label
-                ><input
-                  id="pago"
-                  type="number"
-                  v-model="vitola.pago"
-                  class="form-control"
-                />
-              </div>
-              <!-- <div>
-                <label
-                  class="ta-l col-form-label col-form-label-sm"
-                  for="descripcion"
-                  >Descripción:</label
-                ><input
-                  id="descripcion"
-                  type="descripcion"
-                  v-model="vitola.descripcion"
-                  class="form-control"
-                />
-              </div> -->
             </div>
-            <!-- End Fields -->
-          </div>
-          <!-- <button
-            class="btn btn-primary"
-            @click.prevent="saveVitola()"
-            :disabled="!vitola.tamano || !vitola.tipo || !vitola.pago"
-          >
-            <i class="fas fa-save"></i> Guardar
+
+            <button
+              class="btn btn-success"
+              @click.prevent="saveFuncion()"
+              :disabled="!funcion.descripcion"
+            >
+              <i class="fas fa-save"></i> Guardar
+            </button>
+            <!-- <button class="btn btn-success" @click.prevent="handleUpdate()">
+            <i class="fas fa-edit"></i> Actualizar
           </button> -->
 
-          <button
-            class="btn btn-success"
-            @click.prevent="handleUpdate()"
-            :disabled="!vitola.tamano || !vitola.tipo || !vitola.pago"
-          >
-            <i class="fas fa-save"></i> Guardar
-          </button>
-
-          <button
+            <!-- <button
             v-if="showDelete"
             class="btn btn-danger"
             @click.prevent="handleDelete()"
           >
             <i class="fas fa-trash-alt"></i> Eliminar
-          </button>
-        </fieldset>
-      </form>
-    </div>
-  </Transition>
+          </button> -->
+          </fieldset>
+        </form>
+      </div>
+    </Transition>
+  </div>
 </template>
 
 <script lang="ts">
 import Navbar from "@/components/Navbar.vue";
 import { defineComponent } from "vue";
-import { Vitola } from "@/interfaces/Vitola";
+import { Funcion } from "@/interfaces/Funcion";
 import {
-  createVitola,
-  eliminateVitolas,
-  createVitolaa,
-  getOneVitola,
-  deleteVitola,
-  getVitola,
-  updateVitola,
-} from "@/services/almaycru/Vitola";
+  createFuncion,
+  eliminateFuncions,
+  createFunciona,
+  getOneFuncion,
+  deleteFuncion,
+  getFuncion,
+  updateFuncion,
+} from "@/services/almaycru/Funcion";
 import { createMensaje } from "@/services/almaycru/ChatService";
 import numeral from "numeral";
 import moment from "moment";
 import Pusher from "pusher-js";
 
 export default defineComponent({
-  name: "vitolas-form",
+  name: "funcions-form",
   components: {
     Navbar,
   },
@@ -134,8 +96,8 @@ export default defineComponent({
       showAlert: false,
       loadedAfiliado: {},
       cargando: false,
-      vitola: {} as Vitola,
-      oneVitola: {} as Vitola,
+      funcion: {} as Funcion,
+      oneFuncion: {} as Funcion,
       one: {},
       nextNo: Number,
       medicoSelected: [],
@@ -151,12 +113,12 @@ export default defineComponent({
   },
 
   mounted() {
-    // this.vitola.no = 1;
+    this.funcion.no = 1;
     // this.defFields();
 
     this.showDeleteMethod();
     if (typeof this.$route.params.id === "string") {
-      this.loadVitola(this.$route.params.id);
+      this.loadFuncion(this.$route.params.id);
     }
     this.pusherSubscribe();
 
@@ -164,27 +126,14 @@ export default defineComponent({
   },
 
   methods: {
-    async loadVitola(id: string) {
-      this.toggleLoading();
-      try {
-        const { data } = await getVitola(id);
-        this.vitola = data;
-        // this.fixTime();
-      } catch (error) {
-        //console.error(error);
-      }
-      this.toggleLoading();
-    },
-
     async handleUpdate() {
       // this.toggleLoading();
       try {
         if (typeof this.$route.params.id === "string") {
-          this.vitola.userMod = this.$store.state.user.usuario;
-          this.vitola.descripcion = this.vitola.tipo + " " + this.vitola.tamano;
-          await updateVitola(this.$route.params.id, this.vitola);
+          this.funcion.userMod = this.$store.state.user.usuario;
+          await updateFuncion(this.$route.params.id, this.funcion);
           this.addMessage();
-          this.$router.push("/vitolas");
+          this.$router.push("/funcions");
         }
       } catch (error) {
         //console.error(error);
@@ -194,16 +143,14 @@ export default defineComponent({
     },
 
     async handleDelete() {
-      if (confirm("Está Seguro que desea Eliminar Esta Vitola?")) {
-        try {
-          if (typeof this.$route.params.id === "string") {
-            await deleteVitola(this.$route.params.id);
-            this.addMessage();
-            this.$router.push("/vitolas");
-          }
-        } catch (error) {
-          //console.error(error);
+      try {
+        if (typeof this.$route.params.id === "string") {
+          await deleteFuncion(this.$route.params.id);
+          this.addMessage();
+          this.$router.push("/funcions");
         }
+      } catch (error) {
+        //console.error(error);
       }
     },
 
@@ -216,7 +163,7 @@ export default defineComponent({
       var channel = pusher.subscribe("my-channel");
       channel.bind("my-event", (data: any) => {
         if (typeof this.$route.params.id === "string") {
-          this.loadVitola2(this.$route.params.id);
+          this.loadFuncion2(this.$route.params.id);
         }
         // this.player.src = this.song.src;
         // this.player.play();
@@ -250,7 +197,7 @@ export default defineComponent({
       } else {
         years = edad;
       }
-      this.vitola.edaddelvitola = years;
+      this.funcion.edaddelfuncion = years;
     },
 
     formatDateToFix(dateValue: Date, incTime: boolean) {
@@ -264,8 +211,8 @@ export default defineComponent({
     },
 
     fixTime() {
-      this.vitola.fecha_ingreso = this.formatDateToFix(
-        this.vitola.fecha_ingreso,
+      this.funcion.fecha_ingreso = this.formatDateToFix(
+        this.funcion.fecha_ingreso,
         true
       );
     },
@@ -278,30 +225,30 @@ export default defineComponent({
       }
     },
 
-    // async getVitola() {
+    // async getFuncion() {
     //   this.toggleLoading();
-    //   this.documento.idfact = this.vitola.idfact;
+    //   this.documento.idfact = this.funcion.idfact;
     //   if (this.documento) {
     //     try {
-    //       const res = await getVitola(this.documento);
-    //       // const res = await getVitolas();
-    //       // this.vitola = res.data;
+    //       const res = await getFuncion(this.documento);
+    //       // const res = await getFuncions();
+    //       // this.funcion = res.data;
     //       // Asignar Campos Seleccionandolos
-    //       this.vitola.idfact = res.data.idfact;
-    //       this.vitola.id_ars = res.data.id_ars;
-    //       this.vitola.nom = res.data.nom;
-    //       this.vitola.nro_autorizacion_salida =
+    //       this.funcion.idfact = res.data.idfact;
+    //       this.funcion.id_ars = res.data.id_ars;
+    //       this.funcion.nom = res.data.nom;
+    //       this.funcion.nro_autorizacion_salida =
     //         res.data.nro_autorizacion_salida;
-    //       this.vitola.fecha_ingreso = res.data.fecha_ingreso;
-    //       this.vitola.numero_afiliado = res.data.numero_afiliado;
-    //       this.vitola.rnc = res.data.rnc;
-    //       this.vitola.tipo_vitola = res.data.tipo_vitola;
-    //       this.vitola.cobertura = res.data.cobertura;
-    //       this.vitola.total_servicio = res.data.total_servicio;
+    //       this.funcion.fecha_ingreso = res.data.fecha_ingreso;
+    //       this.funcion.numero_afiliado = res.data.numero_afiliado;
+    //       this.funcion.rnc = res.data.rnc;
+    //       this.funcion.tipo_funcion = res.data.tipo_funcion;
+    //       this.funcion.cobertura = res.data.cobertura;
+    //       this.funcion.total_servicio = res.data.total_servicio;
 
-    //       this.vitola.status = this.$store.state.user.defaultStatus;
-    //       this.vitola.actividad = [];
-    //       this.vitola.actividad.push({
+    //       this.funcion.status = this.$store.state.user.defaultStatus;
+    //       this.funcion.actividad = [];
+    //       this.funcion.actividad.push({
     //         description: this.$store.state.user.defaultStatus,
     //         date: new Date(),
     //         user: this.$store.state.user.usuario,
@@ -313,18 +260,20 @@ export default defineComponent({
     //     }
     //   }
     //   await this.toggleLoading();
-    //   if (this.vitola.cobertura == 0) {
-    //     // this.saveVitola();
-    //     // alert("Vitola Encontrada");
-    //     alert("Vitola no Encontrada");
+    //   if (this.funcion.cobertura == 0) {
+    //     // this.saveFuncion();
+    //     // alert("Funcion Encontrada");
+    //     alert("Funcion no Encontrada");
     //     this.focus();
     //   }
     // },
 
     isError(message: string) {
-      if (message == "Vitola Registrada Exitosamente") {
+      if (message == "Funcion Registrada Exitosamente") {
         return "success";
-      } else if (message == "Ya Existe una Vitola Registrada con este Id") {
+      } else if (
+        message == "Ya Existe una Funcion Registrada con esta Descripción"
+      ) {
         return "error";
       }
     },
@@ -332,9 +281,9 @@ export default defineComponent({
     toggleAlert() {
       this.showAlert = !this.showAlert;
     },
-    calcVitola() {
-      (this.vitola.retension = this.vitola.bruto * 0.1),
-        (this.vitola.neto = this.vitola.bruto * 0.9);
+    calcFuncion() {
+      (this.funcion.retension = this.funcion.bruto * 0.1),
+        (this.funcion.neto = this.funcion.bruto * 0.9);
     },
     formatNumber(value: number) {
       return numeral(value).format("00000000");
@@ -351,16 +300,16 @@ export default defineComponent({
     },
 
     // defFields() {
-    // this.vitola.status = this.$store.state.user.defaultStatus;
+    // this.funcion.status = this.$store.state.user.defaultStatus;
     // this.actividad = "4 - Recibido por Reclamaciones Médicas";
-    // this.vitola.actividad.push(this.actividad);
+    // this.funcion.actividad.push(this.actividad);
     // },
 
-    async loadOneVitola() {
+    async loadOneFuncion() {
       try {
-        const res = await getOneVitola();
-        this.oneVitola = res.data;
-        this.one = this.oneVitola[0];
+        const res = await getOneFuncion();
+        this.oneFuncion = res.data;
+        this.one = this.oneFuncion[0];
         if (typeof this.one.no === "number") {
           this.nextNo = this.one.no + 1;
         } else {
@@ -370,40 +319,40 @@ export default defineComponent({
         if (this.nextNo == null) {
           this.nextNo = 0;
         }
-        this.vitola.no = this.nextNo;
-        this.vitola.principal = this.nextNo;
-        this.vitola.principal = this.nextNo;
+        this.funcion.no = this.nextNo;
+        this.funcion.principal = this.nextNo;
+        this.funcion.principal = this.nextNo;
       } catch (error) {
         // console.error(error);
       }
     },
 
-    async saveVitolaa() {
-      await this.loadOneVitola();
+    async saveFunciona() {
+      await this.loadOneFuncion();
       try {
-        const res = await createVitolaa(this.servicio);
+        const res = await createFunciona(this.servicio);
         // // console.log(res);
       } catch (error) {
         // // console.error(error);
       }
     },
 
-    async saveVitola() {
+    async saveFuncion() {
       this.toggleLoading();
       try {
         try {
-          const res = await getOneVitola();
-          this.oneVitola = res.data;
-          this.one = this.oneVitola[0];
+          const res = await getOneFuncion();
+          this.oneFuncion = res.data;
+          this.one = this.oneFuncion[0];
           this.nextNo = this.one.no + 1;
-          this.vitola.no = this.nextNo;
-          this.vitola.principal = this.nextNo;
+          this.funcion.no = this.nextNo;
+          this.funcion.principal = this.nextNo;
         } catch (error) {
           // // console.error(error);
         }
-        this.vitola.status = this.$store.state.user.defaultStatus;
-        this.vitola.userReg = this.$store.state.user.usuario;
-        const res = await createVitola(this.vitola).then(
+        this.funcion.status = this.$store.state.user.defaultStatus;
+        this.funcion.userReg = this.$store.state.user.usuario;
+        const res = await createFuncion(this.funcion).then(
           (res) => {
             this.error = this.respuesta = res.data.title;
             // this.$router.push("/");
@@ -416,20 +365,20 @@ export default defineComponent({
             this.error = err.response.data.error;
           }
         );
-        // this.$router.push("/vitolas/");
+        // this.$router.push("/funcions/");
       } catch (error) {
         // // console.error(error);
       }
       await this.toggleLoading();
       await this.definingFields();
       // await this.defFields();
-      document.getElementById("tamano").focus();
+      document.getElementById("descripcion").focus();
       this.toggleAlert();
     },
 
-    async deleteAllVitolas() {
+    async deleteAllFuncions() {
       try {
-        const res = await eliminateVitolas(this.vitola);
+        const res = await eliminateFuncions(this.funcion);
         // // console.log(res);
       } catch (error) {
         // // console.error(error);
@@ -437,10 +386,7 @@ export default defineComponent({
     },
 
     definingFields() {
-      this.vitola.tamano = "";
-      this.vitola.tipo = "";
-      this.vitola.pago = "";
-      this.vitola.descripcion = "";
+      this.funcion.descripcion = "";
     },
 
     toggleLoading() {
@@ -448,7 +394,7 @@ export default defineComponent({
     },
 
     focus() {
-      document.getElementById("tamano").focus();
+      document.getElementById("descripcion").focus();
     },
   },
 });

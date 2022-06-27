@@ -59,6 +59,19 @@
         >
         <!-- End Option -->
         <!-- Start Option -->
+        <a
+          v-if="
+            this.$store.state.user.type == 'Power User' ||
+              this.$store.state.user.type == 'Administrador'
+          "
+          class="navbar-option"
+          @click="this.hamburger('Funciones')"
+          href="#"
+          ><i class="fas fa-cog"></i> Funciones</a
+        >
+        <!-- End Option -->
+
+        <!-- Start Option -->
         <!-- <a
           v-if="
             this.$store.state.user.type == 'Power User' ||
@@ -82,7 +95,7 @@
             <img class="localIMG" src="@/assets/images/logo.png" /> Alma & Cru
             <span class="version">V 1.0</span></a
           >
-          <a class="item navbar-brand" @click="hamburger()" href="#"
+          <a class="item navbar-brand2" @click="hamburger()" href="#"
             ><i class="item fas fa-ellipsis-v"></i
           ></a>
         </div>
@@ -109,6 +122,9 @@ export default defineComponent({
   methods: {
     hamburger(texto: string) {
       switch (texto) {
+        case "Funciones":
+          this.$router.push("/funcions");
+          break;
         case "Mejoras":
           this.$router.push("/mejoras");
           break;
@@ -188,6 +204,12 @@ img {
   color: white;
   font-family: "Agency FB";
   margin-left: 5px;
+}
+
+.navbar-brand2 {
+  color: white;
+  margin-right: 28px;
+  margin-top: 7px;
 }
 
 .navbar-option {

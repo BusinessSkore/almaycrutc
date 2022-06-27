@@ -56,6 +56,13 @@ import VitolaPrintComponent from "../components/Vitola/PrintComponent.vue";
 import VitolaFormComp from "../components/Vitola/FormComp.vue";
 // ----------------------------------------------------------------------------
 
+// Funcion -------------------------------------------------------------------
+import FuncionComponent from "../components/Funcion/PrincipalComponent.vue";
+import FuncionDetailComponent from "../components/Funcion/DetailComponent.vue";
+import FuncionPrintComponent from "../components/Funcion/PrintComponent.vue";
+import FuncionFormComp from "../components/Funcion/FormComp.vue";
+// ----------------------------------------------------------------------------
+
 // Chat -------------------------------------------------------------------
 import ChatComponent from "../components/ChatComponent.vue";
 // ----------------------------------------------------------------------------
@@ -302,14 +309,13 @@ const routes = [
 
       // ----------------------------------------------------------------------------
 
-
       // Vitola --------------------------------------------------------------------
       {
         path: "/vitolas",
         name: "vitolas",
         component: VitolaComponent,
         meta: {
-          roles: ["Power User", "Administrador", "Encargado", "Agente"],
+          roles: ["Power User", "Administrador"],
         },
       },
       {
@@ -317,7 +323,7 @@ const routes = [
         name: "vitola-details",
         component: VitolaDetailComponent,
         meta: {
-          roles: ["Power User", "Administrador", "Encargado", "Agente"],
+          roles: ["Power User", "Administrador"],
         },
       },
       {
@@ -325,7 +331,7 @@ const routes = [
         name: "vitola-details2",
         component: VitolaPrintComponent,
         meta: {
-          roles: ["Power User", "Administrador", "Encargado"],
+          roles: ["Power User", "Administrador"],
         },
       },
       {
@@ -333,7 +339,43 @@ const routes = [
         name: "vitolas-form",
         component: VitolaFormComp,
         meta: {
-          roles: ["Power User", "Administrador", "Encargado", "Agente"],
+          roles: ["Power User", "Administrador"],
+        },
+      },
+
+      // ----------------------------------------------------------------------------
+
+      // Funcion --------------------------------------------------------------------
+      {
+        path: "/funcions",
+        name: "funcions",
+        component: FuncionComponent,
+        meta: {
+          roles: ["Power User", "Administrador"],
+        },
+      },
+      {
+        path: "/funcions/:id",
+        name: "funcion-details",
+        component: FuncionDetailComponent,
+        meta: {
+          roles: ["Power User", "Administrador"],
+        },
+      },
+      {
+        path: "/funcions2/:id",
+        name: "funcion-details2",
+        component: FuncionPrintComponent,
+        meta: {
+          roles: ["Power User", "Administrador"],
+        },
+      },
+      {
+        path: "/funcions/new",
+        name: "funcions-form",
+        component: FuncionFormComp,
+        meta: {
+          roles: ["Power User", "Administrador"],
         },
       },
 
