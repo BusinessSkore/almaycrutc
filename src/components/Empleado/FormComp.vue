@@ -1,14 +1,14 @@
 <template v-show="!cargando">
   <!-- {{ this.$route.fullPath }} -->
   <!-- {{this.modoForm}} -->
-  <div>
-    <Navbar />
-    <Transition>
+  <Transition>
+    <div>
+      <Navbar />
+
       <div v-if="cargando" class="spin">
         <img class="img" src="@/assets/images/logo.png" />
       </div>
-    </Transition>
-    <Transition>
+
       <div v-show="!cargando" class="general">
         <h6 :class="isError(error)">{{ error }}</h6>
         <form>
@@ -89,20 +89,20 @@
                     <option>Asalariado</option>
                   </select>
                 </div>
-                <Transition>
-                  <div v-if="empleado.modalidad == 'Asalariado'">
-                    <label
-                      class="ta-l col-form-label col-form-label-sm"
-                      for="sueldo"
-                      >Sueldo:</label
-                    ><input
-                      id="sueldo"
-                      type="number"
-                      v-model="empleado.sueldo"
-                      class="form-control"
-                    />
-                  </div>
-                </Transition>
+
+                <div v-if="empleado.modalidad == 'Asalariado'">
+                  <label
+                    class="ta-l col-form-label col-form-label-sm"
+                    for="sueldo"
+                    >Sueldo:</label
+                  ><input
+                    id="sueldo"
+                    type="number"
+                    v-model="empleado.sueldo"
+                    class="form-control"
+                  />
+                </div>
+
                 <div>
                   <label
                     class="ta-l col-form-label col-form-label-sm"
@@ -117,20 +117,20 @@
                     <option>Transferencia</option>
                   </select>
                 </div>
-                <Transition>
-                  <div v-if="empleado.metodoPago == 'Transferencia'">
-                    <label
-                      class="ta-l col-form-label col-form-label-sm"
-                      for="cuenta"
-                      >Cuenta:</label
-                    ><input
-                      id="cuenta"
-                      type="number"
-                      v-model="empleado.cuenta"
-                      class="form-control"
-                    />
-                  </div>
-                </Transition>
+
+                <div v-if="empleado.metodoPago == 'Transferencia'">
+                  <label
+                    class="ta-l col-form-label col-form-label-sm"
+                    for="cuenta"
+                    >Cuenta:</label
+                  ><input
+                    id="cuenta"
+                    type="number"
+                    v-model="empleado.cuenta"
+                    class="form-control"
+                  />
+                </div>
+
                 <!-- End Fields -->
               </div>
             </div>
@@ -173,8 +173,8 @@
           </fieldset>
         </form>
       </div>
-    </Transition>
-  </div>
+    </div>
+  </Transition>
 </template>
 
 <script lang="ts">
@@ -195,7 +195,7 @@ import { getFuncions } from "@/services/almaycru/Funcion";
 import { createMensaje } from "@/services/almaycru/ChatService";
 import numeral from "numeral";
 import moment from "moment";
-import Pusher from "pusher-js";
+// import Pusher from "pusher-js";
 
 export default defineComponent({
   name: "empleados-form",
@@ -237,7 +237,7 @@ export default defineComponent({
     };
   },
 
-  mounted() {
+  async mounted() {
     if (this.$route.fullPath == "/empleados/new") {
       this.modoForm = "add";
       this.encabezado = "Nuevo Empleado";
@@ -252,7 +252,7 @@ export default defineComponent({
     } else {
       this.showDeleteMethod();
       if (typeof this.$route.params.id === "string") {
-        this.loadEmpleado(this.$route.params.id);
+        await this.loadEmpleado(this.$route.params.id);
       }
     }
 
@@ -316,22 +316,22 @@ export default defineComponent({
       }
     },
 
-    pusherSubscribe() {
-      // Start pusher subscribe
-      var pusher = new Pusher("d7b50b87118775ed0b11", {
-        cluster: "us2",
-      });
+    // pusherSubscribe() {
+    //   // Start pusher subscribe
+    //   var pusher = new Pusher("d7b50b87118775ed0b11", {
+    //     cluster: "us2",
+    //   });
 
-      var channel = pusher.subscribe("my-channel");
-      channel.bind("my-event", (data: any) => {
-        if (typeof this.$route.params.id === "string") {
-          this.loadEmpleado2(this.$route.params.id);
-        }
-        // this.player.src = this.song.src;
-        // this.player.play();
-      });
-      // End pusher subscribe
-    },
+    //   var channel = pusher.subscribe("my-channel");
+    //   channel.bind("my-event", (data: any) => {
+    //     if (typeof this.$route.params.id === "string") {
+    //       this.loadEmpleado2(this.$route.params.id);
+    //     }
+    //     // this.player.src = this.song.src;
+    //     // this.player.play();
+    //   });
+    //   // End pusher subscribe
+    // },
 
     showDeleteMethod() {
       if (this.$store.state.user.type == "Power User") {
@@ -386,49 +386,6 @@ export default defineComponent({
         // console.error(error);
       }
     },
-
-    // async getEmpleado() {
-    //   this.toggleLoading();
-    //   this.documento.idfact = this.empleado.idfact;
-    //   if (this.documento) {
-    //     try {
-    //       const res = await getEmpleado(this.documento);
-    //       // const res = await getEmpleados();
-    //       // this.empleado = res.data;
-    //       // Asignar Campos Seleccionandolos
-    //       this.empleado.idfact = res.data.idfact;
-    //       this.empleado.id_ars = res.data.id_ars;
-    //       this.empleado.nom = res.data.nom;
-    //       this.empleado.nro_autorizacion_salida =
-    //         res.data.nro_autorizacion_salida;
-    //       this.empleado.fecha_ingreso = res.data.fecha_ingreso;
-    //       this.empleado.numero_afiliado = res.data.numero_afiliado;
-    //       this.empleado.rnc = res.data.rnc;
-    //       this.empleado.tipo_empleado = res.data.tipo_empleado;
-    //       this.empleado.cobertura = res.data.cobertura;
-    //       this.empleado.total_servicio = res.data.total_servicio;
-
-    //       this.empleado.status = this.$store.state.user.defaultStatus;
-    //       this.empleado.actividad = [];
-    //       this.empleado.actividad.push({
-    //         description: this.$store.state.user.defaultStatus,
-    //         date: new Date(),
-    //         user: this.$store.state.user.usuario,
-    //         detalles: "",
-    //       });
-    //       this.fixTime();
-    //     } catch (error) {
-    //       // console.error(error);
-    //     }
-    //   }
-    //   await this.toggleLoading();
-    //   if (this.empleado.cobertura == 0) {
-    //     // this.saveEmpleado();
-    //     // alert("Empleado Encontrada");
-    //     alert("Empleado no Encontrada");
-    //     this.focus();
-    //   }
-    // },
 
     isError(message: string) {
       if (message == "Empleado Registrado Exitosamente") {

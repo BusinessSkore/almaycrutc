@@ -1,55 +1,57 @@
 <template v-show="!cargando">
-  <!-- Spinner -->
-  <Transition>
-    <div v-if="cargando" class="spin">
-      <img class="img" src="@/assets/images/logo.png" />
-    </div>
-  </Transition>
-  <Navbar />
-  <!------------------------------------------------ General ------------------------------------------------->
-  <Transition>
-    <div v-show="!cargando" class="general">
-      <!-- Modal -->
-      <Transition>
-        <div v-if="showModal" class="modal">
-          <div class="contenedor">
-            <header>Filtros</header>
-            <div class="contenido">
-              <label @click="this.showModalMethod()" for="btn-modal">X</label>
+  <div>
+    <!-- Spinner -->
+    <Transition>
+      <div v-if="cargando" class="spin">
+        <img class="img" src="@/assets/images/logo.png" />
+      </div>
+    </Transition>
+    <Navbar />
+    <!------------------------------------------------ General ------------------------------------------------->
+    <Transition>
+      <div v-show="!cargando" class="general">
+        <!-- Modal -->
+        <Transition>
+          <div v-if="showModal" class="modal">
+            <div class="contenedor">
+              <header>Filtros</header>
               <div class="contenido">
-                <Filters
-                  :filterEmpleados="filterEmpleados"
-                  :search="search"
-                  :filteredEmpleados="filteredEmpleados"
-                />
+                <label @click="this.showModalMethod()" for="btn-modal">X</label>
+                <div class="contenido">
+                  <Filters
+                    :filterEmpleados="filterEmpleados"
+                    :search="search"
+                    :filteredEmpleados="filteredEmpleados"
+                  />
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </Transition>
-      <!-- Cuerpo -->
-      <div class="grid">
-        <div class="empleados">
-          <!-- <label
+        </Transition>
+        <!-- Cuerpo -->
+        <div class="grid">
+          <div class="empleados">
+            <!-- <label
           style="cursor:pointer"
           @click="this.showModalMethod()"
           for="btn-modal"
           >Opciones</label
         > -->
-          <h4>
-            Listado de Empleados
-            <i
-              style="cursor:pointer"
-              @click="this.$router.push(`/empleados/new`)"
-              class="fas fa-plus"
-              _mstvisible="2"
-            ></i>
-          </h4>
-          <ListadoComponent :empleados="empleados" v-show="!cargando" />
+            <h4>
+              Listado de Empleados
+              <i
+                style="cursor:pointer"
+                @click="this.$router.push(`/empleados/new`)"
+                class="fas fa-plus"
+                _mstvisible="2"
+              ></i>
+            </h4>
+            <ListadoComponent :empleados="empleados" v-show="!cargando" />
+          </div>
         </div>
       </div>
-    </div>
-  </Transition>
+    </Transition>
+  </div>
   <!---------------------------------------------------------------------------------------------------------->
 </template>
 
