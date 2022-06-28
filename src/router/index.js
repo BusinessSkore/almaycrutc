@@ -65,9 +65,14 @@ import FuncionFormComp from "../components/Funcion/FormComp.vue";
 
 // Empleado -------------------------------------------------------------------
 import EmpleadoComponent from "../components/Empleado/PrincipalComponent.vue";
-import EmpleadoDetailComponent from "../components/Empleado/DetailComponent.vue";
 import EmpleadoPrintComponent from "../components/Empleado/PrintComponent.vue";
 import EmpleadoFormComp from "../components/Empleado/FormComp.vue";
+// ----------------------------------------------------------------------------
+
+// Liga -------------------------------------------------------------------
+import LigaComponent from "../components/Liga/PrincipalComponent.vue";
+import LigaPrintComponent from "../components/Liga/PrintComponent.vue";
+import LigaFormComp from "../components/Liga/FormComp.vue";
 // ----------------------------------------------------------------------------
 
 // Chat -------------------------------------------------------------------
@@ -417,6 +422,42 @@ const routes = [
         path: "/empleados/new",
         name: "empleados-form",
         component: EmpleadoFormComp,
+        meta: {
+          roles: ["Power User", "Administrador"],
+        },
+      },
+
+      // ----------------------------------------------------------------------------
+
+      // Liga --------------------------------------------------------------------
+      {
+        path: "/ligas",
+        name: "ligas",
+        component: LigaComponent,
+        meta: {
+          roles: ["Power User", "Administrador"],
+        },
+      },
+      {
+        path: "/ligas/:id",
+        name: "liga-details",
+        component: LigaFormComp,
+        meta: {
+          roles: ["Power User", "Administrador"],
+        },
+      },
+      {
+        path: "/ligas2/:id",
+        name: "liga-details2",
+        component: LigaPrintComponent,
+        meta: {
+          roles: ["Power User", "Administrador"],
+        },
+      },
+      {
+        path: "/ligas/new",
+        name: "ligas-form",
+        component: LigaFormComp,
         meta: {
           roles: ["Power User", "Administrador"],
         },

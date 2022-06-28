@@ -11,7 +11,9 @@
           ><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</label
         >
 
-        <label class="versionNumber"><span class="version">V 1.1.2</span></label>
+        <label class="versionNumber"
+          ><span class="version">V 1.1.3</span></label
+        >
 
         <label class="name" @click="this.hamburger()" for="btn-modal"
           ><i class="fas fa-user"></i>
@@ -86,6 +88,19 @@
         <!-- End Option -->
 
         <!-- Start Option -->
+        <a
+          v-if="
+            this.$store.state.user.type == 'Power User' ||
+              this.$store.state.user.type == 'Administrador'
+          "
+          class="navbar-option"
+          @click="this.hamburger('Ligas')"
+          href="#"
+          ><i class="fas fa-bookmark"></i> Ligas</a
+        >
+        <!-- End Option -->
+
+        <!-- Start Option -->
         <!-- <a
           v-if="
             this.$store.state.user.type == 'Power User' ||
@@ -135,6 +150,9 @@ export default defineComponent({
   methods: {
     hamburger(texto: string) {
       switch (texto) {
+        case "Ligas":
+          this.$router.push("/ligas");
+          break;
         case "Empleados":
           this.$router.push("/empleados");
           break;
