@@ -10,4 +10,7 @@ export interface Empleado {
   funcion: String;
   modalidad: String;
   sueldo: Number;
+  metodoPago: String;
+  cuenta: String;
+  codigoPonchador: String;
 }

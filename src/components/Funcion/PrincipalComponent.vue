@@ -163,7 +163,7 @@ export default {
 
   mounted() {
     this.loadFuncions();
-    this.pusherSubscribe();
+    // this.pusherSubscribe();
   },
 };
 </script>

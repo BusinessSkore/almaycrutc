@@ -11,7 +11,7 @@
           ><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</label
         >
 
-        <label class="versionNumber"><span class="version">V 1.1</span></label>
+        <label class="versionNumber"><span class="version">V 1.1.2</span></label>
 
         <label class="name" @click="this.hamburger()" for="btn-modal"
           ><i class="fas fa-user"></i>

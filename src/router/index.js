@@ -400,7 +400,7 @@ const routes = [
       {
         path: "/empleados/:id",
         name: "empleado-details",
-        component: EmpleadoDetailComponent,
+        component: EmpleadoFormComp,
         meta: {
           roles: ["Power User", "Administrador"],
         },

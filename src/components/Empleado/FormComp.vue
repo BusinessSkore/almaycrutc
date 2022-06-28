@@ -1,4 +1,6 @@
 <template v-show="!cargando">
+  <!-- {{ this.$route.fullPath }} -->
+  <!-- {{this.modoForm}} -->
   <div>
     <Navbar />
     <Transition>
@@ -11,8 +13,8 @@
         <h6 :class="isError(error)">{{ error }}</h6>
         <form>
           <fieldset>
-            <h6>Nuevo Empleado</h6>
-            <label class="form-label"><b>Datos de la Empleado</b></label>
+            <h6>{{ encabezado }}</h6>
+            <label class="form-label"><b>Datos del Empleado</b></label>
             <div class="form-group">
               <div class="grid">
                 <!-- Start Fields -->
@@ -47,13 +49,13 @@
                     >Función:</label
                   ><select
                     id="funcion"
-                    type="funcion"
                     v-model="empleado.funcion"
                     class="form-select"
                   >
                     <option
                       v-for="(funcion, index) in funciones"
                       :key="index"
+                      :value="funcion.descripcion"
                       >{{ funcion.descripcion }}</option
                     >
                   </select>
@@ -61,15 +63,29 @@
                 <div>
                   <label
                     class="ta-l col-form-label col-form-label-sm"
+                    for="codigoPonchador"
+                    >Código Ponchador:</label
+                  ><input
+                    id="codigoPonchador"
+                    type="codigoPonchador"
+                    v-model="empleado.codigoPonchador"
+                    class="form-control"
+                  />
+                </div>
+              </div>
+              <label class="form-label"><b>Datos Financieros</b></label>
+              <div class="grid">
+                <div>
+                  <label
+                    class="ta-l col-form-label col-form-label-sm"
                     for="modalidad"
                     >Modalidad:</label
                   ><select
                     id="modalidad"
-                    type="modalidad"
                     v-model="empleado.modalidad"
                     class="form-select"
                   >
-                    <option>Jornalero</option>
+                    <option selected>Jornalero</option>
                     <option>Asalariado</option>
                   </select>
                 </div>
@@ -87,11 +103,40 @@
                     />
                   </div>
                 </Transition>
+                <div>
+                  <label
+                    class="ta-l col-form-label col-form-label-sm"
+                    for="metodoPago"
+                    >Método de Pago:</label
+                  ><select
+                    id="metodoPago"
+                    v-model="empleado.metodoPago"
+                    class="form-select"
+                  >
+                    <option selected>Efectivo</option>
+                    <option>Transferencia</option>
+                  </select>
+                </div>
+                <Transition>
+                  <div v-if="empleado.metodoPago == 'Transferencia'">
+                    <label
+                      class="ta-l col-form-label col-form-label-sm"
+                      for="cuenta"
+                      >Cuenta:</label
+                    ><input
+                      id="cuenta"
+                      type="number"
+                      v-model="empleado.cuenta"
+                      class="form-control"
+                    />
+                  </div>
+                </Transition>
                 <!-- End Fields -->
               </div>
             </div>
 
             <button
+              v-if="this.modoForm == 'add'"
               class="btn btn-success"
               @click.prevent="saveEmpleado()"
               :disabled="
@@ -103,17 +148,28 @@
             >
               <i class="fas fa-save"></i> Guardar
             </button>
-            <!-- <button class="btn btn-success" @click.prevent="handleUpdate()">
-            <i class="fas fa-edit"></i> Actualizar
-          </button> -->
 
-            <!-- <button
-            v-if="showDelete"
-            class="btn btn-danger"
-            @click.prevent="handleDelete()"
-          >
-            <i class="fas fa-trash-alt"></i> Eliminar
-          </button> -->
+            <button
+              v-if="this.modoForm == 'show'"
+              class="btn btn-success"
+              @click.prevent="handleUpdate()"
+              :disabled="
+                !empleado.cedula ||
+                  !empleado.nombre ||
+                  !empleado.funcion ||
+                  !empleado.modalidad
+              "
+            >
+              <i class="fas fa-save"></i> Guardar
+            </button>
+
+            <button
+              v-if="showDelete"
+              class="btn btn-danger"
+              @click.prevent="handleDelete()"
+            >
+              <i class="fas fa-trash-alt"></i> Eliminar
+            </button>
           </fieldset>
         </form>
       </div>
@@ -148,6 +204,8 @@ export default defineComponent({
   },
   data() {
     return {
+      encabezado: "",
+      modoForm: "",
       funciones: [] as Funcion[],
       showDatosPadre: false,
       showDatosMadre: false,
@@ -180,13 +238,23 @@ export default defineComponent({
   },
 
   mounted() {
-    this.empleado.no = 1;
-    // this.defFields();
+    if (this.$route.fullPath == "/empleados/new") {
+      this.modoForm = "add";
+      this.encabezado = "Nuevo Empleado";
+    } else {
+      this.modoForm = "show";
+      this.encabezado = "Detalles de Empleado";
+    }
 
-    // this.showDeleteMethod();
-    // if (typeof this.$route.params.id === "string") {
-    //   this.loadEmpleado(this.$route.params.id);
-    // }
+    if (this.modoForm == "add") {
+      this.empleado.no = 1;
+      this.fillFields();
+    } else {
+      this.showDeleteMethod();
+      if (typeof this.$route.params.id === "string") {
+        this.loadEmpleado(this.$route.params.id);
+      }
+    }
 
     // this.pusherSubscribe();
 
@@ -391,11 +459,10 @@ export default defineComponent({
       return moment(out).format("yyyy-MM-DTHH:mm");
     },
 
-    // defFields() {
-    // this.empleado.status = this.$store.state.user.defaultStatus;
-    // this.actividad = "4 - Recibido por Reclamaciones Médicas";
-    // this.empleado.actividad.push(this.actividad);
-    // },
+    fillFields() {
+      this.empleado.modalidad = "Jornalero";
+      this.empleado.metodoPago = "Efectivo";
+    },
 
     async loadOneEmpleado() {
       try {
@@ -462,8 +529,13 @@ export default defineComponent({
         // // console.error(error);
       }
       await this.toggleLoading();
-      await this.definingFields();
-      // await this.defFields();
+      if (
+        this.error !==
+        "Ya Existe un Empleado Registrado con esta Cédula o con Este Número de Ponchador"
+      ) {
+        await this.cleanFields();
+      }
+      await this.fillFields();
       document.getElementById("cedula").focus();
       this.toggleAlert();
     },
@@ -477,12 +549,15 @@ export default defineComponent({
       }
     },
 
-    definingFields() {
+    cleanFields() {
       this.empleado.cedula = "";
       this.empleado.nombre = "";
       this.empleado.funcion = "";
       this.empleado.modalidad = "";
       this.empleado.sueldo = "";
+      this.empleado.metodoPago = "";
+      this.empleado.cuenta = "";
+      this.empleado.codigoPonchador = "";
     },
 
     toggleLoading() {
