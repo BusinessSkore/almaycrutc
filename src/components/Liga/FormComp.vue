@@ -92,6 +92,7 @@ export default defineComponent({
   },
   data() {
     return {
+      campoFocus: "descripcion",
       mensageError: "Ya Existe un Liga Registrada con esta Descripción",
       mensageExito: "Liga Registrada Exitosamente",
       encabezado: "",
@@ -146,25 +147,12 @@ export default defineComponent({
       }
     }
 
-    // this.pusherSubscribe();
-
     this.focus();
-    this.loadFunciones();
   },
 
   methods: {
     arreglar() {
       this.liga.descripcion = this.liga.descripcion.trim();
-    },
-    async loadFunciones() {
-      this.toggleLoading();
-      try {
-        const res = await getFuncions();
-        this.funciones = res.data;
-      } catch (error) {
-        // console.error(error);
-      }
-      this.toggleLoading();
     },
 
     async loadLiga(id: string) {
@@ -196,7 +184,7 @@ export default defineComponent({
     },
 
     async handleDelete() {
-      if (confirm("Está Seguro que desea Eliminar Este Liga?")) {
+      if (confirm("¿Está Seguro que desea Eliminar Este Liga?")) {
         try {
           if (typeof this.$route.params.id === "string") {
             await deleteLiga(this.$route.params.id);
@@ -208,23 +196,6 @@ export default defineComponent({
         }
       }
     },
-
-    // pusherSubscribe() {
-    //   // Start pusher subscribe
-    //   var pusher = new Pusher("d7b50b87118775ed0b11", {
-    //     cluster: "us2",
-    //   });
-
-    //   var channel = pusher.subscribe("my-channel");
-    //   channel.bind("my-event", (data: any) => {
-    //     if (typeof this.$route.params.id === "string") {
-    //       this.loadLiga2(this.$route.params.id);
-    //     }
-    //     // this.player.src = this.song.src;
-    //     // this.player.play();
-    //   });
-    //   // End pusher subscribe
-    // },
 
     showDeleteMethod() {
       if (this.$store.state.user.type == "Power User") {
@@ -240,36 +211,6 @@ export default defineComponent({
     },
     toggleShowDatosTutor() {
       this.showDatosTutor = !this.showDatosTutor;
-    },
-
-    calcularEdad(date: any) {
-      let years = 0;
-      let edad = Math.floor(
-        moment(new Date()).diff(moment(date, "YYYY-MM-DD"), "years", true)
-      );
-      if (edad > 120 || edad < 0) {
-        years = 0;
-      } else {
-        years = edad;
-      }
-      this.liga.edaddelliga = years;
-    },
-
-    formatDateToFix(dateValue: Date, incTime: boolean) {
-      if (incTime == true) {
-        let out = moment(dateValue).add(0, "days");
-        return moment(out).format("yyyy-MM-DTHH:mm");
-      } else {
-        let out = moment(dateValue).add(0, "days");
-        return moment(out).format("yyyy-MM-D");
-      }
-    },
-
-    fixTime() {
-      this.liga.fecha_ingreso = this.formatDateToFix(
-        this.liga.fecha_ingreso,
-        true
-      );
     },
 
     async addMessage() {
@@ -383,7 +324,7 @@ export default defineComponent({
         await this.cleanFields();
       }
       await this.fillFields();
-      document.getElementById("cedula").focus();
+      document.getElementById(this.campoFocus).focus();
       this.toggleAlert();
     },
 
@@ -405,7 +346,7 @@ export default defineComponent({
     },
 
     focus() {
-      document.getElementById("cedula").focus();
+      document.getElementById(this.campoFocus).focus();
     },
   },
 });

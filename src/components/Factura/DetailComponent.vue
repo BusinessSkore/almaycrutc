@@ -369,7 +369,7 @@ export default defineComponent({
     },
     deleteService(it: any, user: string) {
       if (user == this.$store.state.user.usuario) {
-        if (confirm("Está Seguro que desea Eliminar Esta Actividad?")) {
+        if (confirm("¿Está Seguro que desea Eliminar Esta Actividad?")) {
           this.factura.actividad.splice(it, 1);
           this.handleUpdate();
         }

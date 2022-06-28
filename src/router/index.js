@@ -75,6 +75,12 @@ import LigaPrintComponent from "../components/Liga/PrintComponent.vue";
 import LigaFormComp from "../components/Liga/FormComp.vue";
 // ----------------------------------------------------------------------------
 
+// Cxp -------------------------------------------------------------------
+import CxpComponent from "../components/Cxp/PrincipalComponent.vue";
+import CxpPrintComponent from "../components/Cxp/PrintComponent.vue";
+import CxpFormComp from "../components/Cxp/FormComp.vue";
+// ----------------------------------------------------------------------------
+
 // Chat -------------------------------------------------------------------
 import ChatComponent from "../components/ChatComponent.vue";
 // ----------------------------------------------------------------------------
@@ -363,7 +369,7 @@ const routes = [
         name: "funcions",
         component: FuncionComponent,
         meta: {
-          roles: ["Power User", "Administrador"],
+          roles: ["Power User"],
         },
       },
       {
@@ -371,7 +377,7 @@ const routes = [
         name: "funcion-details",
         component: FuncionDetailComponent,
         meta: {
-          roles: ["Power User", "Administrador"],
+          roles: ["Power User"],
         },
       },
       {
@@ -379,7 +385,7 @@ const routes = [
         name: "funcion-details2",
         component: FuncionPrintComponent,
         meta: {
-          roles: ["Power User", "Administrador"],
+          roles: ["Power User"],
         },
       },
       {
@@ -387,7 +393,7 @@ const routes = [
         name: "funcions-form",
         component: FuncionFormComp,
         meta: {
-          roles: ["Power User", "Administrador"],
+          roles: ["Power User"],
         },
       },
 
@@ -458,6 +464,42 @@ const routes = [
         path: "/ligas/new",
         name: "ligas-form",
         component: LigaFormComp,
+        meta: {
+          roles: ["Power User", "Administrador"],
+        },
+      },
+
+      // ----------------------------------------------------------------------------
+
+      // Cxp --------------------------------------------------------------------
+      {
+        path: "/cxps",
+        name: "cxps",
+        component: CxpComponent,
+        meta: {
+          roles: ["Power User", "Administrador"],
+        },
+      },
+      {
+        path: "/cxps/:id",
+        name: "cxp-details",
+        component: CxpFormComp,
+        meta: {
+          roles: ["Power User", "Administrador"],
+        },
+      },
+      {
+        path: "/cxps2/:id",
+        name: "cxp-details2",
+        component: CxpPrintComponent,
+        meta: {
+          roles: ["Power User", "Administrador"],
+        },
+      },
+      {
+        path: "/cxps/new",
+        name: "cxps-form",
+        component: CxpFormComp,
         meta: {
           roles: ["Power User", "Administrador"],
         },

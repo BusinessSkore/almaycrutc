@@ -194,7 +194,7 @@ export default defineComponent({
     },
 
     async handleDelete() {
-      if (confirm("Está Seguro que desea Eliminar Esta Vitola?")) {
+      if (confirm("¿Está Seguro que desea Eliminar Esta Vitola?")) {
         try {
           if (typeof this.$route.params.id === "string") {
             await deleteVitola(this.$route.params.id);

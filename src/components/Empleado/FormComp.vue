@@ -303,7 +303,7 @@ export default defineComponent({
     },
 
     async handleDelete() {
-      if (confirm("Está Seguro que desea Eliminar Este Empleado?")) {
+      if (confirm("¿Está Seguro que desea Eliminar Este Empleado?")) {
         try {
           if (typeof this.$route.params.id === "string") {
             await deleteEmpleado(this.$route.params.id);

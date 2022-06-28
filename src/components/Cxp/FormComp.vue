@@ -1,50 +1,103 @@
 <template v-show="!cargando">
-  <!-- {{ this.funcion.actividad }} -->
-  <!-- {{ this.respuesta }} -->
-  <!-- {{this.documento}} -->
-  <Navbar />
-  <Transition>
-    <div v-if="cargando" class="spin">
-      <img class="img" src="@/assets/images/logo.png" />
-    </div>
-  </Transition>
-  <Transition>
+  <!-- {{ this.$route.fullPath }} -->
+  <!-- {{this.modoForm}} -->
+  <!-- {{ this.empleados }} -->
+
+  <div>
+    <Navbar />
+    <Transition>
+      <div v-if="cargando" class="spin">
+        <img class="img" src="@/assets/images/logo.png" />
+      </div>
+    </Transition>
+
     <div v-show="!cargando" class="general">
       <h6 :class="isError(error)">{{ error }}</h6>
       <form>
         <fieldset>
-          <h6>Detalles de Funcion</h6>
-          <label class="form-label"><b>Datos de la Funcion</b></label>
+          <h6>{{ encabezado }}</h6>
+          <label class="form-label"><b>Datos de la Cuenta por Pagar</b></label>
           <div class="form-group">
             <div class="grid">
               <!-- Start Fields -->
               <div>
-                <label
-                  class="ta-l col-form-label col-form-label-sm"
-                  for="descripcion"
-                  >Descripción:</label
+                <label class="ta-l col-form-label col-form-label-sm" for="fecha"
+                  >Fecha:</label
                 ><input
-                  id="descripcion"
-                  type="descripcion"
-                  v-model="funcion.descripcion"
+                  id="fecha"
+                  type="date"
+                  v-model="cxp.fecha"
                   class="form-control"
                 />
               </div>
-              <!-- End Fields -->
+              <!-- <div>
+                <label
+                  class="ta-l col-form-label col-form-label-sm"
+                  for="pagoNo"
+                  >Pago:</label
+                ><input
+                  id="pagoNo"
+                  type="number"
+                  v-model="cxp.pagoNo"
+                  class="form-control"
+                />
+              </div> -->
+              <div>
+                <label
+                  class="ta-l col-form-label col-form-label-sm"
+                  for="empleado"
+                  >Empleado:</label
+                ><select
+                  id="empleado"
+                  v-model="cxp.empleado"
+                  class="form-select"
+                >
+                  <option
+                    v-for="(empleado, index) in empleados"
+                    :key="index"
+                    :value="empleado.nombre"
+                    >{{ empleado.nombre }}</option
+                  >
+                </select>
+              </div>
+              <div>
+                <label class="ta-l col-form-label col-form-label-sm" for="valor"
+                  >Valor:</label
+                ><input
+                  id="valor"
+                  type="number"
+                  v-model="cxp.valor"
+                  class="form-control"
+                />
+              </div>
+              <div>
+                <label
+                  class="ta-l col-form-label col-form-label-sm"
+                  for="origen"
+                  >Orígen:</label
+                ><select id="origen" v-model="cxp.origen" class="form-select">
+                  <option>Producción</option>
+                  <option>Insentivo</option>
+                  <option>Salario</option>
+                </select>
+              </div>
             </div>
           </div>
-          <!-- <button
-            class="btn btn-primary"
-            @click.prevent="saveFuncion()"
-            :disabled="!funcion.tamano || !funcion.tipo || !funcion.pago"
-          >
-            <i class="fas fa-save"></i> Guardar
-          </button> -->
 
           <button
+            v-if="this.modoForm == 'add'"
+            class="btn btn-success"
+            @click.prevent="saveCxp()"
+            :disabled="!cxp.fecha || !cxp.empleado || !cxp.valor || !cxp.origen"
+          >
+            <i class="fas fa-save"></i> Guardar
+          </button>
+
+          <button
+            v-if="this.modoForm == 'show'"
             class="btn btn-success"
             @click.prevent="handleUpdate()"
-            :disabled="!funcion.descripcion"
+            :disabled="!cxp.fecha || !cxp.empleado || !cxp.valor || !cxp.origen"
           >
             <i class="fas fa-save"></i> Guardar
           </button>
@@ -59,34 +112,46 @@
         </fieldset>
       </form>
     </div>
-  </Transition>
+  </div>
 </template>
 
 <script lang="ts">
 import Navbar from "@/components/Navbar.vue";
 import { defineComponent } from "vue";
+import { Cxp } from "@/interfaces/Cxp";
 import { Funcion } from "@/interfaces/Funcion";
+import { Empleado } from "@/interfaces/Empleado";
+import { getEmpleados } from "@/services/almaycru/Empleado";
 import {
-  createFuncion,
-  eliminateFuncions,
-  createFunciona,
-  getOneFuncion,
-  deleteFuncion,
-  getFuncion,
-  updateFuncion,
-} from "@/services/almaycru/Funcion";
+  createCxp,
+  eliminateCxps,
+  createCxpa,
+  getOneCxp,
+  deleteCxp,
+  getCxp,
+  updateCxp,
+} from "@/services/almaycru/Cxp";
+import { getFuncions } from "@/services/almaycru/Funcion";
 import { createMensaje } from "@/services/almaycru/ChatService";
 import numeral from "numeral";
 import moment from "moment";
-import Pusher from "pusher-js";
+// import Pusher from "pusher-js";
 
 export default defineComponent({
-  name: "funcions-form",
+  name: "cxps-form",
   components: {
     Navbar,
   },
   data() {
     return {
+      empleados: [] as Empleado[],
+      campoFocus: "empleado",
+      mensageError: "Error",
+      mensageExito: "Cuenta por Pagar Registrada Exitosamente",
+      mensageConfirm: "¿Está Seguro que desea Eliminar Esta Cuenta por Pagar?",
+      encabezado: "",
+      modoForm: "",
+      funciones: [] as Funcion[],
       showDatosPadre: false,
       showDatosMadre: false,
       showDatosTutor: false,
@@ -101,8 +166,8 @@ export default defineComponent({
       showAlert: false,
       loadedAfiliado: {},
       cargando: false,
-      funcion: {} as Funcion,
-      oneFuncion: {} as Funcion,
+      cxp: {} as Cxp,
+      oneCxp: {} as Cxp,
       one: {},
       nextNo: Number,
       medicoSelected: [],
@@ -117,26 +182,62 @@ export default defineComponent({
     };
   },
 
-  mounted() {
-    // this.funcion.no = 1;
-    // this.defFields();
-
-    this.showDeleteMethod();
-    if (typeof this.$route.params.id === "string") {
-      this.loadFuncion(this.$route.params.id);
+  async mounted() {
+    if (this.$route.fullPath == "/cxps/new") {
+      this.modoForm = "add";
+      this.encabezado = "Nueva Cuenta por Pagar";
+    } else {
+      this.modoForm = "show";
+      this.encabezado = "Detalles de Cuenta por Pagar";
     }
 
-    // this.pusherSubscribe();
+    if (this.modoForm == "add") {
+      this.cxp.no = 1;
+      this.fillFields();
+      this.fixTime();
+    } else {
+      this.showDeleteMethod();
+      if (typeof this.$route.params.id === "string") {
+        await this.loadCxp(this.$route.params.id);
+      }
+      this.fixTime();
+    }
 
     this.focus();
+    this.loadEmpleados();
   },
 
   methods: {
-    async loadFuncion(id: string) {
+    async loadEmpleados() {
       this.toggleLoading();
       try {
-        const { data } = await getFuncion(id);
-        this.funcion = data;
+        const res = await getEmpleados();
+        this.empleados = res.data;
+      } catch (error) {
+        // console.error(error);
+      }
+      this.toggleLoading();
+    },
+
+    fixTime() {
+      this.cxp.fecha = this.formatDateToFix(this.cxp.fecha, false);
+    },
+
+    formatDateToFix(dateValue: Date, incTime: boolean) {
+      if (incTime == true) {
+        let out = moment(dateValue).add(0, "days");
+        return moment(out).format("yyyy-MM-DTHH:mm");
+      } else {
+        let out = moment(dateValue).add(0, "days");
+        return moment(out).format("yyyy-MM-D");
+      }
+    },
+
+    async loadCxp(id: string) {
+      this.toggleLoading();
+      try {
+        const { data } = await getCxp(id);
+        this.cxp = data;
         // this.fixTime();
       } catch (error) {
         //console.error(error);
@@ -148,10 +249,10 @@ export default defineComponent({
       // this.toggleLoading();
       try {
         if (typeof this.$route.params.id === "string") {
-          this.funcion.userMod = this.$store.state.user.usuario;
-          await updateFuncion(this.$route.params.id, this.funcion);
+          this.cxp.userMod = this.$store.state.user.usuario;
+          await updateCxp(this.$route.params.id, this.cxp);
           this.addMessage();
-          this.$router.push("/funcions");
+          this.$router.push("/cxps");
         }
       } catch (error) {
         //console.error(error);
@@ -161,34 +262,17 @@ export default defineComponent({
     },
 
     async handleDelete() {
-      if (confirm("¿Está Seguro que desea Eliminar Esta Funcion?")) {
+      if (confirm(this.mensageConfirm)) {
         try {
           if (typeof this.$route.params.id === "string") {
-            await deleteFuncion(this.$route.params.id);
+            await deleteCxp(this.$route.params.id);
             this.addMessage();
-            this.$router.push("/funcions");
+            this.$router.push("/cxps");
           }
         } catch (error) {
           //console.error(error);
         }
       }
-    },
-
-    pusherSubscribe() {
-      // Start pusher subscribe
-      var pusher = new Pusher("d7b50b87118775ed0b11", {
-        cluster: "us2",
-      });
-
-      var channel = pusher.subscribe("my-channel");
-      channel.bind("my-event", (data: any) => {
-        if (typeof this.$route.params.id === "string") {
-          this.loadFuncion2(this.$route.params.id);
-        }
-        // this.player.src = this.song.src;
-        // this.player.play();
-      });
-      // End pusher subscribe
     },
 
     showDeleteMethod() {
@@ -207,36 +291,6 @@ export default defineComponent({
       this.showDatosTutor = !this.showDatosTutor;
     },
 
-    calcularEdad(date: any) {
-      let years = 0;
-      let edad = Math.floor(
-        moment(new Date()).diff(moment(date, "YYYY-MM-DD"), "years", true)
-      );
-      if (edad > 120 || edad < 0) {
-        years = 0;
-      } else {
-        years = edad;
-      }
-      this.funcion.edaddelfuncion = years;
-    },
-
-    formatDateToFix(dateValue: Date, incTime: boolean) {
-      if (incTime == true) {
-        let out = moment(dateValue).add(0, "days");
-        return moment(out).format("yyyy-MM-DTHH:mm");
-      } else {
-        let out = moment(dateValue).add(0, "days");
-        return moment(out).format("yyyy-MM-D");
-      }
-    },
-
-    fixTime() {
-      this.funcion.fecha_ingreso = this.formatDateToFix(
-        this.funcion.fecha_ingreso,
-        true
-      );
-    },
-
     async addMessage() {
       try {
         const res = await createMensaje(this.message);
@@ -245,53 +299,10 @@ export default defineComponent({
       }
     },
 
-    // async getFuncion() {
-    //   this.toggleLoading();
-    //   this.documento.idfact = this.funcion.idfact;
-    //   if (this.documento) {
-    //     try {
-    //       const res = await getFuncion(this.documento);
-    //       // const res = await getFuncions();
-    //       // this.funcion = res.data;
-    //       // Asignar Campos Seleccionandolos
-    //       this.funcion.idfact = res.data.idfact;
-    //       this.funcion.id_ars = res.data.id_ars;
-    //       this.funcion.nom = res.data.nom;
-    //       this.funcion.nro_autorizacion_salida =
-    //         res.data.nro_autorizacion_salida;
-    //       this.funcion.fecha_ingreso = res.data.fecha_ingreso;
-    //       this.funcion.numero_afiliado = res.data.numero_afiliado;
-    //       this.funcion.rnc = res.data.rnc;
-    //       this.funcion.tipo_funcion = res.data.tipo_funcion;
-    //       this.funcion.cobertura = res.data.cobertura;
-    //       this.funcion.total_servicio = res.data.total_servicio;
-
-    //       this.funcion.status = this.$store.state.user.defaultStatus;
-    //       this.funcion.actividad = [];
-    //       this.funcion.actividad.push({
-    //         description: this.$store.state.user.defaultStatus,
-    //         date: new Date(),
-    //         user: this.$store.state.user.usuario,
-    //         detalles: "",
-    //       });
-    //       this.fixTime();
-    //     } catch (error) {
-    //       // console.error(error);
-    //     }
-    //   }
-    //   await this.toggleLoading();
-    //   if (this.funcion.cobertura == 0) {
-    //     // this.saveFuncion();
-    //     // alert("Funcion Encontrada");
-    //     alert("Funcion no Encontrada");
-    //     this.focus();
-    //   }
-    // },
-
     isError(message: string) {
-      if (message == "Funcion Registrada Exitosamente") {
+      if (message == this.mensageExito) {
         return "success";
-      } else if (message == "Ya Existe una Funcion Registrada con este Id") {
+      } else {
         return "error";
       }
     },
@@ -299,9 +310,9 @@ export default defineComponent({
     toggleAlert() {
       this.showAlert = !this.showAlert;
     },
-    calcFuncion() {
-      (this.funcion.retension = this.funcion.bruto * 0.1),
-        (this.funcion.neto = this.funcion.bruto * 0.9);
+    calcCxp() {
+      (this.cxp.retension = this.cxp.bruto * 0.1),
+        (this.cxp.neto = this.cxp.bruto * 0.9);
     },
     formatNumber(value: number) {
       return numeral(value).format("00000000");
@@ -317,17 +328,15 @@ export default defineComponent({
       return moment(out).format("yyyy-MM-DTHH:mm");
     },
 
-    // defFields() {
-    // this.funcion.status = this.$store.state.user.defaultStatus;
-    // this.actividad = "4 - Recibido por Reclamaciones Médicas";
-    // this.funcion.actividad.push(this.actividad);
-    // },
+    fillFields() {
+      this.cxp.fecha = this.formatDate(new Date());
+    },
 
-    async loadOneFuncion() {
+    async loadOneCxp() {
       try {
-        const res = await getOneFuncion();
-        this.oneFuncion = res.data;
-        this.one = this.oneFuncion[0];
+        const res = await getOneCxp();
+        this.oneCxp = res.data;
+        this.one = this.oneCxp[0];
         if (typeof this.one.no === "number") {
           this.nextNo = this.one.no + 1;
         } else {
@@ -337,40 +346,39 @@ export default defineComponent({
         if (this.nextNo == null) {
           this.nextNo = 0;
         }
-        this.funcion.no = this.nextNo;
-        this.funcion.principal = this.nextNo;
-        this.funcion.principal = this.nextNo;
+        this.cxp.no = this.nextNo;
+        this.cxp.principal = this.nextNo;
+        this.cxp.principal = this.nextNo;
       } catch (error) {
         // console.error(error);
       }
     },
 
-    async saveFunciona() {
-      await this.loadOneFuncion();
+    async saveCxpa() {
+      await this.loadOneCxp();
       try {
-        const res = await createFunciona(this.servicio);
+        const res = await createCxpa(this.servicio);
         // // console.log(res);
       } catch (error) {
         // // console.error(error);
       }
     },
 
-    async saveFuncion() {
+    async saveCxp() {
       this.toggleLoading();
       try {
         try {
-          const res = await getOneFuncion();
-          this.oneFuncion = res.data;
-          this.one = this.oneFuncion[0];
+          const res = await getOneCxp();
+          this.oneCxp = res.data;
+          this.one = this.oneCxp[0];
           this.nextNo = this.one.no + 1;
-          this.funcion.no = this.nextNo;
-          this.funcion.principal = this.nextNo;
+          this.cxp.no = this.nextNo;
+          this.cxp.principal = this.nextNo;
         } catch (error) {
           // // console.error(error);
         }
-        this.funcion.status = this.$store.state.user.defaultStatus;
-        this.funcion.userReg = this.$store.state.user.usuario;
-        const res = await createFuncion(this.funcion).then(
+        this.cxp.userReg = this.$store.state.user.usuario;
+        const res = await createCxp(this.cxp).then(
           (res) => {
             this.error = this.respuesta = res.data.title;
             // this.$router.push("/");
@@ -383,28 +391,33 @@ export default defineComponent({
             this.error = err.response.data.error;
           }
         );
-        // this.$router.push("/funcions/");
+        // this.$router.push("/cxps/");
       } catch (error) {
         // // console.error(error);
       }
       await this.toggleLoading();
-      await this.definingFields();
-      // await this.defFields();
-      document.getElementById("descripcion").focus();
+      if (this.error !== this.mensageError) {
+        await this.cleanFields();
+      }
+      await this.fillFields();
+      document.getElementById(this.campoFocus).focus();
       this.toggleAlert();
     },
 
-    async deleteAllFuncions() {
+    async deleteAllCxps() {
       try {
-        const res = await eliminateFuncions(this.funcion);
+        const res = await eliminateCxps(this.cxp);
         // // console.log(res);
       } catch (error) {
         // // console.error(error);
       }
     },
 
-    definingFields() {
-      this.funcion.descripcion = "";
+    cleanFields() {
+      this.cxp.fecha = "";
+      this.cxp.empleado = "";
+      this.cxp.valor = "";
+      this.cxp.origen = "";
     },
 
     toggleLoading() {
@@ -412,7 +425,7 @@ export default defineComponent({
     },
 
     focus() {
-      document.getElementById("descripcion").focus();
+      document.getElementById(this.campoFocus).focus();
     },
   },
 });
