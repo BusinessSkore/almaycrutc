@@ -2,15 +2,15 @@ export interface Empleado {
   // Generales
   id: null;
   no: number;
-  userReg: String;
-  userMod: String;
+  userReg: string;
+  userMod: string;
   // Entidad
-  cedula: String;
-  nombre: String;
-  funcion: String;
-  modalidad: String;
-  sueldo: Number;
-  metodoPago: String;
-  cuenta: String;
-  codigoPonchador: String;
+  cedula: string;
+  nombre: string;
+  funcion: string;
+  modalidad: string;
+  sueldo: number;
+  metodoPago: string;
+  cuenta: string;
+  codigoPonchador: string;
 }

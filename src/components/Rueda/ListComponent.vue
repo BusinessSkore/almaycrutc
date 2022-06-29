@@ -1,33 +1,36 @@
 <template>
-  <table v-if="this.totales.cxps" id="customers">
+  <table v-if="this.totales.ruedas" id="customers">
     <tr>
-      <th>Fecha / Hora</th>
-      <!-- <th>Pago</th> -->
-      <th>Empleado</th>
-      <th>Orígen</th>
-      <th>Valor</th>
+      <th>Fecha</th>
+      <th>Liga</th>
+      <!-- <th>Empleados</th> -->
+      <th>Vitola</th>
+      <!-- <th>Cantidad</th> -->
+      <th>Monos</th>
     </tr>
     <tr
-      v-for="(cxp, index) in cxps"
+      v-for="(rueda, index) in ruedas"
       :key="index"
-      @click="this.$router.push(`/cxps/${cxp._id}`)"
+      @click="this.$router.push(`/ruedas/${rueda._id}`)"
     >
-      <td>{{ formatDate(cxp.fecha) }}</td>
-      <!-- <td>{{ cxp.pagoNo }}</td> -->
-      <td>{{ cxp.empleado }}</td>
-      <td>{{ cxp.origen }}</td>
-      <td class="der">{{ formatNumber(cxp.valor, true) }}</td>
+      <td>{{ formatDate(rueda.fecha) }}</td>
+      <td>{{ rueda.liga }}</td>
+      <!-- <td>{{ rueda.empleados }}</td> -->
+      <td>{{ rueda.vitola }}</td>
+      <!-- <td>{{ rueda.cantidad }}</td> -->
+      <td class="der">{{ formatNumber(rueda.monos, false) }}</td>
     </tr>
     <tr>
-      <td>Total: {{ formatNumber(this.totales.cxps) }}</td>
-      <!-- <td></td> -->
+      <td>Total: {{ formatNumber(this.totales.ruedas) }}</td>
       <td></td>
       <td></td>
-      <td class="der">{{ formatNumber(this.totales.valor, true) }}</td>
+      <!-- <td></td>
+      <td></td> -->
+      <td class="der">{{ formatNumber(this.totales.valor, false) }}</td>
     </tr>
   </table>
 
-  <h6 class="noRegist" v-if="!this.totales.cxps">
+  <h6 class="noRegist" v-if="!this.totales.ruedas">
     No se Encontraron Registros.
   </h6>
 </template>
@@ -35,11 +38,11 @@
 <script lang="ts">
 import numeral from "numeral";
 import moment from "moment";
-import { updateOne } from "@/services/almaycru/Cxp";
-import { Cxp } from "@/interfaces/Cxp";
+import { updateOne } from "@/services/almaycru/Rueda";
+import { Rueda } from "@/interfaces/Rueda";
 
 export default {
-  props: ["cxps"],
+  props: ["ruedas"],
   data() {
     return {
       data: false,
@@ -155,10 +158,10 @@ export default {
       }
     },
 
-    async marcarListo(cxp: Cxp) {
-      alert("Cxp Lista.");
+    async marcarListo(rueda: Rueda) {
+      alert("Rueda Lista.");
       try {
-        const res = await updateOne(cxp);
+        const res = await updateOne(rueda);
       } catch (error) {
         // console.error(error);
       }
@@ -169,14 +172,14 @@ export default {
         return "table-danger";
       } else if (type == "Función") {
         return "table-success";
-      } else if (type == "Cxp") {
+      } else if (type == "Rueda") {
         return "table-warning";
       }
     },
     valorTotal() {
-      this.totales.cxps = this.cxps.length;
-      this.totales.valor = this.cxps.reduce(
-        (accum: any, item: any) => accum + item.valor,
+      this.totales.ruedas = this.ruedas.length;
+      this.totales.valor = this.ruedas.reduce(
+        (accum: any, item: any) => accum + item.monos,
         0
       );
     },
@@ -198,7 +201,7 @@ export default {
     },
 
     formatDate(dateValue: Date) {
-      let out = moment(dateValue).add(4, "h");
+      let out = moment(dateValue).add(0, "h");
       return moment(out).format("D/MM/yyyy HH:mm");
     },
   },
@@ -271,7 +274,7 @@ export default {
   font-weight: bold;
 }
 
-.gridlistacxps {
+.gridlistaruedas {
   display: grid;
   grid-auto-flow: dense;
   grid-template-rows: auto auto;

@@ -30,7 +30,7 @@
                     class="form-control"
                   />
                 </div>
-                <div>
+                <!-- <div>
                   <label
                     class="ta-l col-form-label col-form-label-sm"
                     for="nombre"
@@ -41,7 +41,7 @@
                     v-model="empleado.nombre"
                     class="form-control"
                   />
-                </div>
+                </div> -->
                 <div>
                   <label
                     class="ta-l col-form-label col-form-label-sm"
@@ -130,6 +130,353 @@
                     class="form-control"
                   />
                 </div>
+              </div>
+              <label class="form-label"><b>Datos Personales</b></label>
+              <div class="grid">
+                <div>
+                  <label
+                    class="ta-l col-form-label col-form-label-sm"
+                    for="primerNombre"
+                    >Primer Nombre:</label
+                  ><input
+                    id="primerNombre"
+                    type="String"
+                    v-model="empleado.primerNombre"
+                    class="form-control"
+                  />
+                </div>
+                <div>
+                  <label
+                    class="ta-l col-form-label col-form-label-sm"
+                    for="segundoNombre"
+                    >Segundo Nombre:</label
+                  ><input
+                    id="segundoNombre"
+                    type="String"
+                    v-model="empleado.segundoNombre"
+                    class="form-control"
+                  />
+                </div>
+                <div>
+                  <label
+                    class="ta-l col-form-label col-form-label-sm"
+                    for="primerApellido"
+                    >Primer Apellido:</label
+                  ><input
+                    id="primerApellido"
+                    type="String"
+                    v-model="empleado.primerApellido"
+                    class="form-control"
+                  />
+                </div>
+                <div>
+                  <label
+                    class="ta-l col-form-label col-form-label-sm"
+                    for="segundoApellido"
+                    >Segundo Apellido:</label
+                  ><input
+                    id="segundoApellido"
+                    type="String"
+                    v-model="empleado.segundoApellido"
+                    class="form-control"
+                  />
+                </div>
+                <div>
+                  <label
+                    class="ta-l col-form-label col-form-label-sm"
+                    for="sexo"
+                    >Sexo:</label
+                  ><select
+                    id="sexo"
+                    type="String"
+                    v-model="empleado.sexo"
+                    class="form-select"
+                  >
+                    <option>Masculino</option>
+                    <option>Femenino</option>
+                  </select>
+                </div>
+                <div>
+                  <label
+                    class="ta-l col-form-label col-form-label-sm"
+                    for="fechaNacimiento"
+                    >Fecha de Nacimiento:</label
+                  ><input
+                    id="fechaNacimiento"
+                    @change="calcularEdad(empleado.fechaNacimiento)"
+                    type="Date"
+                    v-model="empleado.fechaNacimiento"
+                    class="form-control"
+                  />
+                </div>
+                <div>
+                  <label
+                    class="ta-l col-form-label col-form-label-sm"
+                    for="edad"
+                    >Edad:</label
+                  ><input
+                    disabled
+                    id="edad"
+                    type="Number"
+                    v-model="empleado.edad"
+                    class="form-control"
+                  />
+                </div>
+                <div>
+                  <label
+                    class="ta-l col-form-label col-form-label-sm"
+                    for="direccion"
+                    >Dirección:</label
+                  ><input
+                    id="direccion"
+                    type="String"
+                    v-model="empleado.direccion"
+                    class="form-control"
+                  />
+                </div>
+                <div>
+                  <label
+                    class="ta-l col-form-label col-form-label-sm"
+                    for="telResidencial"
+                    >Teléfono Residencial:</label
+                  ><input
+                    id="telResidencial"
+                    type="String"
+                    v-model="empleado.telResidencial"
+                    class="form-control"
+                  />
+                </div>
+                <div>
+                  <label
+                    class="ta-l col-form-label col-form-label-sm"
+                    for="telCelular"
+                    >Teléfono Celular:</label
+                  ><input
+                    id="telCelular"
+                    type="String"
+                    v-model="empleado.telCelular"
+                    class="form-control"
+                  />
+                </div>
+                <div>
+                  <label
+                    class="ta-l col-form-label col-form-label-sm"
+                    for="estudiosRealizados"
+                    >Estudios Realizados:</label
+                  ><input
+                    id="estudiosRealizados"
+                    type="String"
+                    v-model="empleado.estudiosRealizados"
+                    class="form-control"
+                  />
+                </div>
+
+                <div>
+                  <label
+                    class="ta-l col-form-label col-form-label-sm"
+                    for="seguroSocial"
+                    >Seguro Social:</label
+                  ><input
+                    id="seguroSocial"
+                    type="String"
+                    v-model="empleado.seguroSocial"
+                    class="form-control"
+                  />
+                </div>
+                <div>
+                  <label
+                    class="ta-l col-form-label col-form-label-sm"
+                    for="estadoCivil"
+                    >Estado Civil:</label
+                  ><select
+                    id="estadoCivil"
+                    type="String"
+                    v-model="empleado.estadoCivil"
+                    class="form-select"
+                  >
+                    <option>Unido</option>
+                    <option>Soltero</option>
+                    <option>Casado</option>
+                  </select>
+                </div>
+              </div>
+              <label class="form-label"><b>Datos Laborales</b></label>
+              <div class="grid">
+                <div>
+                  <label
+                    class="ta-l col-form-label col-form-label-sm"
+                    for="noColaborador"
+                    >Colaborador No.: :</label
+                  ><input
+                    id="noColaborador"
+                    type="String"
+                    v-model="empleado.noColaborador"
+                    class="form-control"
+                  />
+                </div>
+                <div>
+                  <label
+                    class="ta-l col-form-label col-form-label-sm"
+                    for="departamento"
+                    >Departamento:</label
+                  ><input
+                    id="departamento"
+                    type="String"
+                    v-model="empleado.departamento"
+                    class="form-control"
+                  />
+                </div>
+                <div>
+                  <label
+                    class="ta-l col-form-label col-form-label-sm"
+                    for="fechaContratacion"
+                    >Fecha de Contratación:</label
+                  ><input
+                    id="fechaContratacion"
+                    type="Date"
+                    v-model="empleado.fechaContratacion"
+                    class="form-control"
+                  />
+                </div>
+                <div>
+                  <label
+                    class="ta-l col-form-label col-form-label-sm"
+                    for="cargo"
+                    >Cargo:</label
+                  ><input
+                    id="cargo"
+                    type="String"
+                    v-model="empleado.cargo"
+                    class="form-control"
+                  />
+                </div>
+              </div>
+              <label class="form-label"><b>Datos Médicos</b></label>
+              <div class="grid">
+                <div>
+                  <label
+                    class="ta-l col-form-label col-form-label-sm"
+                    for="tipoSangre"
+                    >Tipo de Sangre:</label
+                  ><select
+                    id="tipoSangre"
+                    type="String"
+                    v-model="empleado.tipoSangre"
+                    class="form-select"
+                  >
+                    <option>A+</option>
+                    <option>B+</option>
+                    <option>AB+</option>
+                    <option>O+</option>
+                    <option>A-</option>
+                    <option>B-</option>
+                    <option>AB-</option>
+                    <option></option>
+
+                    O-
+                  </select>
+                </div>
+                <div>
+                  <label
+                    class="ta-l col-form-label col-form-label-sm"
+                    for="alergias"
+                    >Alergias:</label
+                  ><input
+                    id="alergias"
+                    type="String"
+                    v-model="empleado.alergias"
+                    class="form-control"
+                  />
+                </div>
+                <div>
+                  <label
+                    class="ta-l col-form-label col-form-label-sm"
+                    for="enEmergenciasLlamar"
+                    >En Caso de Emergencias Llamar A:</label
+                  ><input
+                    id="enEmergenciasLlamar"
+                    type="String"
+                    v-model="empleado.enEmergenciasLlamar"
+                    class="form-control"
+                  />
+                </div>
+                <div>
+                  <label
+                    class="ta-l col-form-label col-form-label-sm"
+                    for="parentezcoLlamar"
+                    >Parentezco:</label
+                  ><input
+                    id="parentezcoLlamar"
+                    type="String"
+                    v-model="empleado.parentezcoLlamar"
+                    class="form-control"
+                  />
+                </div>
+                <div>
+                  <label
+                    class="ta-l col-form-label col-form-label-sm"
+                    for="telefonoLlamar"
+                    >Teléfono:</label
+                  ><input
+                    id="telefonoLlamar"
+                    type="String"
+                    v-model="empleado.telefonoLlamar"
+                    class="form-control"
+                  />
+                </div>
+              </div>
+              <label class="form-label"><b>Otros Datos</b></label>
+              <div class="grid">
+                <div>
+                  <label
+                    class="ta-l col-form-label col-form-label-sm"
+                    for="nombreConyuge"
+                    >Nombre del Cónyuge:</label
+                  ><input
+                    id="nombreConyuge"
+                    type="String"
+                    v-model="empleado.nombreConyuge"
+                    class="form-control"
+                  />
+                </div>
+                <div>
+                  <label
+                    class="ta-l col-form-label col-form-label-sm"
+                    for="cedulaConyuge"
+                    >Cédula del Cónyuge:</label
+                  ><input
+                    id="cedulaConyuge"
+                    type="String"
+                    v-model="empleado.cedulaConyuge"
+                    class="form-control"
+                  />
+                </div>
+              </div>
+              <div class="grid">
+                <div>
+                  <label
+                    class="ta-l col-form-label col-form-label-sm"
+                    for="hijos"
+                    >Hijos:</label
+                  ><textarea
+                    id="hijos"
+                    type="Object"
+                    v-model="empleado.hijos"
+                    class="form-control"
+                  />
+                </div>
+                <div>
+                  <label
+                    class="ta-l col-form-label col-form-label-sm"
+                    for="recursosHumanos"
+                    >Recursos Humanos:</label
+                  ><textarea
+                    id="recursosHumanos"
+                    type="Object"
+                    v-model="empleado.recursosHumanos"
+                    class="form-control"
+                  />
+                </div>
 
                 <!-- End Fields -->
               </div>
@@ -140,10 +487,31 @@
               class="btn btn-success"
               @click.prevent="saveEmpleado()"
               :disabled="
-                !empleado.cedula ||
-                  !empleado.nombre ||
-                  !empleado.funcion ||
-                  !empleado.modalidad
+                !empleado.primerNombre ||
+                  !empleado.primerApellido ||
+                  !empleado.segundoApellido ||
+                  !empleado.sexo ||
+                  !empleado.fechaNacimiento ||
+                  !empleado.edad ||
+                  !empleado.direccion ||
+                  !empleado.telResidencial ||
+                  !empleado.telCelular ||
+                  !empleado.noColaborador ||
+                  !empleado.departamento ||
+                  !empleado.fechaContratacion ||
+                  !empleado.cargo ||
+                  !empleado.estudiosRealizados ||
+                  !empleado.nombreConyuge ||
+                  !empleado.cedulaConyuge ||
+                  !empleado.seguroSocial ||
+                  !empleado.estadoCivil ||
+                  !empleado.tipoSangre ||
+                  !empleado.alergias ||
+                  !empleado.enEmergenciasLlamar ||
+                  !empleado.parentezcoLlamar ||
+                  !empleado.telefonoLlamar ||
+                  !empleado.hijos ||
+                  !empleado.recursosHumanos
               "
             >
               <i class="fas fa-save"></i> Guardar
@@ -154,10 +522,31 @@
               class="btn btn-success"
               @click.prevent="handleUpdate()"
               :disabled="
-                !empleado.cedula ||
-                  !empleado.nombre ||
-                  !empleado.funcion ||
-                  !empleado.modalidad
+                !empleado.primerNombre ||
+                  !empleado.primerApellido ||
+                  !empleado.segundoApellido ||
+                  !empleado.sexo ||
+                  !empleado.fechaNacimiento ||
+                  !empleado.edad ||
+                  !empleado.direccion ||
+                  !empleado.telResidencial ||
+                  !empleado.telCelular ||
+                  !empleado.noColaborador ||
+                  !empleado.departamento ||
+                  !empleado.fechaContratacion ||
+                  !empleado.cargo ||
+                  !empleado.estudiosRealizados ||
+                  !empleado.nombreConyuge ||
+                  !empleado.cedulaConyuge ||
+                  !empleado.seguroSocial ||
+                  !empleado.estadoCivil ||
+                  !empleado.tipoSangre ||
+                  !empleado.alergias ||
+                  !empleado.enEmergenciasLlamar ||
+                  !empleado.parentezcoLlamar ||
+                  !empleado.telefonoLlamar ||
+                  !empleado.hijos ||
+                  !empleado.recursosHumanos
               "
             >
               <i class="fas fa-save"></i> Guardar
@@ -279,7 +668,7 @@ export default defineComponent({
       try {
         const { data } = await getEmpleado(id);
         this.empleado = data;
-        // this.fixTime();
+        this.fixTime();
       } catch (error) {
         //console.error(error);
       }
@@ -359,7 +748,7 @@ export default defineComponent({
       } else {
         years = edad;
       }
-      this.empleado.edaddelempleado = years;
+      this.empleado.edad = years;
     },
 
     formatDateToFix(dateValue: Date, incTime: boolean) {
@@ -373,9 +762,13 @@ export default defineComponent({
     },
 
     fixTime() {
-      this.empleado.fecha_ingreso = this.formatDateToFix(
-        this.empleado.fecha_ingreso,
-        true
+      this.empleado.fechaNacimiento = this.formatDateToFix(
+        this.empleado.fechaNacimiento,
+        false
+      );
+      this.empleado.fechaContratacion = this.formatDateToFix(
+        this.empleado.fechaContratacion,
+        false
       );
     },
 
@@ -468,6 +861,14 @@ export default defineComponent({
         }
         this.empleado.status = this.$store.state.user.defaultStatus;
         this.empleado.userReg = this.$store.state.user.usuario;
+        this.empleado.nombre =
+          this.empleado.primerNombre +
+          " " +
+          this.empleado.segundoNombre +
+          " " +
+          this.empleado.primerApellido +
+          " " +
+          this.empleado.segundoApellido;
         const res = await createEmpleado(this.empleado).then(
           (res) => {
             this.error = this.respuesta = res.data.title;
@@ -515,6 +916,32 @@ export default defineComponent({
       this.empleado.metodoPago = "";
       this.empleado.cuenta = "";
       this.empleado.codigoPonchador = "";
+      this.empleado.primerNombre = "";
+      this.empleado.segundoNombre = "";
+      this.empleado.primerApellido = "";
+      this.empleado.segundoApellido = "";
+      this.empleado.sexo = "";
+      this.empleado.fechaNacimiento = "";
+      this.empleado.edad = "";
+      this.empleado.direccion = "";
+      this.empleado.telResidencial = "";
+      this.empleado.telCelular = "";
+      this.empleado.noColaborador = "";
+      this.empleado.departamento = "";
+      this.empleado.fechaContratacion = "";
+      this.empleado.cargo = "";
+      this.empleado.estudiosRealizados = "";
+      this.empleado.nombreConyuge = "";
+      this.empleado.cedulaConyuge = "";
+      this.empleado.seguroSocial = "";
+      this.empleado.estadoCivil = "";
+      this.empleado.tipoSangre = "";
+      this.empleado.alergias = "";
+      this.empleado.enEmergenciasLlamar = "";
+      this.empleado.parentezcoLlamar = "";
+      this.empleado.telefonoLlamar = "";
+      this.empleado.hijos = "";
+      this.empleado.recursosHumanos = "";
     },
 
     toggleLoading() {

@@ -12,7 +12,7 @@
         >
 
         <label class="versionNumber"
-          ><span class="version">V 2.1.0</span></label
+          ><span class="version">V 3.0.0</span></label
         >
 
         <label class="name" @click="this.hamburger()" for="btn-modal"
@@ -64,9 +64,7 @@
         <!-- End Option -->
         <!-- Start Option -->
         <a
-          v-if="
-            this.$store.state.user.type == 'Power User'
-          "
+          v-if="this.$store.state.user.type == 'Power User'"
           class="navbar-option"
           @click="this.hamburger('Funciones')"
           href="#"
@@ -98,6 +96,20 @@
           ><i class="fas fa-bookmark"></i> Ligas</a
         >
         <!-- End Option -->
+
+        <!-- Start Option -->
+        <a
+          v-if="
+            this.$store.state.user.type == 'Power User' ||
+              this.$store.state.user.type == 'Administrador'
+          "
+          class="navbar-option"
+          @click="this.hamburger('Ruedas')"
+          href="#"
+          ><i class="fas fa-dot-circle"></i> Ruedas</a
+        >
+        <!-- End Option -->
+
         <!-- Start Option -->
         <a
           v-if="
@@ -148,6 +160,9 @@ export default defineComponent({
   methods: {
     hamburger(texto: string) {
       switch (texto) {
+        case "Ruedas":
+          this.$router.push("/ruedas");
+          break;
         case "Cxp":
           this.$router.push("/cxps");
           break;

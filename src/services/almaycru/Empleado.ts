@@ -9,15 +9,18 @@ export const createEmpleadoa = async (
 ): Promise<AxiosResponse> => await axios.post("/empleados/Savea", empleado);
 
 // Crear un Solo Registro
-export const createEmpleado = async (empleado: Empleado): Promise<AxiosResponse> =>
-  await axios.post("/empleados/Save", empleado);
+export const createEmpleado = async (
+  empleado: Empleado
+): Promise<AxiosResponse> => await axios.post("/empleados/Save", empleado);
 
 // Leer Todos los registros
 export const getEmpleados = async (): Promise<AxiosResponse<Empleado[]>> =>
   await axios.get("/empleados/get");
 
 //Leer un solo Registro por ID
-export const getEmpleado = async (id: string): Promise<AxiosResponse<Empleado>> =>
+export const getEmpleado = async (
+  id: string
+): Promise<AxiosResponse<Empleado>> =>
   await axios.get(`/empleados/GetById/${id}`);
 
 //Leer el último Registro
@@ -55,3 +58,14 @@ export const getfactsGpedByCli = async (): Promise<AxiosResponse<Empleado[]>> =>
 //Actualizar Un Registro
 export const updateOne = async (empleado: Empleado): Promise<AxiosResponse> =>
   await axios.post("/empleados/updateOne", empleado);
+
+// Leer Todos los registros por Campo
+
+export const getMez = async (): Promise<AxiosResponse<Empleado[]>> =>
+  await axios.get("/empleados/getMez");
+
+export const getPeg = async (): Promise<AxiosResponse<Empleado[]>> =>
+  await axios.get("/empleados/getPeg");
+
+export const getEmp = async (): Promise<AxiosResponse<Empleado[]>> =>
+  await axios.get("/empleados/getEmp");

@@ -1,8 +1,10 @@
 <template>
   <table v-if="this.totales.vitolas" id="customers">
     <tr>
-      <th>Tamaño</th>
       <th>Tipo</th>
+      <th>Tamaño</th>
+      <th>Capa</th>
+      <th>Costo</th>
       <th>Pago</th>
     </tr>
     <tr
@@ -11,10 +13,17 @@
       @click="this.$router.push(`/vitolas/${vitola._id}`)"
     >
       <td>
+        {{ vitola.tipo }}
+      </td>
+      <td>
         {{ vitola.tamano }}
       </td>
       <td>
-        {{ vitola.tipo }}
+        {{ vitola.capa }}
+      </td>
+
+      <td class="der">
+        {{ formatNumber(vitola.costo, true) }}
       </td>
       <td class="der">
         {{ formatNumber(vitola.pago, true) }}
@@ -22,6 +31,8 @@
     </tr>
     <tr>
       <td>Total: {{ formatNumber(this.totales.vitolas) }}</td>
+      <td></td>
+      <td></td>
       <td></td>
       <td></td>
     </tr>

@@ -1,57 +1,97 @@
 <template v-show="!cargando">
-  <!-- {{ this.vitola.actividad }} -->
-  <!-- {{ this.respuesta }} -->
-  <!-- {{this.documento}} -->
-  <Navbar />
-  <Transition>
-    <div v-if="cargando" class="spin">
-      <img class="img" src="@/assets/images/logo.png" />
-    </div>
-  </Transition>
-  <Transition>
-    <div v-show="!cargando" class="general">
-      <h6 :class="isError(error)">{{ error }}</h6>
-      <form>
-        <fieldset>
-          <h6>Detalles de Vitola</h6>
-          <label class="form-label"><b>Datos de la Vitola</b></label>
-          <div class="form-group">
-            <!-- <label class="form-label"><b>Datos Generales</b></label> -->
-            <!-- Start Fields -->
-            <div class="grid">
-              <div>
-                <label
-                  class="ta-l col-form-label col-form-label-sm"
-                  for="tamano"
-                  >Tamaño:</label
-                ><input
-                  id="tamano"
-                  type="tamano"
-                  v-model="vitola.tamano"
-                  class="form-control"
-                />
-              </div>
-              <div>
-                <label class="ta-l col-form-label col-form-label-sm" for="tipo"
-                  >Tipo:</label
-                ><input
-                  id="tipo"
-                  type="tipo"
-                  v-model="vitola.tipo"
-                  class="form-control"
-                />
-              </div>
-              <div>
-                <label class="ta-l col-form-label col-form-label-sm" for="pago"
-                  >Pago:</label
-                ><input
-                  id="pago"
-                  type="number"
-                  v-model="vitola.pago"
-                  class="form-control"
-                />
-              </div>
-              <!-- <div>
+  <div>
+    <!-- {{ this.vitola.actividad }} -->
+    <!-- {{ this.respuesta }} -->
+    <!-- {{this.documento}} -->
+    <Navbar />
+    <Transition>
+      <div v-if="cargando" class="spin">
+        <img class="img" src="@/assets/images/logo.png" />
+      </div>
+    </Transition>
+    <Transition>
+      <div v-show="!cargando" class="general">
+        <h6 :class="isError(error)">{{ error }}</h6>
+        <form>
+          <fieldset>
+            <h6>Detalles de Vitola</h6>
+            <label class="form-label"><b>Datos de la Vitola</b></label>
+            <div class="form-group">
+              <!-- <label class="form-label"><b>Datos Generales</b></label> -->
+              <!-- Start Fields -->
+              <div class="grid">
+                <div>
+                  <label
+                    class="ta-l col-form-label col-form-label-sm"
+                    for="tipo"
+                    >Tipo:</label
+                  ><select
+                    id="tipo"
+                    type="tipo"
+                    v-model="vitola.tipo"
+                    class="form-select"
+                  >
+                    <option>CORONA</option>
+                    <option>CORONA CORTA</option>
+                    <option>TORO</option>
+                    <option>ROBUSTO</option>
+                    <option>LANCERO</option>
+                    <option>GRAN TORO</option>
+                  </select>
+                </div>
+                <div>
+                  <label
+                    class="ta-l col-form-label col-form-label-sm"
+                    for="tamano"
+                    >Tamaño:</label
+                  ><input
+                    id="tamano"
+                    type="tamano"
+                    v-model="vitola.tamano"
+                    class="form-control"
+                  />
+                </div>
+                <div>
+                  <label
+                    class="ta-l col-form-label col-form-label-sm"
+                    for="capa"
+                    >Capa:</label
+                  ><select
+                    id="capa"
+                    type="capa"
+                    v-model="vitola.capa"
+                    class="form-select"
+                  >
+                    <option>Natural</option>
+                    <option>Madura</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label
+                    class="ta-l col-form-label col-form-label-sm"
+                    for="costo"
+                    >Costo:</label
+                  ><input
+                    id="costo"
+                    type="number"
+                    v-model="vitola.costo"
+                    class="form-control"
+                  />
+                </div>
+                <div>
+                  <label
+                    class="ta-l col-form-label col-form-label-sm"
+                    for="pago"
+                    >Pago:</label
+                  ><input
+                    id="pago"
+                    type="number"
+                    v-model="vitola.pago"
+                    class="form-control"
+                  />
+                </div>
+                <!-- <div>
                 <label
                   class="ta-l col-form-label col-form-label-sm"
                   for="descripcion"
@@ -63,10 +103,10 @@
                   class="form-control"
                 />
               </div> -->
+              </div>
+              <!-- End Fields -->
             </div>
-            <!-- End Fields -->
-          </div>
-          <!-- <button
+            <!-- <button
             class="btn btn-primary"
             @click.prevent="saveVitola()"
             :disabled="!vitola.tamano || !vitola.tipo || !vitola.pago"
@@ -74,25 +114,32 @@
             <i class="fas fa-save"></i> Guardar
           </button> -->
 
-          <button
-            class="btn btn-success"
-            @click.prevent="handleUpdate()"
-            :disabled="!vitola.tamano || !vitola.tipo || !vitola.pago"
-          >
-            <i class="fas fa-save"></i> Guardar
-          </button>
+            <button
+              class="btn btn-success"
+              @click.prevent="handleUpdate()"
+              :disabled="
+                !vitola.tamano ||
+                  !vitola.tipo ||
+                  !vitola.pago ||
+                  !vitola.costo ||
+                  !vitola.capa
+              "
+            >
+              <i class="fas fa-save"></i> Guardar
+            </button>
 
-          <button
-            v-if="showDelete"
-            class="btn btn-danger"
-            @click.prevent="handleDelete()"
-          >
-            <i class="fas fa-trash-alt"></i> Eliminar
-          </button>
-        </fieldset>
-      </form>
-    </div>
-  </Transition>
+            <button
+              v-if="showDelete"
+              class="btn btn-danger"
+              @click.prevent="handleDelete()"
+            >
+              <i class="fas fa-trash-alt"></i> Eliminar
+            </button>
+          </fieldset>
+        </form>
+      </div>
+    </Transition>
+  </div>
 </template>
 
 <script lang="ts">
@@ -440,6 +487,7 @@ export default defineComponent({
       this.vitola.tamano = "";
       this.vitola.tipo = "";
       this.vitola.pago = "";
+      this.vitola.costo = "";
       this.vitola.descripcion = "";
     },
 

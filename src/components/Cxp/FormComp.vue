@@ -25,7 +25,7 @@
                   >Fecha:</label
                 ><input
                   id="fecha"
-                  type="date"
+                  type="datetime-local"
                   v-model="cxp.fecha"
                   class="form-control"
                 />
@@ -220,7 +220,7 @@ export default defineComponent({
     },
 
     fixTime() {
-      this.cxp.fecha = this.formatDateToFix(this.cxp.fecha, false);
+      this.cxp.fecha = this.formatDateToFix(this.cxp.fecha, true);
     },
 
     formatDateToFix(dateValue: Date, incTime: boolean) {

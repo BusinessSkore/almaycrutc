@@ -81,6 +81,12 @@ import CxpPrintComponent from "../components/Cxp/PrintComponent.vue";
 import CxpFormComp from "../components/Cxp/FormComp.vue";
 // ----------------------------------------------------------------------------
 
+// Rueda -------------------------------------------------------------------
+import RuedaComponent from "../components/Rueda/PrincipalComponent.vue";
+import RuedaPrintComponent from "../components/Rueda/PrintComponent.vue";
+import RuedaFormComp from "../components/Rueda/FormComp.vue";
+// ----------------------------------------------------------------------------
+
 // Chat -------------------------------------------------------------------
 import ChatComponent from "../components/ChatComponent.vue";
 // ----------------------------------------------------------------------------
@@ -500,6 +506,42 @@ const routes = [
         path: "/cxps/new",
         name: "cxps-form",
         component: CxpFormComp,
+        meta: {
+          roles: ["Power User", "Administrador"],
+        },
+      },
+
+      // ----------------------------------------------------------------------------
+
+      // Rueda --------------------------------------------------------------------
+      {
+        path: "/ruedas",
+        name: "ruedas",
+        component: RuedaComponent,
+        meta: {
+          roles: ["Power User", "Administrador"],
+        },
+      },
+      {
+        path: "/ruedas/:id",
+        name: "rueda-details",
+        component: RuedaFormComp,
+        meta: {
+          roles: ["Power User", "Administrador"],
+        },
+      },
+      {
+        path: "/ruedas2/:id",
+        name: "rueda-details2",
+        component: RuedaPrintComponent,
+        meta: {
+          roles: ["Power User", "Administrador"],
+        },
+      },
+      {
+        path: "/ruedas/new",
+        name: "ruedas-form",
+        component: RuedaFormComp,
         meta: {
           roles: ["Power User", "Administrador"],
         },

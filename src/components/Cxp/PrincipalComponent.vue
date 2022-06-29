@@ -38,7 +38,7 @@
           >Opciones</label
         > -->
             <h4>
-              Listado de Cuentas por Pagar
+              Cuentas por Pagar
               <i
                 style="cursor:pointer"
                 @click="this.$router.push(`/cxps/new`)"

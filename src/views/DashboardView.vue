@@ -1,5 +1,6 @@
 <template v-show="!cargando">
   <div>
+    <!-- {{ this.gpedByVitola }} -->
     <Navbar />
     <Transition>
       <div v-if="cargando" class="spin">
@@ -58,6 +59,71 @@
               </div>
 
               <!------------------------------------------ ***** ------------------------------------------>
+              <!------------------------------------------ Campo ------------------------------------------>
+
+              <div class="card-body">
+                <p style="font-weight: bold">Ruedas por Vitola</p>
+                <table id="customers">
+                  <tr>
+                    <th>Vitola</th>
+                    <th>Cant.</th>
+                    <th>Cigarros</th>
+                  </tr>
+                  <tr v-for="(item, index) in gpedByVitola" :key="index">
+                    <td>
+                      {{ item._id.vitola }}
+                    </td>
+                    <td class="ta-r">
+                      {{ formatNumber(item.count) }} ({{
+                        formatNumber((item.count / this.totales.ruedas) * 100)
+                      }}%)
+                    </td>
+                    <td class="ta-r">
+                      {{ formatNumber(item.cantidad, false) }} ({{
+                        formatNumber(
+                          (item.cantidad / this.totales.cantidad) * 100
+                        )
+                      }}%)
+                    </td>
+                  </tr>
+                  <tr style="font-weight: bold">
+                    <td>Total</td>
+                    <td class="ta-r">
+                      {{ formatNumber(this.totales.ruedas) }}
+                    </td>
+                    <td class="ta-r">
+                      {{ formatNumber(this.totales.cantidad, false) }}
+                    </td>
+                  </tr>
+                </table>
+              </div>
+
+              <!-- <div
+                v-show="!cargando"
+                v-if="
+                  this.$store.state.user.type == 'Power User' ||
+                    this.$store.state.user.type == 'Administrador'
+                "
+                class="card bg-secondary"
+                style="max-width: 20rem;"
+              >
+                <div class="card-header">
+                  <p>Cantidad de Ruedas por Vitola</p>
+                </div>
+                <div class="card-body">
+                  <p
+                    v-for="(item, index) in gpedByVitola"
+                    :key="index"
+                    class="card-text"
+                  >
+                    {{ item._id.vitola }} : {{ item.count }} ({{
+                      item.cantidad
+                    }}
+                    Cigarros)
+                  </p>
+                </div>
+              </div> -->
+              <!------------------------------------------ ***** ------------------------------------------>
             </div>
           </div>
         </fieldset>
@@ -110,53 +176,6 @@
         </table>
       </div> -->
       <!-- </div> -->
-      <div
-        v-show="!cargando"
-        v-if="
-          this.$store.state.user.type == 'Power User' ||
-            this.$store.state.user.type == 'Administrador'
-        "
-        class="card bg-secondary"
-        style="max-width: 30rem;"
-      >
-        <!-- <div class="card-header">
-        <p>Cantidad de Facturas por Estatus</p>
-      </div> -->
-        <!-- <div class="card-body">
-        <p style="font-weight: bold">Facturas por Cliente</p>
-        <table id="customers">
-          <tr>
-            <th>Cliente</th>
-            <th>Cant.</th>
-            <th>Total</th>
-          </tr>
-          <tr v-for="(item, index) in factsGpedByCli" :key="index">
-            <td>
-              {{ getARS(item._id.status) }}
-            </td>
-            <td class="ta-r">
-              {{ formatNumber(item.count) }} ({{
-                formatNumber((item.count / this.totales.facturas2) * 100)
-              }}%)
-            </td>
-            <td class="ta-r">
-              {{ formatNumber(item.cobertura, true) }} ({{
-                formatNumber((item.cobertura / this.totales.cobertura2) * 100)
-              }}%)
-            </td>
-          </tr>
-          <tr style="font-weight: bold">
-            <td>Total: {{ this.totales.cantClientes }}</td>
-            <td class="ta-r">
-              {{ formatNumber(this.totales.facturas) }}
-            </td>
-            <td class="ta-r">
-              {{ formatNumber(this.totales.cobertura, true) }}
-            </td>
-          </tr>
-        </table>
-      </div> -->
-      </div>
     </div>
   </div>
 </template>
@@ -169,6 +188,7 @@ import {
   getfacturasCant,
   getfactsGpedByCli,
 } from "@/services/almaycru/FacturaService";
+import { getGpedByVitola } from "@/services/almaycru/Rueda";
 import numeral from "numeral";
 import Pusher from "pusher-js";
 export default {
@@ -179,6 +199,7 @@ export default {
 
   data() {
     return {
+      gpedByVitola: [] as any,
       usuariosCant: [] as any,
       facturasCant: [] as any,
       factsGpedByCli: [] as any,
@@ -257,27 +278,17 @@ export default {
     },
 
     valorTotal() {
-      this.totales.facturas = this.facturasCant.reduce(
+      this.totales.ruedas = this.gpedByVitola.reduce(
         (accum: any, item: any) => accum + item.count,
         0
       );
 
-      this.totales.cobertura = this.facturasCant.reduce(
-        (accum: any, item: any) => accum + item.cobertura,
+      this.totales.cantidad = this.gpedByVitola.reduce(
+        (accum: any, item: any) => accum + item.cantidad,
         0
       );
 
-      this.totales.facturas2 = this.factsGpedByCli.reduce(
-        (accum: any, item: any) => accum + item.count,
-        0
-      );
-
-      this.totales.cobertura2 = this.factsGpedByCli.reduce(
-        (accum: any, item: any) => accum + item.cobertura,
-        0
-      );
-
-      this.totales.cantClientes = this.factsGpedByCli.length;
+      this.totales.gpedByVitola = this.gpedByVitola.length;
     },
 
     pusherSubscribe() {
@@ -290,6 +301,7 @@ export default {
       channel.bind("my-event", (data: any) => {
         this.loadfacturasCant2();
         this.loadfactsGpedByCli2();
+        this.loadGpedByVitola();
         // this.player.src = this.song.src;
         // this.player.play();
       });
@@ -341,6 +353,17 @@ export default {
       this.toggleLoading();
     },
 
+    async loadGpedByVitola() {
+      // this.toggleLoading();
+      try {
+        const res = await getGpedByVitola();
+        this.gpedByVitola = res.data;
+      } catch (error) {
+        // console.error(error);
+      }
+      // this.toggleLoading();
+    },
+
     async loadfactsGpedByCli() {
       this.toggleLoading();
       try {
@@ -376,9 +399,10 @@ export default {
   mounted() {
     this.loadMejorasPendientes();
     this.loadUsuariosCant();
+    this.loadGpedByVitola();
     // this.loadfacturasCant();
     // this.loadfactsGpedByCli();
-    // this.pusherSubscribe();
+    this.pusherSubscribe();
   },
 
   updated() {

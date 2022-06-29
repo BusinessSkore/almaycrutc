@@ -37,7 +37,7 @@
           >Opciones</label
         > -->
           <h4>
-            Listado de Funciones
+            Funciones
             <i
               style="cursor:pointer"
               @click="this.$router.push(`/funcions/new`)"

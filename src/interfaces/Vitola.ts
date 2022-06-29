@@ -7,4 +7,6 @@ export interface Vitola {
   descripcion: String;
   userReg: String;
   userMod: String;
+  capa: String;
+  costo: Number;
 }

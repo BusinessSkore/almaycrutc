@@ -20,6 +20,25 @@
                 <div>
                   <label
                     class="ta-l col-form-label col-form-label-sm"
+                    for="tipo"
+                    >Tipo:</label
+                  ><select
+                    id="tipo"
+                    type="tipo"
+                    v-model="vitola.tipo"
+                    class="form-select"
+                  >
+                    <option>CORONA</option>
+                    <option>CORONA CORTA</option>
+                    <option>TORO</option>
+                    <option>ROBUSTO</option>
+                    <option>LANCERO</option>
+                    <option>GRAN TORO</option>
+                  </select>
+                </div>
+                <div>
+                  <label
+                    class="ta-l col-form-label col-form-label-sm"
                     for="tamano"
                     >Tamaño:</label
                   ><input
@@ -32,12 +51,28 @@
                 <div>
                   <label
                     class="ta-l col-form-label col-form-label-sm"
-                    for="tipo"
-                    >Tipo:</label
+                    for="capa"
+                    >Capa:</label
+                  ><select
+                    id="capa"
+                    type="capa"
+                    v-model="vitola.capa"
+                    class="form-select"
+                  >
+                    <option>Natural</option>
+                    <option>Madura</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label
+                    class="ta-l col-form-label col-form-label-sm"
+                    for="costo"
+                    >Costo:</label
                   ><input
-                    id="tipo"
-                    type="tipo"
-                    v-model="vitola.tipo"
+                    id="costo"
+                    type="number"
+                    v-model="vitola.costo"
                     class="form-control"
                   />
                 </div>
@@ -71,7 +106,13 @@
             <button
               class="btn btn-success"
               @click.prevent="saveVitola()"
-              :disabled="!vitola.tamano || !vitola.tipo || !vitola.pago"
+              :disabled="
+                !vitola.tamano ||
+                  !vitola.tipo ||
+                  !vitola.pago ||
+                  !vitola.costo ||
+                  !vitola.capa
+              "
             >
               <i class="fas fa-save"></i> Guardar
             </button>
@@ -307,7 +348,9 @@ export default defineComponent({
     isError(message: string) {
       if (message == "Vitola Registrada Exitosamente") {
         return "success";
-      } else if (message == "Ya Existe una Vitola Registrada con esta Descripción") {
+      } else if (
+        message == "Ya Existe una Vitola Registrada con esta Descripción"
+      ) {
         return "error";
       }
     },
@@ -407,7 +450,7 @@ export default defineComponent({
       await this.toggleLoading();
       await this.definingFields();
       // await this.defFields();
-      document.getElementById("tamano").focus();
+      document.getElementById("tipo").focus();
       this.toggleAlert();
     },
 
@@ -424,6 +467,7 @@ export default defineComponent({
       this.vitola.tamano = "";
       this.vitola.tipo = "";
       this.vitola.pago = "";
+      this.vitola.costo = "";
       this.vitola.descripcion = "";
     },
 
@@ -432,7 +476,7 @@ export default defineComponent({
     },
 
     focus() {
-      document.getElementById("tamano").focus();
+      document.getElementById("tipo").focus();
     },
   },
 });

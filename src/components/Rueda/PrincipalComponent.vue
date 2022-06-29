@@ -1,16 +1,17 @@
 <template v-show="!cargando">
-  <!-- Spinner -->
-  <Transition>
-  <div v-if="cargando" class="spin">
-    <img class="img" src="@/assets/images/logo.png" />
-  </div>
-  </Transition>
-  <Navbar />
-  <!------------------------------------------------ General ------------------------------------------------->
-  <Transition>
-  <div v-show="!cargando" class="general">
-    <!-- Modal -->
+  <div>
+    <!-- Spinner -->
     <Transition>
+      <div v-if="cargando" class="spin">
+        <img class="img" src="@/assets/images/logo.png" />
+      </div>
+    </Transition>
+    <Navbar />
+    <!------------------------------------------------ General ------------------------------------------------->
+
+    <div v-show="!cargando" class="general">
+      <!-- Modal -->
+
       <div v-if="showModal" class="modal">
         <div class="contenedor">
           <header>Filtros</header>
@@ -18,47 +19,47 @@
             <label @click="this.showModalMethod()" for="btn-modal">X</label>
             <div class="contenido">
               <Filters
-                :filterFacturas="filterFacturas"
+                :filterRuedas="filterRuedas"
                 :search="search"
-                :filteredFacturas="filteredFacturas"
+                :filteredRuedas="filteredRuedas"
               />
             </div>
           </div>
         </div>
       </div>
-    </Transition>
-    <!-- Cuerpo -->
-    <div class="grid">
-      <div class="facturas">
-        <!-- <label
+
+      <!-- Cuerpo -->
+      <div class="grid">
+        <div class="ruedas">
+          <!-- <label
           style="cursor:pointer"
           @click="this.showModalMethod()"
           for="btn-modal"
           >Opciones</label
         > -->
-        <h4>
-          Facturas
-          <i
-            style="cursor:pointer"
-            @click="this.showModalMethod()"
-            class="fas fa-filter"
-            _mstvisible="2"
-          ></i>
-        </h4>
-        <ListadoComponent :facturas="facturas" v-show="!cargando" />
+          <h4>
+            Ruedas
+            <i
+              style="cursor:pointer"
+              @click="this.$router.push(`/ruedas/new`)"
+              class="fas fa-plus"
+              _mstvisible="2"
+            ></i>
+          </h4>
+          <ListadoComponent :ruedas="ruedas" v-show="!cargando" />
+        </div>
       </div>
     </div>
   </div>
-  </Transition>
   <!---------------------------------------------------------------------------------------------------------->
 </template>
 
 <script lang="ts">
-import Filters from "@/components/Factura/FiltersComponent.vue";
-import ListadoComponent from "@/components/Factura/ListComponent.vue";
+import Filters from "@/components/Rueda/FiltersComponent.vue";
+import ListadoComponent from "@/components/Rueda/ListComponent.vue";
 import Navbar from "@/components/Navbar.vue";
-import { Factura } from "@/interfaces/Factura";
-import { getFacturas } from "@/services/almaycru/FacturaService";
+import { Rueda } from "@/interfaces/Rueda";
+import { getRuedas } from "@/services/almaycru/Rueda";
 import Pusher from "pusher-js";
 
 export default {
@@ -79,7 +80,7 @@ export default {
       player: new Audio(),
       showModal: false,
       cargando: false,
-      facturas: [] as Factura[],
+      ruedas: [] as Rueda[],
       str: "",
       type: "",
     };
@@ -94,7 +95,7 @@ export default {
 
       var channel = pusher.subscribe("my-channel");
       channel.bind("my-event", (data: any) => {
-        this.loadFacturas2();
+        this.loadRuedas2();
         // this.player.src = this.song.src;
         // this.player.play();
       });
@@ -108,16 +109,16 @@ export default {
     toggleLoading() {
       this.cargando = !this.cargando;
     },
-    async filterFacturas(catName: string) {
+    async filterRuedas(catName: string) {
       try {
-        const res = await getFacturas();
-        this.facturas = res.data;
+        const res = await getRuedas();
+        this.ruedas = res.data;
       } catch (error) {
         // console.error(error);
       }
       if (catName !== "Todos") {
-        this.facturas = this.facturas.filter((factura: Factura) => {
-          return factura.status === catName;
+        this.ruedas = this.ruedas.filter((rueda: Rueda) => {
+          return rueda.liga === catName;
         });
       }
     },
@@ -125,35 +126,35 @@ export default {
     async search(term: string) {
       this.toggleLoading();
       try {
-        const res = await getFacturas();
-        this.facturas = res.data;
+        const res = await getRuedas();
+        this.ruedas = res.data;
       } catch (error) {
         // console.error(error);
       }
       if (term !== "Todos") {
-        this.facturas = this.facturas.filter((factura: Factura) => {
-          return factura.idfact.toLowerCase().includes(term.toLowerCase());
+        this.ruedas = this.ruedas.filter((rueda: Rueda) => {
+          return rueda.liga.toLowerCase().includes(term.toLowerCase());
         });
       }
       this.toggleLoading();
     },
 
-    async loadFacturas() {
+    async loadRuedas() {
       this.toggleLoading();
       try {
-        const res = await getFacturas();
-        this.facturas = res.data;
+        const res = await getRuedas();
+        this.ruedas = res.data;
       } catch (error) {
         // console.error(error);
       }
       this.toggleLoading();
     },
 
-    async loadFacturas2() {
+    async loadRuedas2() {
       this.toggleLoading();
       try {
-        const res = await getFacturas();
-        this.facturas = res.data;
+        const res = await getRuedas();
+        this.ruedas = res.data;
       } catch (error) {
         // console.error(error);
       }
@@ -162,7 +163,7 @@ export default {
   },
 
   mounted() {
-    this.loadFacturas();
+    this.loadRuedas();
     this.pusherSubscribe();
   },
 };
@@ -219,7 +220,7 @@ export default {
   gap: 1em;
   grid-template-areas:
     "filters filters filters filters filters filters filters"
-    "facturas facturas facturas facturas facturas facturas facturas";
+    "ruedas ruedas ruedas ruedas ruedas ruedas ruedas";
 }
 
 .grid .filters {
@@ -229,8 +230,8 @@ export default {
   border-radius: 7px;
 }
 
-.grid .facturas {
-  grid-area: facturas;
+.grid .ruedas {
+  grid-area: ruedas;
   /* background-color: rgb(255, 255, 255); */
   /* box-shadow: 2px 2px 10px rgb(199, 199, 199); */
   /* border-radius: 7px; */

@@ -38,7 +38,7 @@
           >Opciones</label
         > -->
             <h4>
-              Listado de Ligas
+              Ligas
               <i
                 style="cursor:pointer"
                 @click="this.$router.push(`/ligas/new`)"

@@ -37,7 +37,7 @@
           >Opciones</label
         > -->
           <h4>
-            Listado de Vitolas
+            Vitolas
             <i
               style="cursor:pointer"
               @click="this.$router.push(`/vitolas/new`)"

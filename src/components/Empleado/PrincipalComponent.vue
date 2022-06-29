@@ -38,7 +38,7 @@
           >Opciones</label
         > -->
             <h4>
-              Listado de Empleados
+              Empleados
               <i
                 style="cursor:pointer"
                 @click="this.$router.push(`/empleados/new`)"
