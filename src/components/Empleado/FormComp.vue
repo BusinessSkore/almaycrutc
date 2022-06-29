@@ -680,6 +680,14 @@ export default defineComponent({
       try {
         if (typeof this.$route.params.id === "string") {
           this.empleado.userMod = this.$store.state.user.usuario;
+          this.empleado.nombre =
+            this.empleado.primerNombre +
+            " " +
+            this.empleado.segundoNombre +
+            " " +
+            this.empleado.primerApellido +
+            " " +
+            this.empleado.segundoApellido;
           await updateEmpleado(this.$route.params.id, this.empleado);
           this.addMessage();
           this.$router.push("/empleados");
