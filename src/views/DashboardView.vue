@@ -61,7 +61,14 @@
               <!------------------------------------------ ***** ------------------------------------------>
               <!------------------------------------------ Campo ------------------------------------------>
 
-              <div class="card-body">
+              <div
+                v-show="!cargando"
+                v-if="
+                  this.$store.state.user.type == 'Power User' ||
+                    this.$store.state.user.type == 'Administrador'
+                "
+                class="card-body"
+              >
                 <p style="font-weight: bold">Ruedas por Vitola</p>
                 <table id="customers">
                   <tr>

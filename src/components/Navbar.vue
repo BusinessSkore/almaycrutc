@@ -12,7 +12,7 @@
         >
 
         <label class="versionNumber"
-          ><span class="version">V 3.0.0</span></label
+          ><span class="version">V 3.1.0</span></label
         >
 
         <label class="name" @click="this.hamburger()" for="btn-modal"
@@ -101,7 +101,8 @@
         <a
           v-if="
             this.$store.state.user.type == 'Power User' ||
-              this.$store.state.user.type == 'Administrador'
+              this.$store.state.user.type == 'Administrador' ||
+              this.$store.state.user.type == 'Encargado'
           "
           class="navbar-option"
           @click="this.hamburger('Ruedas')"

@@ -519,7 +519,7 @@ const routes = [
         name: "ruedas",
         component: RuedaComponent,
         meta: {
-          roles: ["Power User", "Administrador"],
+          roles: ["Power User", "Administrador", "Encargado"],
         },
       },
       {
@@ -527,7 +527,7 @@ const routes = [
         name: "rueda-details",
         component: RuedaFormComp,
         meta: {
-          roles: ["Power User", "Administrador"],
+          roles: ["Power User", "Administrador", "Encargado"],
         },
       },
       {
@@ -535,7 +535,7 @@ const routes = [
         name: "rueda-details2",
         component: RuedaPrintComponent,
         meta: {
-          roles: ["Power User", "Administrador"],
+          roles: ["Power User", "Administrador", "Encargado"],
         },
       },
       {
@@ -543,7 +543,7 @@ const routes = [
         name: "ruedas-form",
         component: RuedaFormComp,
         meta: {
-          roles: ["Power User", "Administrador"],
+          roles: ["Power User", "Administrador", "Encargado"],
         },
       },
 

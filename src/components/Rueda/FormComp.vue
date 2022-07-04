@@ -1,4 +1,7 @@
 <template v-show="!cargando">
+  <!-- {{ this.vitolas }} -->
+  <!-- {{ this.vitolaSelected }}<br/> -->
+  <!-- {{ this.cxp }} -->
   <div>
     <div>
       <Navbar />
@@ -55,6 +58,7 @@
                     type="String"
                     v-model="rueda.vitola"
                     class="form-select"
+                    @change="selectVitola(rueda.vitola)"
                   >
                     <option
                       v-for="(vitola, index) in vitolas"
@@ -227,9 +231,11 @@ import {
   getRueda,
   updateRueda,
 } from "@/services/almaycru/Rueda";
+import { createCxp, getOneCxp } from "@/services/almaycru/Cxp";
 import { getVitolas } from "@/services/almaycru/Vitola";
 import { getFuncions } from "@/services/almaycru/Funcion";
 import { createMensaje } from "@/services/almaycru/ChatService";
+import { Cxp } from "@/interfaces/Cxp";
 import numeral from "numeral";
 import moment from "moment";
 // import Pusher from "pusher-js";
@@ -241,6 +247,9 @@ export default defineComponent({
   },
   data() {
     return {
+      oneCxp: {} as Cxp,
+      cxp: {} as Cxp,
+      vitolaSelected: [],
       vitolas: [] as Vitola[],
       empleados: [] as Empleado[],
       empleadosEmp: [] as Empleado[],
@@ -312,6 +321,54 @@ export default defineComponent({
   },
 
   methods: {
+    async saveCxp() {
+      // this.toggleLoading();
+      try {
+        try {
+          const res = await getOneCxp();
+          this.oneCxp = res.data;
+          this.one = this.oneCxp[0];
+          this.nextNo = this.one.no + 1;
+          this.cxp.no = this.nextNo;
+          // this.cxp.principal = this.nextNo;
+        } catch (error) {
+          // // console.error(error);
+        }
+        this.cxp.userReg = this.$store.state.user.usuario;
+
+        const res = await createCxp(this.cxp).then(
+          (res) => {
+            this.error = this.respuesta = res.data.title;
+            // this.$router.push("/");
+            this.res = res;
+            this.respuesta = res.data;
+            this.addMessage();
+          },
+          (err) => {
+            // console.log(err.response);
+            this.error = err.response.data.error;
+          }
+        );
+        // this.$router.push("/cxps/");
+      } catch (error) {
+        // // console.error(error);
+      }
+      // await this.toggleLoading();
+      // if (this.error !== this.mensageError) {
+      //   await this.cleanFields();
+      // }
+      // await this.fillFields();
+      // document.getElementById(this.campoFocus).focus();
+      // this.toggleAlert();
+    },
+
+    selectVitola(term: string) {
+      this.vitolaSelected = this.vitolas.filter((vitola: Vitola) => {
+        return vitola.descripcion.toLowerCase().includes(term.toLowerCase());
+      });
+      this.cxp.valor = this.vitolaSelected[0].pago;
+    },
+
     async filterEmpleados() {
       this.toggleLoading();
       try {
@@ -373,15 +430,16 @@ export default defineComponent({
 
     fixTime() {
       this.rueda.fecha = this.formatDateToFix(this.rueda.fecha, true);
+      this.cxp.fecha = this.formatDateToFix(this.cxp.fecha, true);
     },
 
     formatDateToFix(dateValue: Date, incTime: boolean) {
       if (incTime == true) {
         let out = moment(dateValue).add(0, "days");
-        return moment(out).format("yyyy-MM-DTHH:mm");
+        return moment(out).format("yyyy-MM-DDTHH:mm");
       } else {
         let out = moment(dateValue).add(0, "days");
-        return moment(out).format("yyyy-MM-D");
+        return moment(out).format("yyyy-MM-DD");
       }
     },
 
@@ -481,9 +539,11 @@ export default defineComponent({
     },
 
     fillFields() {
-      this.rueda.fecha = this.formatDate(new Date());
+      this.rueda.fecha = new Date();
       this.rueda.cantidad = 50;
       this.rueda.monos = 0;
+      this.rueda.empleadoMezclador = "ROBERTO EPIFANIO CABRERA SANTOS";
+      this.cxp.fecha = new Date();
     },
 
     async loadOneRueda() {
@@ -531,6 +591,11 @@ export default defineComponent({
           // // console.error(error);
         }
         this.rueda.userReg = this.$store.state.user.usuario;
+        this.cxp.origen = "Producción";
+        this.cxp.empleado = this.rueda.empleadoEmpunero;
+        await this.saveCxp();
+        this.cxp.empleado = this.rueda.empleadoPegador;
+        await this.saveCxp();
         const res = await createRueda(this.rueda).then(
           (res) => {
             this.error = this.respuesta = res.data.title;
