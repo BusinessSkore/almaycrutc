@@ -77,6 +77,7 @@
                   >Orígen:</label
                 ><select id="origen" v-model="cxp.origen" class="form-select">
                   <option>Producción</option>
+                  <option>Recapada</option>
                   <option>Insentivo</option>
                   <option>Salario</option>
                 </select>

@@ -115,6 +115,20 @@
         <a
           v-if="
             this.$store.state.user.type == 'Power User' ||
+              this.$store.state.user.type == 'Administrador' ||
+              this.$store.state.user.type == 'Encargado'
+          "
+          class="navbar-option"
+          @click="this.hamburger('Recapadas')"
+          href="#"
+          ><i class="fas fa-redo"></i> Recapadas</a
+        >
+        <!-- End Option -->
+
+        <!-- Start Option -->
+        <a
+          v-if="
+            this.$store.state.user.type == 'Power User' ||
               this.$store.state.user.type == 'Administrador'
           "
           class="navbar-option"
@@ -161,6 +175,9 @@ export default defineComponent({
   methods: {
     hamburger(texto: string) {
       switch (texto) {
+        case "Recapadas":
+          this.$router.push("/recapadas");
+          break;
         case "Ruedas":
           this.$router.push("/ruedas");
           break;

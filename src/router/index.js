@@ -86,6 +86,11 @@ import RuedaComponent from "../components/Rueda/PrincipalComponent.vue";
 import RuedaPrintComponent from "../components/Rueda/PrintComponent.vue";
 import RuedaFormComp from "../components/Rueda/FormComp.vue";
 // ----------------------------------------------------------------------------
+// Recapada -------------------------------------------------------------------
+import RecapadaComponent from "../components/Recapada/PrincipalComponent.vue";
+import RecapadaPrintComponent from "../components/Recapada/PrintComponent.vue";
+import RecapadaFormComp from "../components/Recapada/FormComp.vue";
+// ----------------------------------------------------------------------------
 
 // Chat -------------------------------------------------------------------
 import ChatComponent from "../components/ChatComponent.vue";
@@ -542,6 +547,41 @@ const routes = [
         path: "/ruedas/new",
         name: "ruedas-form",
         component: RuedaFormComp,
+        meta: {
+          roles: ["Power User", "Administrador", "Encargado"],
+        },
+      },
+
+      // ----------------------------------------------------------------------------
+      // Recapada --------------------------------------------------------------------
+      {
+        path: "/recapadas",
+        name: "recapadas",
+        component: RecapadaComponent,
+        meta: {
+          roles: ["Power User", "Administrador", "Encargado"],
+        },
+      },
+      {
+        path: "/recapadas/:id",
+        name: "recapada-details",
+        component: RecapadaFormComp,
+        meta: {
+          roles: ["Power User", "Administrador", "Encargado"],
+        },
+      },
+      {
+        path: "/recapadas2/:id",
+        name: "recapada-details2",
+        component: RecapadaPrintComponent,
+        meta: {
+          roles: ["Power User", "Administrador", "Encargado"],
+        },
+      },
+      {
+        path: "/recapadas/new",
+        name: "recapadas-form",
+        component: RecapadaFormComp,
         meta: {
           roles: ["Power User", "Administrador", "Encargado"],
         },

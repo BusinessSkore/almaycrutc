@@ -1,44 +1,36 @@
 <template>
-  <table v-if="this.totales.vitolas" id="customers">
+  <table v-if="this.totales.recapadas" id="customers">
     <tr>
-      <th>Tipo</th>
-      <th>Tamaño</th>
-      <th>Capa</th>
-      <th>Meta</th>
-      <th>Pago</th>
+      <th>Fecha</th>
+      <th>Liga</th>
+      <!-- <th>Empleados</th> -->
+      <th>Vitola</th>
+      <!-- <th>Cantidad</th> -->
+      <th>Cantidad</th>
     </tr>
     <tr
-      v-for="(vitola, index) in vitolas"
+      v-for="(recapada, index) in recapadas"
       :key="index"
-      @click="this.$router.push(`/vitolas/${vitola._id}`)"
+      @click="this.$router.push(`/recapadas/${recapada._id}`)"
     >
-      <td>
-        {{ vitola.tipo }}
-      </td>
-      <td>
-        {{ vitola.tamano }}
-      </td>
-      <td>
-        {{ vitola.capa }}
-      </td>
-
-      <td class="der">
-        {{ formatNumber(vitola.costo, false) }}
-      </td>
-      <td class="der">
-        {{ formatNumber(vitola.pago, true) }}
-      </td>
+      <td>{{ formatDate(recapada.fecha) }}</td>
+      <td>{{ recapada.liga }}</td>
+      <!-- <td>{{ recapada.empleados }}</td> -->
+      <td>{{ recapada.vitola }}</td>
+      <!-- <td>{{ recapada.cantidad }}</td> -->
+      <td class="der">{{ formatNumber(recapada.cantidad, false) }}</td>
     </tr>
     <tr>
-      <td>Total: {{ formatNumber(this.totales.vitolas) }}</td>
+      <td>Total: {{ formatNumber(this.totales.recapadas) }}</td>
       <td></td>
       <td></td>
-      <td></td>
-      <td></td>
+      <!-- <td></td>
+      <td></td> -->
+      <td class="der">{{ formatNumber(this.totales.valor, false) }}</td>
     </tr>
   </table>
 
-  <h6 class="noRegist" v-if="!this.totales.vitolas">
+  <h6 class="noRegist" v-if="!this.totales.recapadas">
     No se Encontraron Registros.
   </h6>
 </template>
@@ -46,11 +38,11 @@
 <script lang="ts">
 import numeral from "numeral";
 import moment from "moment";
-import { updateOne } from "@/services/almaycru/Vitola";
-import { Vitola } from "@/interfaces/Vitola";
+import { updateOne } from "@/services/almaycru/Recapada";
+import { Recapada } from "@/interfaces/Recapada";
 
 export default {
-  props: ["vitolas"],
+  props: ["recapadas"],
   data() {
     return {
       data: false,
@@ -166,10 +158,10 @@ export default {
       }
     },
 
-    async marcarListo(vitola: Vitola) {
-      alert("Vitola Lista.");
+    async marcarListo(recapada: Recapada) {
+      alert("Recapada Lista.");
       try {
-        const res = await updateOne(vitola);
+        const res = await updateOne(recapada);
       } catch (error) {
         // console.error(error);
       }
@@ -180,14 +172,14 @@ export default {
         return "table-danger";
       } else if (type == "Función") {
         return "table-success";
-      } else if (type == "Vitola") {
+      } else if (type == "Recapada") {
         return "table-warning";
       }
     },
     valorTotal() {
-      this.totales.vitolas = this.vitolas.length;
-      this.totales.cobertura = this.vitolas.reduce(
-        (accum: any, item: any) => accum + item.cobertura,
+      this.totales.recapadas = this.recapadas.length;
+      this.totales.valor = this.recapadas.reduce(
+        (accum: any, item: any) => accum + item.monos,
         0
       );
     },
@@ -282,7 +274,7 @@ export default {
   font-weight: bold;
 }
 
-.gridlistavitolas {
+.gridlistarecapadas {
   display: grid;
   grid-auto-flow: dense;
   grid-template-rows: auto auto;
