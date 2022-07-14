@@ -10,7 +10,7 @@
       @click="this.$router.push(`/jornadas/${jornada._id}`)"
     >
       <td>{{ formatDate(jornada.fecha) }}</td>
-      <td class="der">{{ formatNumber(jornada.empleados.length, true) }}</td>
+      <td class="der">{{ formatNumber(jornada.empleados.length, false) }}</td>
     </tr>
     <tr>
       <td>Total: {{ formatNumber(this.totales.jornadas) }}</td>

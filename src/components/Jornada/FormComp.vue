@@ -71,17 +71,18 @@
             </h4>
           </div>
           <div>
-            <ul>
+            <ol>
               <li v-for="(empleado, index) in jornada.empleados" :key="index">
                 <i
                   v-if="this.modoForm == 'add'"
                   @click.prevent="deleteService(index)"
                   style="cursor:pointer"
                   class="fas fa-minus-circle redOption"
-                ></i>
+                ></i
+                >
                 {{ empleado }}
               </li>
-            </ul>
+            </ol>
           </div>
           <button
             v-if="this.modoForm == 'add'"
@@ -425,7 +426,7 @@ export default defineComponent({
 
     formatDateToFix(dateValue: Date, incTime: boolean) {
       if (incTime == true) {
-        let out = moment(dateValue).add(0, "days");
+        let out = moment(dateValue).add(4, "days");
         return moment(out).format("yyyy-MM-DDTHH:mm");
       } else {
         let out = moment(dateValue).add(0, "days");
