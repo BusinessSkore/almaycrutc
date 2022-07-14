@@ -2,6 +2,7 @@
   <!-- {{ this.$route.fullPath }} -->
   <!-- {{this.modoForm}} -->
   <!-- {{ this.empleados }} -->
+  <!-- {{ this.cxp }} -->
 
   <div>
     <Navbar />
@@ -80,6 +81,7 @@
                   <option>Recapada</option>
                   <option>Insentivo</option>
                   <option>Salario</option>
+                  <option>Jornada</option>
                 </select>
               </div>
             </div>

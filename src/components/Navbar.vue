@@ -124,6 +124,19 @@
           ><i class="fas fa-redo"></i> Recapadas</a
         >
         <!-- End Option -->
+        <!-- Start Option -->
+        <a
+          v-if="
+            this.$store.state.user.type == 'Power User' ||
+              this.$store.state.user.type == 'Administrador' ||
+              this.$store.state.user.type == 'Encargado'
+          "
+          class="navbar-option"
+          @click="this.hamburger('Jornadas')"
+          href="#"
+          ><i class="fas fa-calendar-check"></i> Jornadas</a
+        >
+        <!-- End Option -->
 
         <!-- Start Option -->
         <a
@@ -175,6 +188,9 @@ export default defineComponent({
   methods: {
     hamburger(texto: string) {
       switch (texto) {
+        case "Jornadas":
+          this.$router.push("/jornadas");
+          break;
         case "Recapadas":
           this.$router.push("/recapadas");
           break;

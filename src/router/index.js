@@ -86,10 +86,17 @@ import RuedaComponent from "../components/Rueda/PrincipalComponent.vue";
 import RuedaPrintComponent from "../components/Rueda/PrintComponent.vue";
 import RuedaFormComp from "../components/Rueda/FormComp.vue";
 // ----------------------------------------------------------------------------
+
 // Recapada -------------------------------------------------------------------
 import RecapadaComponent from "../components/Recapada/PrincipalComponent.vue";
 import RecapadaPrintComponent from "../components/Recapada/PrintComponent.vue";
 import RecapadaFormComp from "../components/Recapada/FormComp.vue";
+// ----------------------------------------------------------------------------
+
+// Jornada -------------------------------------------------------------------
+import JornadaComponent from "../components/Jornada/PrincipalComponent.vue";
+import JornadaPrintComponent from "../components/Jornada/PrintComponent.vue";
+import JornadaFormComp from "../components/Jornada/FormComp.vue";
 // ----------------------------------------------------------------------------
 
 // Chat -------------------------------------------------------------------
@@ -553,6 +560,7 @@ const routes = [
       },
 
       // ----------------------------------------------------------------------------
+      
       // Recapada --------------------------------------------------------------------
       {
         path: "/recapadas",
@@ -582,6 +590,42 @@ const routes = [
         path: "/recapadas/new",
         name: "recapadas-form",
         component: RecapadaFormComp,
+        meta: {
+          roles: ["Power User", "Administrador", "Encargado"],
+        },
+      },
+
+      // ----------------------------------------------------------------------------
+
+      // Jornada --------------------------------------------------------------------
+      {
+        path: "/jornadas",
+        name: "jornadas",
+        component: JornadaComponent,
+        meta: {
+          roles: ["Power User", "Administrador", "Encargado"],
+        },
+      },
+      {
+        path: "/jornadas/:id",
+        name: "jornada-details",
+        component: JornadaFormComp,
+        meta: {
+          roles: ["Power User", "Administrador", "Encargado"],
+        },
+      },
+      {
+        path: "/jornadas2/:id",
+        name: "jornada-details2",
+        component: JornadaPrintComponent,
+        meta: {
+          roles: ["Power User", "Administrador", "Encargado"],
+        },
+      },
+      {
+        path: "/jornadas/new",
+        name: "jornadas-form",
+        component: JornadaFormComp,
         meta: {
           roles: ["Power User", "Administrador", "Encargado"],
         },
