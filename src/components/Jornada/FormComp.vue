@@ -78,8 +78,7 @@
                   @click.prevent="deleteService(index)"
                   style="cursor:pointer"
                   class="fas fa-minus-circle redOption"
-                ></i
-                >
+                ></i>
                 {{ empleado }}
               </li>
             </ol>
@@ -278,6 +277,7 @@ export default defineComponent({
       if (this.seguros2.length == 1) {
         if (confirm("¿" + this.seguros2[0].nombre + "?")) {
           this.setSeguro(this.seguros2[0]);
+          this.search = "";
         }
       }
     },
@@ -426,10 +426,10 @@ export default defineComponent({
 
     formatDateToFix(dateValue: Date, incTime: boolean) {
       if (incTime == true) {
-        let out = moment(dateValue).add(4, "days");
+        let out = moment(dateValue).add(4, "hours");
         return moment(out).format("yyyy-MM-DDTHH:mm");
       } else {
-        let out = moment(dateValue).add(0, "days");
+        let out = moment(dateValue).add(4, "hours");
         return moment(out).format("yyyy-MM-DD");
       }
     },
