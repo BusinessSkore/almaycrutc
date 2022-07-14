@@ -632,9 +632,10 @@ export default defineComponent({
       this.jornada.fecha = "";
       // this.jornada.empleados = "";
       // this.jornada.empleadoEmpunero = "";
-      this.jornada.empleadoPegador = "";
-      this.jornada.vitola = "";
-      this.jornada.cantidad = "";
+      this.jornada.empleados = [];
+      // this.jornada.empleadoPegador = "";
+      // this.jornada.vitola = "";
+      // this.jornada.cantidad = "";
       // this.jornada.monos = "";
     },
 

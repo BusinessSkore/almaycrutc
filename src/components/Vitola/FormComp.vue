@@ -68,7 +68,7 @@
                   <label
                     class="ta-l col-form-label col-form-label-sm"
                     for="costo"
-                    >Costo:</label
+                    >Meta:</label
                   ><input
                     id="costo"
                     type="number"
