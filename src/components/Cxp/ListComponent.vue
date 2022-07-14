@@ -198,7 +198,7 @@ export default {
     },
 
     formatDate(dateValue: Date) {
-      let out = moment(dateValue).add(0, "h");
+      let out = moment(dateValue).add(4, "h");
       return moment(out).format("D/MM/yyyy HH:mm");
     },
   },

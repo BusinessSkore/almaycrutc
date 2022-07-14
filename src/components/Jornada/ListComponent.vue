@@ -10,11 +10,12 @@
       @click="this.$router.push(`/jornadas/${jornada._id}`)"
     >
       <td>{{ formatDate(jornada.fecha) }}</td>
-      <td class="der">{{ formatNumber(jornada.empleados.length, false) }}</td>
+      <td class="der">{{ formatNumber(jornada.empleados.length, true) }}</td>
     </tr>
     <tr>
       <td>Total: {{ formatNumber(this.totales.jornadas) }}</td>
-      <td class="der">{{ formatNumber(this.totales.valor, false) }}</td>
+      <!-- <td class="der">{{ formatNumber(this.totales.valor, false) }}</td> -->
+      <td></td>
     </tr>
   </table>
 
@@ -189,7 +190,7 @@ export default {
     },
 
     formatDate(dateValue: Date) {
-      let out = moment(dateValue).add(4, "h");
+      let out = moment(dateValue).add(0, "h");
       return moment(out).format("D/MM/yyyy");
     },
   },

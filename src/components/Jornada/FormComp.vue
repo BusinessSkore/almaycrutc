@@ -323,7 +323,7 @@ export default defineComponent({
     },
 
     async saveCxp() {
-      this.toggleLoading();
+      // this.toggleLoading();
       try {
         try {
           const res = await getOneCxp();
@@ -342,7 +342,7 @@ export default defineComponent({
       } catch (error) {
         // // console.error(error);
       }
-      await this.toggleLoading();
+      // await this.toggleLoading();
       // if (this.error !== this.mensageError) {
       //   await this.cleanFields();
       // }
