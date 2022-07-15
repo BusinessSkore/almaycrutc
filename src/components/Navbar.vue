@@ -12,7 +12,7 @@
         >
 
         <label class="versionNumber"
-          ><span class="version">V 3.1.0</span></label
+          ><span class="version">V 4.0.0</span></label
         >
 
         <label class="name" @click="this.hamburger()" for="btn-modal"
@@ -147,7 +147,33 @@
           class="navbar-option"
           @click="this.hamburger('Cxp')"
           href="#"
-          ><i class="fas fa-money-check-alt"></i> CxP</a
+          ><i class="fas fa-dollar-sign"></i> CxP</a
+        >
+        <!-- End Option -->
+
+        <!-- Start Option -->
+        <a
+          v-if="
+            this.$store.state.user.type == 'Power User' ||
+              this.$store.state.user.type == 'Administrador'
+          "
+          class="navbar-option"
+          @click="this.hamburger('Pagos')"
+          href="#"
+          ><i class="fas fa-money-check-alt"></i> Pagos</a
+        >
+        <!-- End Option -->
+
+        <!-- Start Option -->
+        <a
+          v-if="
+            this.$store.state.user.type == 'Power User' ||
+              this.$store.state.user.type == 'Administrador'
+          "
+          class="navbar-option"
+          @click="this.hamburger('Nominas')"
+          href="#"
+          ><i class="fas fa-file-invoice-dollar"></i> Nominas</a
         >
         <!-- End Option -->
       </nav>
@@ -188,6 +214,12 @@ export default defineComponent({
   methods: {
     hamburger(texto: string) {
       switch (texto) {
+        case "Nómina":
+          this.$router.push("/nominas");
+          break;
+        case "Pagos":
+          this.$router.push("/pagos");
+          break;
         case "Jornadas":
           this.$router.push("/jornadas");
           break;

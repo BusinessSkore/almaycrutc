@@ -2,7 +2,7 @@
   <!-- {{ this.$route.fullPath }} -->
   <!-- {{this.modoForm}} -->
   <!-- {{ this.empleados }} -->
-  <!-- {{ this.cxp }} -->
+  <!-- {{ this.nomina }} -->
 
   <div>
     <Navbar />
@@ -27,7 +27,7 @@
                 ><input
                   id="fecha"
                   type="datetime-local"
-                  v-model="cxp.fecha"
+                  v-model="nomina.fecha"
                   class="form-control"
                 />
               </div>
@@ -39,7 +39,7 @@
                 ><input
                   id="pagoNo"
                   type="number"
-                  v-model="cxp.pagoNo"
+                  v-model="nomina.pagoNo"
                   class="form-control"
                 />
               </div> -->
@@ -50,7 +50,7 @@
                   >Empleado:</label
                 ><select
                   id="empleado"
-                  v-model="cxp.empleado"
+                  v-model="nomina.empleado"
                   class="form-select"
                 >
                   <option
@@ -67,7 +67,7 @@
                 ><input
                   id="valor"
                   type="number"
-                  v-model="cxp.valor"
+                  v-model="nomina.valor"
                   class="form-control"
                 />
               </div>
@@ -76,7 +76,7 @@
                   class="ta-l col-form-label col-form-label-sm"
                   for="origen"
                   >Orígen:</label
-                ><select id="origen" v-model="cxp.origen" class="form-select">
+                ><select id="origen" v-model="nomina.origen" class="form-select">
                   <option>Producción</option>
                   <option>Recapada</option>
                   <option>Insentivo</option>
@@ -90,8 +90,8 @@
           <button
             v-if="this.modoForm == 'add'"
             class="btn btn-success"
-            @click.prevent="saveCxp()"
-            :disabled="!cxp.fecha || !cxp.empleado || !cxp.valor || !cxp.origen"
+            @click.prevent="saveNomina()"
+            :disabled="!nomina.fecha || !nomina.empleado || !nomina.valor || !nomina.origen"
           >
             <i class="fas fa-save"></i> Guardar
           </button>
@@ -100,7 +100,7 @@
             v-if="this.modoForm == 'show'"
             class="btn btn-success"
             @click.prevent="handleUpdate()"
-            :disabled="!cxp.fecha || !cxp.empleado || !cxp.valor || !cxp.origen"
+            :disabled="!nomina.fecha || !nomina.empleado || !nomina.valor || !nomina.origen"
           >
             <i class="fas fa-save"></i> Guardar
           </button>
@@ -121,19 +121,19 @@
 <script lang="ts">
 import Navbar from "@/components/Navbar.vue";
 import { defineComponent } from "vue";
-import { Cxp } from "@/interfaces/Cxp";
+import { Nomina } from "@/interfaces/Nomina";
 import { Funcion } from "@/interfaces/Funcion";
 import { Empleado } from "@/interfaces/Empleado";
 import { getEmpleados } from "@/services/almaycru/Empleado";
 import {
-  createCxp,
-  eliminateCxps,
-  createCxpa,
-  getOneCxp,
-  deleteCxp,
-  getCxp,
-  updateCxp,
-} from "@/services/almaycru/Cxp";
+  createNomina,
+  eliminateNominas,
+  createNominaa,
+  getOneNomina,
+  deleteNomina,
+  getNomina,
+  updateNomina,
+} from "@/services/almaycru/Nomina";
 import { getFuncions } from "@/services/almaycru/Funcion";
 import { createMensaje } from "@/services/almaycru/ChatService";
 import numeral from "numeral";
@@ -141,7 +141,7 @@ import moment from "moment";
 // import Pusher from "pusher-js";
 
 export default defineComponent({
-  name: "cxps-form",
+  name: "nominas-form",
   components: {
     Navbar,
   },
@@ -169,8 +169,8 @@ export default defineComponent({
       showAlert: false,
       loadedAfiliado: {},
       cargando: false,
-      cxp: {} as Cxp,
-      oneCxp: {} as Cxp,
+      nomina: {} as Nomina,
+      oneNomina: {} as Nomina,
       one: {},
       nextNo: Number,
       medicoSelected: [],
@@ -186,7 +186,7 @@ export default defineComponent({
   },
 
   async mounted() {
-    if (this.$route.fullPath == "/cxps/new") {
+    if (this.$route.fullPath == "/nominas/new") {
       this.modoForm = "add";
       this.encabezado = "Nueva Cuenta por Pagar";
     } else {
@@ -195,13 +195,13 @@ export default defineComponent({
     }
 
     if (this.modoForm == "add") {
-      this.cxp.no = 1;
+      this.nomina.no = 1;
       this.fillFields();
       this.fixTime();
     } else {
       this.showDeleteMethod();
       if (typeof this.$route.params.id === "string") {
-        await this.loadCxp(this.$route.params.id);
+        await this.loadNomina(this.$route.params.id);
       }
       this.fixTime();
     }
@@ -223,7 +223,7 @@ export default defineComponent({
     },
 
     fixTime() {
-      this.cxp.fecha = this.formatDateToFix(this.cxp.fecha, true);
+      this.nomina.fecha = this.formatDateToFix(this.nomina.fecha, true);
     },
 
     formatDateToFix(dateValue: Date, incTime: boolean) {
@@ -236,11 +236,11 @@ export default defineComponent({
       }
     },
 
-    async loadCxp(id: string) {
+    async loadNomina(id: string) {
       this.toggleLoading();
       try {
-        const { data } = await getCxp(id);
-        this.cxp = data;
+        const { data } = await getNomina(id);
+        this.nomina = data;
         // this.fixTime();
       } catch (error) {
         //console.error(error);
@@ -252,10 +252,10 @@ export default defineComponent({
       // this.toggleLoading();
       try {
         if (typeof this.$route.params.id === "string") {
-          this.cxp.userMod = this.$store.state.user.usuario;
-          await updateCxp(this.$route.params.id, this.cxp);
+          this.nomina.userMod = this.$store.state.user.usuario;
+          await updateNomina(this.$route.params.id, this.nomina);
           this.addMessage();
-          this.$router.push("/cxps");
+          this.$router.push("/nominas");
         }
       } catch (error) {
         //console.error(error);
@@ -268,9 +268,9 @@ export default defineComponent({
       if (confirm(this.mensageConfirm)) {
         try {
           if (typeof this.$route.params.id === "string") {
-            await deleteCxp(this.$route.params.id);
+            await deleteNomina(this.$route.params.id);
             this.addMessage();
-            this.$router.push("/cxps");
+            this.$router.push("/nominas");
           }
         } catch (error) {
           //console.error(error);
@@ -313,9 +313,9 @@ export default defineComponent({
     toggleAlert() {
       this.showAlert = !this.showAlert;
     },
-    calcCxp() {
-      (this.cxp.retension = this.cxp.bruto * 0.1),
-        (this.cxp.neto = this.cxp.bruto * 0.9);
+    calcNomina() {
+      (this.nomina.retension = this.nomina.bruto * 0.1),
+        (this.nomina.neto = this.nomina.bruto * 0.9);
     },
     formatNumber(value: number) {
       return numeral(value).format("00000000");
@@ -332,15 +332,14 @@ export default defineComponent({
     },
 
     fillFields() {
-      this.cxp.fecha = this.formatDate(new Date());
-      this.cxp.pago = 0;
+      this.nomina.fecha = this.formatDate(new Date());
     },
 
-    async loadOneCxp() {
+    async loadOneNomina() {
       try {
-        const res = await getOneCxp();
-        this.oneCxp = res.data;
-        this.one = this.oneCxp[0];
+        const res = await getOneNomina();
+        this.oneNomina = res.data;
+        this.one = this.oneNomina[0];
         if (typeof this.one.no === "number") {
           this.nextNo = this.one.no + 1;
         } else {
@@ -350,41 +349,39 @@ export default defineComponent({
         if (this.nextNo == null) {
           this.nextNo = 0;
         }
-        this.cxp.no = this.nextNo;
-        this.cxp.principal = this.nextNo;
-        this.cxp.principal = this.nextNo;
+        this.nomina.no = this.nextNo;
+        this.nomina.principal = this.nextNo;
+        this.nomina.principal = this.nextNo;
       } catch (error) {
         // console.error(error);
       }
     },
 
-    async saveCxpa() {
-      await this.loadOneCxp();
+    async saveNominaa() {
+      await this.loadOneNomina();
       try {
-        const res = await createCxpa(this.servicio);
+        const res = await createNominaa(this.servicio);
         // // console.log(res);
       } catch (error) {
         // // console.error(error);
       }
     },
 
-    async saveCxp() {
+    async saveNomina() {
       this.toggleLoading();
       try {
         try {
-          const res = await getOneCxp();
-          this.oneCxp = res.data;
-          this.one = this.oneCxp[0];
+          const res = await getOneNomina();
+          this.oneNomina = res.data;
+          this.one = this.oneNomina[0];
           this.nextNo = this.one.no + 1;
-          this.cxp.no = this.nextNo;
-          this.cxp.principal = this.nextNo;
+          this.nomina.no = this.nextNo;
+          this.nomina.principal = this.nextNo;
         } catch (error) {
           // // console.error(error);
         }
-        this.cxp.userReg = this.$store.state.user.usuario;
-        
-        this.cxp.pagar = false;
-        const res = await createCxp(this.cxp).then(
+        this.nomina.userReg = this.$store.state.user.usuario;
+        const res = await createNomina(this.nomina).then(
           (res) => {
             this.error = this.respuesta = res.data.title;
             // this.$router.push("/");
@@ -397,7 +394,7 @@ export default defineComponent({
             this.error = err.response.data.error;
           }
         );
-        // this.$router.push("/cxps/");
+        // this.$router.push("/nominas/");
       } catch (error) {
         // // console.error(error);
       }
@@ -410,9 +407,9 @@ export default defineComponent({
       this.toggleAlert();
     },
 
-    async deleteAllCxps() {
+    async deleteAllNominas() {
       try {
-        const res = await eliminateCxps(this.cxp);
+        const res = await eliminateNominas(this.nomina);
         // // console.log(res);
       } catch (error) {
         // // console.error(error);
@@ -420,10 +417,10 @@ export default defineComponent({
     },
 
     cleanFields() {
-      this.cxp.fecha = "";
-      this.cxp.empleado = "";
-      this.cxp.valor = "";
-      this.cxp.origen = "";
+      this.nomina.fecha = "";
+      this.nomina.empleado = "";
+      this.nomina.valor = "";
+      this.nomina.origen = "";
     },
 
     toggleLoading() {

@@ -338,7 +338,7 @@ export default defineComponent({
           // // console.error(error);
         }
         this.cxp.userReg = this.$store.state.user.usuario;
-
+        this.cxp.pagar = false;
         const res = await createCxp(this.cxp).then(
           (res) => {
             this.error = this.respuesta = res.data.title;
@@ -595,6 +595,7 @@ export default defineComponent({
           // // console.error(error);
         }
         this.recapada.userReg = this.$store.state.user.usuario;
+        this.cxp.pago = 0;
         this.cxp.origen = "Recapada";
         // this.cxp.empleado = this.recapada.empleadoEmpunero;
         // await this.saveCxp();

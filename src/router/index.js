@@ -99,6 +99,18 @@ import JornadaPrintComponent from "../components/Jornada/PrintComponent.vue";
 import JornadaFormComp from "../components/Jornada/FormComp.vue";
 // ----------------------------------------------------------------------------
 
+// Pago -------------------------------------------------------------------
+import PagoComponent from "../components/Pago/PrincipalComponent.vue";
+import PagoPrintComponent from "../components/Pago/PrintComponent.vue";
+import PagoFormComp from "../components/Pago/FormComp.vue";
+// ----------------------------------------------------------------------------
+
+// Nomina -------------------------------------------------------------------
+import NominaComponent from "../components/Nomina/PrincipalComponent.vue";
+import NominaPrintComponent from "../components/Nomina/PrintComponent.vue";
+import NominaFormComp from "../components/Nomina/FormComp.vue";
+// ----------------------------------------------------------------------------
+
 // Chat -------------------------------------------------------------------
 import ChatComponent from "../components/ChatComponent.vue";
 // ----------------------------------------------------------------------------
@@ -628,6 +640,77 @@ const routes = [
         component: JornadaFormComp,
         meta: {
           roles: ["Power User", "Administrador", "Encargado"],
+        },
+      },
+
+      // ----------------------------------------------------------------------------
+
+      // Pago --------------------------------------------------------------------
+      {
+        path: "/pagos",
+        name: "pagos",
+        component: PagoComponent,
+        meta: {
+          roles: ["Power User", "Administrador"],
+        },
+      },
+      {
+        path: "/pagos/:id",
+        name: "pago-details",
+        component: PagoFormComp,
+        meta: {
+          roles: ["Power User", "Administrador"],
+        },
+      },
+      {
+        path: "/pagos2/:id",
+        name: "pago-details2",
+        component: PagoPrintComponent,
+        meta: {
+          roles: ["Power User", "Administrador"],
+        },
+      },
+      {
+        path: "/pagos/new",
+        name: "pagos-form",
+        component: PagoFormComp,
+        meta: {
+          roles: ["Power User", "Administrador"],
+        },
+      },
+
+      // ----------------------------------------------------------------------------
+      // Nomina --------------------------------------------------------------------
+      {
+        path: "/nominas",
+        name: "nominas",
+        component: NominaComponent,
+        meta: {
+          roles: ["Power User", "Administrador"],
+        },
+      },
+      {
+        path: "/nominas/:id",
+        name: "nomina-details",
+        component: NominaFormComp,
+        meta: {
+          roles: ["Power User", "Administrador"],
+        },
+      },
+      {
+        path: "/nominas2/:id",
+        name: "nomina-details2",
+        component: NominaPrintComponent,
+        meta: {
+          roles: ["Power User", "Administrador"],
+        },
+      },
+      {
+        path: "/nominas/new",
+        name: "nominas-form",
+        component: NominaFormComp,
+        meta: {
+          roles: ["Power User", "Administrador"],
         },
       },
 

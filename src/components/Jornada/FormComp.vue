@@ -337,7 +337,7 @@ export default defineComponent({
           // // console.error(error);
         }
         this.cxp.userReg = this.$store.state.user.usuario;
-
+        this.cxp.pagar = false;
         const res = await createCxp(this.cxp);
         // this.$router.push("/cxps/");
       } catch (error) {
@@ -426,10 +426,10 @@ export default defineComponent({
 
     formatDateToFix(dateValue: Date, incTime: boolean) {
       if (incTime == true) {
-        let out = moment(dateValue).add(4, "hours");
+        let out = moment(dateValue).add(0, "hours");
         return moment(out).format("yyyy-MM-DDTHH:mm");
       } else {
-        let out = moment(dateValue).add(4, "hours");
+        let out = moment(dateValue).add(0, "hours");
         return moment(out).format("yyyy-MM-DD");
       }
     },
@@ -585,6 +585,7 @@ export default defineComponent({
             // // console.error(error);
           }
           this.jornada.userReg = this.$store.state.user.usuario;
+          this.cxp.pago = 0;
           this.cxp.origen = "Jornada";
           this.cxp.valor = 600;
           let i: number;

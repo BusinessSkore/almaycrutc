@@ -1,4 +1,4 @@
-export interface Cxp {
+export interface Pago {
   // Generales
   id: null;
   no: number;
@@ -10,6 +10,5 @@ export interface Cxp {
   empleado: String;
   valor: Number;
   origen: String;
-  pago: Number;
-  pagar: Boolean;
+  nomina: Number;
 }
