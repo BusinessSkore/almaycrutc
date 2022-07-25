@@ -11,4 +11,5 @@ export interface Pago {
   valor: Number;
   origen: String;
   nomina: Number;
+  cant: Number;
 }

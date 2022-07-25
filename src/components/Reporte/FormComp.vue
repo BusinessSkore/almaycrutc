@@ -182,8 +182,8 @@ export default defineComponent({
       usuario: {} as Usuario,
       usuario2: {} as Usuario,
       message: {
-        username: "Ronnald",
-        message: "Hola",
+        username: "R",
+        message: "H",
       },
       reportes: [] as Reporte[],
       showAlert: false,

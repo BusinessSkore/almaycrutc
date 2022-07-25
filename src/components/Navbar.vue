@@ -12,7 +12,7 @@
         >
 
         <label class="versionNumber"
-          ><span class="version">V 4.0.0</span></label
+          ><span class="version">V 4.5.0</span></label
         >
 
         <label class="name" @click="this.hamburger()" for="btn-modal"
@@ -171,9 +171,9 @@
               this.$store.state.user.type == 'Administrador'
           "
           class="navbar-option"
-          @click="this.hamburger('Nominas')"
+          @click="this.hamburger('Nóminas')"
           href="#"
-          ><i class="fas fa-file-invoice-dollar"></i> Nominas</a
+          ><i class="fas fa-file-invoice-dollar"></i> Nóminas</a
         >
         <!-- End Option -->
       </nav>
@@ -187,9 +187,9 @@
           >
             <img class="localIMG" src="@/assets/images/logoN.png" /> Alma & Cru
           </a>
-          <a class="item navbar-brand2" @click="hamburger()" href="#"
-            ><i class="item fas fa-ellipsis-v"></i
-          ></a>
+          <a class="item navbar-brand2" @click="hamburger()" href="#">
+            <i class="item fas fa-ellipsis-v"></i>
+          </a>
         </div>
       </nav>
     </div>
@@ -214,7 +214,7 @@ export default defineComponent({
   methods: {
     hamburger(texto: string) {
       switch (texto) {
-        case "Nómina":
+        case "Nóminas":
           this.$router.push("/nominas");
           break;
         case "Pagos":
@@ -414,4 +414,11 @@ li {
     width: 65vw;
   }
 }
+
+/* nav { */
+  /* position: fixed; */
+  /* width: 100%; */
+  /* left: 0; */
+  /* top: 0; */
+/* } */
 </style>

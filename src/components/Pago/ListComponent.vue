@@ -1,10 +1,11 @@
 <template>
   <table v-if="this.totales.pagos" id="customers">
     <tr>
-      <th>Fecha / Hora</th>
+      <th>Fecha</th>
       <!-- <th>Pago</th> -->
       <th>Empleado</th>
-      <th>Orígen</th>
+      <!-- <th>Orígen</th> -->
+      <th>Cant.</th>
       <th>Valor</th>
     </tr>
     <tr
@@ -15,14 +16,15 @@
       <td>{{ formatDate(pago.fecha) }}</td>
       <!-- <td>{{ pago.pagoNo }}</td> -->
       <td>{{ pago.empleado }}</td>
-      <td>{{ pago.origen }}</td>
+      <!-- <td>{{ pago.origen }}</td> -->
+      <td class="der">{{ formatNumber(pago.cant, false) }}</td>
       <td class="der">{{ formatNumber(pago.valor, true) }}</td>
     </tr>
     <tr>
       <td>Total: {{ formatNumber(this.totales.pagos) }}</td>
       <!-- <td></td> -->
       <td></td>
-      <td></td>
+      <td class="der">{{ formatNumber(this.totales.cant, false) }}</td>
       <td class="der">{{ formatNumber(this.totales.valor, true) }}</td>
     </tr>
   </table>
@@ -175,6 +177,10 @@ export default {
     },
     valorTotal() {
       this.totales.pagos = this.pagos.length;
+      this.totales.cant = this.pagos.reduce(
+        (accum: any, item: any) => accum + item.cant,
+        0
+      );
       this.totales.valor = this.pagos.reduce(
         (accum: any, item: any) => accum + item.valor,
         0
@@ -199,7 +205,7 @@ export default {
 
     formatDate(dateValue: Date) {
       let out = moment(dateValue).add(4, "h");
-      return moment(out).format("D/MM/yyyy HH:mm");
+      return moment(out).format("D/MM/yyyy");
     },
   },
 

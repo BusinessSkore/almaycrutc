@@ -38,7 +38,7 @@
           >Opciones</label
         > -->
             <h4>
-              Cuentas por Pagar
+              Nóminas
               <i
                 style="cursor:pointer"
                 @click="this.$router.push(`/nominas/new`)"
@@ -117,11 +117,11 @@ export default {
       } catch (error) {
         // console.error(error);
       }
-      if (catName !== "Todos") {
-        this.nominas = this.nominas.filter((nomina: Nomina) => {
-          return nomina.empleado === catName;
-        });
-      }
+      // if (catName !== "Todos") {
+      //   this.nominas = this.nominas.filter((nomina: Nomina) => {
+      //     return nomina.empleado === catName;
+      //   });
+      // }
     },
 
     async search(term: string) {
@@ -132,11 +132,11 @@ export default {
       } catch (error) {
         // console.error(error);
       }
-      if (term !== "Todos") {
-        this.nominas = this.nominas.filter((nomina: Nomina) => {
-          return nomina.empleado.toLowerCase().includes(term.toLowerCase());
-        });
-      }
+      // if (term !== "Todos") {
+      //   this.nominas = this.nominas.filter((nomina: Nomina) => {
+      //     return nomina.cant.toLowerCase().includes(term.toLowerCase());
+      //   });
+      // }
       this.toggleLoading();
     },
 

@@ -1,10 +1,8 @@
 <template>
   <table v-if="this.totales.nominas" id="customers">
     <tr>
-      <th>Fecha / Hora</th>
-      <!-- <th>Pago</th> -->
-      <th>Empleado</th>
-      <th>Orígen</th>
+      <th>Fecha</th>
+      <th>Pagos</th>
       <th>Valor</th>
     </tr>
     <tr
@@ -13,15 +11,11 @@
       @click="this.$router.push(`/nominas/${nomina._id}`)"
     >
       <td>{{ formatDate(nomina.fecha) }}</td>
-      <!-- <td>{{ nomina.pagoNo }}</td> -->
-      <td>{{ nomina.empleado }}</td>
-      <td>{{ nomina.origen }}</td>
+      <td class="der">{{ formatNumber(nomina.cant, false) }}</td>
       <td class="der">{{ formatNumber(nomina.valor, true) }}</td>
     </tr>
     <tr>
       <td>Total: {{ formatNumber(this.totales.nominas) }}</td>
-      <!-- <td></td> -->
-      <td></td>
       <td></td>
       <td class="der">{{ formatNumber(this.totales.valor, true) }}</td>
     </tr>
@@ -199,7 +193,7 @@ export default {
 
     formatDate(dateValue: Date) {
       let out = moment(dateValue).add(4, "h");
-      return moment(out).format("D/MM/yyyy HH:mm");
+      return moment(out).format("DD/MM/yyyy");
     },
   },
 

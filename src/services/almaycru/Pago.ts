@@ -4,9 +4,8 @@ import axios from "./axios";
 
 //Básicos----------------------------------------------------------------------------------------------------
 //Cargar Registros
-export const createPagoa = async (
-  pago: Pago
-): Promise<AxiosResponse> => await axios.post("/pagos/Savea", pago);
+export const createPagoa = async (pago: Pago): Promise<AxiosResponse> =>
+  await axios.post("/pagos/Savea", pago);
 
 // Crear un Solo Registro
 export const createPago = async (pago: Pago): Promise<AxiosResponse> =>
@@ -38,11 +37,18 @@ export const deletePago = async (id: string): Promise<AxiosResponse> =>
   await axios.delete(`/pagos/Delete/${id}`);
 
 //Eliminar todos los Registros
-export const eliminatePagos = async (
-  pago: Pago
-): Promise<AxiosResponse> => await axios.post("/pagos/delete", pago);
+export const eliminatePagos = async (pago: Pago): Promise<AxiosResponse> =>
+  await axios.post("/pagos/delete", pago);
 
 //Reportes----------------------------------------------------------------------------------------------------
+// Obtener Pagos para Nómina
+export const getPagosNom = async (): Promise<AxiosResponse> =>
+  await axios.get("/pagos/getPagosNom");
+
+// Obtener Pagos por Nómina
+export const getPagByNom = async (documento: any): Promise<AxiosResponse> =>
+  await axios.post("/pagos/getPagByNom", documento);
+
 // Get Pagos Agrupadas por Estatus
 export const getpagosCant = async (): Promise<AxiosResponse<Pago[]>> =>
   await axios.get("/pagos/getGpedByStat");
@@ -51,7 +57,11 @@ export const getpagosCant = async (): Promise<AxiosResponse<Pago[]>> =>
 export const getfactsGpedByCli = async (): Promise<AxiosResponse<Pago[]>> =>
   await axios.get("/pagos/getfactsGpedByCli");
 
-//Pagoes----------------------------------------------------------------------------------------------------
+//Funciones----------------------------------------------------------------------------------------------------
 //Actualizar Un Registro
 export const updateOne = async (pago: Pago): Promise<AxiosResponse> =>
   await axios.post("/pagos/updateOne", pago);
+
+//Marcar Pagos en Nómina
+export const servAsigPago = async (documento: any): Promise<AxiosResponse> =>
+  await axios.post("/pagos/asigPago", documento);

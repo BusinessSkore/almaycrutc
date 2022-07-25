@@ -6,9 +6,6 @@ export interface Nomina {
   userMod: string;
   // Entidad
   fecha: Date;
-  pagoNo: Number;
-  empleado: String;
+  cant: Number;
   valor: Number;
-  origen: String;
-  pago: Number;
 }

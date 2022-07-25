@@ -6,6 +6,7 @@
       <th>Empleado</th>
       <th>Orígen</th>
       <th>Valor</th>
+      <th v-if="this.$store.state.user.type == 'Power User'">Pagar</th>
     </tr>
     <tr
       v-for="(cxp, index) in cxps"
@@ -17,6 +18,19 @@
       <td>{{ cxp.empleado }}</td>
       <td>{{ cxp.origen }}</td>
       <td class="der">{{ formatNumber(cxp.valor, true) }}</td>
+      <td v-if="this.$store.state.user.type == 'Power User'">
+        <div class="form-check">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            v-model="cxp.pagar"
+            id="flexCheckDefault"
+          />
+          <!-- <label class="form-check-label" for="flexCheckDefault">
+            Default checkbox
+          </label> -->
+        </div>
+      </td>
     </tr>
     <tr>
       <td>Total: {{ formatNumber(this.totales.cxps) }}</td>
@@ -24,6 +38,7 @@
       <td></td>
       <td></td>
       <td class="der">{{ formatNumber(this.totales.valor, true) }}</td>
+      <td v-if="this.$store.state.user.type == 'Power User'"></td>
     </tr>
   </table>
 
@@ -199,7 +214,7 @@ export default {
 
     formatDate(dateValue: Date) {
       let out = moment(dateValue).add(4, "h");
-      return moment(out).format("D/MM/yyyy HH:mm");
+      return moment(out).format("DD/MM/yyyy HH:mm");
     },
   },
 

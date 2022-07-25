@@ -17,16 +17,17 @@
       <form>
         <fieldset>
           <h6>{{ encabezado }}</h6>
-          <label class="form-label"><b>Datos de la Cuenta por Pagar</b></label>
+          <label class="form-label"><b>Datos del Pago</b></label>
           <div class="form-group">
             <div class="grid">
               <!-- Start Fields -->
               <div>
                 <label class="ta-l col-form-label col-form-label-sm" for="fecha"
-                  >Fecha:</label
+                  >Fecha</label
                 ><input
+                  disabled
                   id="fecha"
-                  type="datetime-local"
+                  type="date"
                   v-model="pago.fecha"
                   class="form-control"
                 />
@@ -49,6 +50,7 @@
                   for="empleado"
                   >Empleado:</label
                 ><select
+                  disabled
                   id="empleado"
                   v-model="pago.empleado"
                   class="form-select"
@@ -62,16 +64,28 @@
                 </select>
               </div>
               <div>
+                <label class="ta-l col-form-label col-form-label-sm" for="cant"
+                  >Cant.:</label
+                ><input
+                  disabled
+                  id="cant"
+                  type="number"
+                  v-model="pago.cant"
+                  class="form-control"
+                />
+              </div>
+              <div>
                 <label class="ta-l col-form-label col-form-label-sm" for="valor"
                   >Valor:</label
                 ><input
+                  disabled
                   id="valor"
                   type="number"
                   v-model="pago.valor"
                   class="form-control"
                 />
               </div>
-              <div>
+              <!-- <div>
                 <label
                   class="ta-l col-form-label col-form-label-sm"
                   for="origen"
@@ -83,7 +97,7 @@
                   <option>Salario</option>
                   <option>Jornada</option>
                 </select>
-              </div>
+              </div> -->
             </div>
           </div>
 
@@ -91,7 +105,7 @@
             v-if="this.modoForm == 'add'"
             class="btn btn-success"
             @click.prevent="savePago()"
-            :disabled="!pago.fecha || !pago.empleado || !pago.valor || !pago.origen"
+            :disabled="!pago.fecha || !pago.empleado || !pago.valor"
           >
             <i class="fas fa-save"></i> Guardar
           </button>
@@ -100,7 +114,7 @@
             v-if="this.modoForm == 'show'"
             class="btn btn-success"
             @click.prevent="handleUpdate()"
-            :disabled="!pago.fecha || !pago.empleado || !pago.valor || !pago.origen"
+            :disabled="!pago.fecha || !pago.empleado || !pago.valor"
           >
             <i class="fas fa-save"></i> Guardar
           </button>
@@ -150,8 +164,8 @@ export default defineComponent({
       empleados: [] as Empleado[],
       campoFocus: "empleado",
       mensageError: "Error",
-      mensageExito: "Cuenta por Pagar Registrada Exitosamente",
-      mensageConfirm: "¿Está Seguro que desea Eliminar Esta Cuenta por Pagar?",
+      mensageExito: "Pago Registrado Exitosamente",
+      mensageConfirm: "¿Está Seguro que desea Eliminar Este Pago?",
       encabezado: "",
       modoForm: "",
       funciones: [] as Funcion[],
@@ -159,8 +173,8 @@ export default defineComponent({
       showDatosMadre: false,
       showDatosTutor: false,
       message: {
-        username: "Ronnald",
-        message: "Hola",
+        username: "R",
+        message: "H",
       },
       documento: {} as any,
       error: "",
@@ -188,10 +202,10 @@ export default defineComponent({
   async mounted() {
     if (this.$route.fullPath == "/pagos/new") {
       this.modoForm = "add";
-      this.encabezado = "Nueva Cuenta por Pagar";
+      this.encabezado = "Nuevo Pago";
     } else {
       this.modoForm = "show";
-      this.encabezado = "Detalles de Cuenta por Pagar";
+      this.encabezado = "Detalles de Pago";
     }
 
     if (this.modoForm == "add") {
@@ -223,7 +237,7 @@ export default defineComponent({
     },
 
     fixTime() {
-      this.pago.fecha = this.formatDateToFix(this.pago.fecha, true);
+      this.pago.fecha = this.formatDateToFix(this.pago.fecha, false);
     },
 
     formatDateToFix(dateValue: Date, incTime: boolean) {
@@ -323,7 +337,7 @@ export default defineComponent({
 
     formatDate(dateValue: Date) {
       let out = moment(dateValue).add(0, "days");
-      return moment(out).format("yyyy-MM-DTHH:mm");
+      return moment(out).format("yyyy-MM-DD");
     },
 
     formatDatePlus(dateValue: Date) {
@@ -333,6 +347,7 @@ export default defineComponent({
 
     fillFields() {
       this.pago.fecha = this.formatDate(new Date());
+      this.pago.nomina = 0;
     },
 
     async loadOnePago() {

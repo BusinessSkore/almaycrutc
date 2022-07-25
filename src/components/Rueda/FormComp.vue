@@ -266,8 +266,8 @@ export default defineComponent({
       showDatosMadre: false,
       showDatosTutor: false,
       message: {
-        username: "Ronnald",
-        message: "Hola",
+        username: "R",
+        message: "H",
       },
       documento: {} as any,
       error: "",

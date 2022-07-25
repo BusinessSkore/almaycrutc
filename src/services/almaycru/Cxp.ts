@@ -51,7 +51,20 @@ export const getcxpsCant = async (): Promise<AxiosResponse<Cxp[]>> =>
 export const getfactsGpedByCli = async (): Promise<AxiosResponse<Cxp[]>> =>
   await axios.get("/cxps/getfactsGpedByCli");
 
-//Cxpes----------------------------------------------------------------------------------------------------
+//Funciones----------------------------------------------------------------------------------------------------
+
+//Marcar Cuentas en Pago
+export const servEnPago = async (documento: any): Promise<AxiosResponse> =>
+  await axios.post("/cxps/enPago", documento);
+
+//Seleccionar Cuentas para Pago
+export const servParaPago = async (documento: any): Promise<AxiosResponse> =>
+  await axios.post("/cxps/paraPago", documento);
+
+//Seleccionar Cuentas para Pago
+export const GetPrepagos = async (): Promise<AxiosResponse> =>
+  await axios.get("/cxps/getprepagos");
+
 //Actualizar Un Registro
 export const updateOne = async (cxp: Cxp): Promise<AxiosResponse> =>
   await axios.post("/cxps/updateOne", cxp);

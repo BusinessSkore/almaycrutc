@@ -38,7 +38,7 @@
           >Opciones</label
         > -->
             <h4>
-              Cuentas por Pagar
+              Pagos
               <i
                 style="cursor:pointer"
                 @click="this.$router.push(`/pagos/new`)"

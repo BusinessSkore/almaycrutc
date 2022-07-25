@@ -46,6 +46,12 @@ export const eliminateEmpleados = async (
 ): Promise<AxiosResponse> => await axios.post("/empleados/delete", empleado);
 
 //Reportes----------------------------------------------------------------------------------------------------
+
+// Obtener Empleados Asalariados para Nómina
+
+export const GetAsalar = async (): Promise<AxiosResponse<Empleado[]>> =>
+  await axios.get("/empleados/GetAsalar");
+
 // Get Empleados Agrupadas por Estatus
 export const getempleadosCant = async (): Promise<AxiosResponse<Empleado[]>> =>
   await axios.get("/empleados/getGpedByStat");

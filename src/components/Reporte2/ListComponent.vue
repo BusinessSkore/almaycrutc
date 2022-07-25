@@ -92,8 +92,8 @@ export default {
         },
       },
       message: {
-        username: "Ronnald",
-        message: "Hola",
+        username: "R",
+        message: "H",
       },
       nuevoReporte: {} as any,
       nuevoReporte2: {} as any,

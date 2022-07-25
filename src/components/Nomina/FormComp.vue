@@ -3,12 +3,18 @@
   <!-- {{this.modoForm}} -->
   <!-- {{ this.empleados }} -->
   <!-- {{ this.nomina }} -->
+  <!-- {{ this.documento }}<br /> -->
+  <!-- {{ this.documento2 }} -->
+  <!-- {{ this.prepagos }} -->
+  <!-- {{ this.pagos }} -->
+  <!-- {{ this.nextNo }} -->
 
   <div>
     <Navbar />
     <Transition>
       <div v-if="cargando" class="spin">
         <img class="img" src="@/assets/images/logo.png" />
+        <h6 class="ta-c">{{ this.estadoLoading }}</h6>
       </div>
     </Transition>
 
@@ -17,16 +23,17 @@
       <form>
         <fieldset>
           <h6>{{ encabezado }}</h6>
-          <label class="form-label"><b>Datos de la Cuenta por Pagar</b></label>
+          <label class="form-label"><b>Datos de la Nómina</b></label>
           <div class="form-group">
             <div class="grid">
               <!-- Start Fields -->
+              <!-- {{ this.nomina.fecha }} -->
               <div>
                 <label class="ta-l col-form-label col-form-label-sm" for="fecha"
                   >Fecha:</label
                 ><input
                   id="fecha"
-                  type="datetime-local"
+                  type="date"
                   v-model="nomina.fecha"
                   class="form-control"
                 />
@@ -43,7 +50,7 @@
                   class="form-control"
                 />
               </div> -->
-              <div>
+              <!-- <div>
                 <label
                   class="ta-l col-form-label col-form-label-sm"
                   for="empleado"
@@ -60,49 +67,116 @@
                     >{{ empleado.nombre }}</option
                   >
                 </select>
+              </div> -->
+              <div v-if="this.modoForm == 'show'">
+                <label class="ta-l col-form-label col-form-label-sm" for="cant"
+                  >Pagos:</label
+                ><input
+                  disabled
+                  id="cant"
+                  type="number"
+                  v-model="nomina.cant"
+                  class="form-control"
+                />
               </div>
-              <div>
+              <div v-if="this.modoForm == 'show'">
                 <label class="ta-l col-form-label col-form-label-sm" for="valor"
                   >Valor:</label
                 ><input
+                  disabled
                   id="valor"
                   type="number"
                   v-model="nomina.valor"
                   class="form-control"
                 />
               </div>
-              <div>
+              <!-- <div>
                 <label
                   class="ta-l col-form-label col-form-label-sm"
                   for="origen"
                   >Orígen:</label
-                ><select id="origen" v-model="nomina.origen" class="form-select">
+                ><select
+                  id="origen"
+                  v-model="nomina.origen"
+                  class="form-select"
+                >
                   <option>Producción</option>
                   <option>Recapada</option>
                   <option>Insentivo</option>
                   <option>Salario</option>
                   <option>Jornada</option>
                 </select>
-              </div>
+              </div> -->
+            </div>
+            <label v-if="this.modoForm == 'show'" class="form-label"
+              ><b>Pagos</b></label
+            >
+            <div v-if="this.modoForm == 'show'" class="grid">
+              <table id="customers">
+                <!-- Head -->
+                <tr>
+                  <th>No.</th>
+                  <th>Empleado</th>
+                  <th>Valor</th>
+                </tr>
+                <!-- Body -->
+                <tr v-for="(item, index) in pagos" :key="index">
+                  <td class="ta-r">
+                    {{ index + 1 }}
+                  </td>
+                  <td>
+                    {{ item.empleado }}
+                  </td>
+                  <td class="ta-r">
+                    {{ formatNumber(item.valor) }}
+                  </td>
+                </tr>
+                <!-- End -->
+                <!-- <tr style="font-weight: bold">
+                  <td>Total: {{ this.totales.cantPagos }}</td>
+                  <td></td>
+                  <td class="ta-r">
+                    {{ formatNumber(this.totales.pagos) }}
+                  </td>
+                </tr> -->
+              </table>
             </div>
           </div>
-
+          <!-- {{ this.asalariados }}<br /> -->
+          <!-- {{ this.cxp }} -->
           <button
             v-if="this.modoForm == 'add'"
             class="btn btn-success"
+            @click.prevent="generarNomina()"
+            :disabled="!nomina.fecha"
+          >
+            <i class="fas fa-cog"></i> Generar Nómina
+          </button>
+
+          <!-- <button
+            v-if="this.modoForm == 'add'"
+            class="btn btn-success"
             @click.prevent="saveNomina()"
-            :disabled="!nomina.fecha || !nomina.empleado || !nomina.valor || !nomina.origen"
+            :disabled="!nomina.fecha || !nomina.cant || !nomina.valor"
+          >
+            <i class="fas fa-save"></i> Guardar
+          </button> -->
+
+          <button
+            v-if="this.modoForm == 'show'"
+            class="btn btn-success"
+            @click.prevent="handleUpdate()"
+            :disabled="!nomina.fecha || !nomina.cant || !nomina.valor"
           >
             <i class="fas fa-save"></i> Guardar
           </button>
 
           <button
             v-if="this.modoForm == 'show'"
-            class="btn btn-success"
-            @click.prevent="handleUpdate()"
-            :disabled="!nomina.fecha || !nomina.empleado || !nomina.valor || !nomina.origen"
+            class="btn btn-warning"
+            @click="this.$router.push(`/nominas2/${nomina._id}`)"
           >
-            <i class="fas fa-save"></i> Guardar
+            <i class="fas fa-print"></i> Imprimir
           </button>
 
           <button
@@ -123,8 +197,16 @@ import Navbar from "@/components/Navbar.vue";
 import { defineComponent } from "vue";
 import { Nomina } from "@/interfaces/Nomina";
 import { Funcion } from "@/interfaces/Funcion";
-import { Empleado } from "@/interfaces/Empleado";
-import { getEmpleados } from "@/services/almaycru/Empleado";
+import { Cxp } from "@/interfaces/Cxp";
+import { Pago } from "@/interfaces/Pago";
+import {
+  getPagByNom,
+  getPagosNom,
+  servAsigPago,
+} from "@/services/almaycru/Pago";
+import { GetAsalar } from "@/services/almaycru/Empleado";
+import { GetPrepagos } from "@/services/almaycru/Cxp";
+import { servParaPago, servEnPago } from "@/services/almaycru/Cxp";
 import {
   createNomina,
   eliminateNominas,
@@ -134,6 +216,8 @@ import {
   getNomina,
   updateNomina,
 } from "@/services/almaycru/Nomina";
+import { createPago, getOnePago } from "@/services/almaycru/Pago";
+import { createCxp, getOneCxp } from "@/services/almaycru/Cxp";
 import { getFuncions } from "@/services/almaycru/Funcion";
 import { createMensaje } from "@/services/almaycru/ChatService";
 import numeral from "numeral";
@@ -147,11 +231,25 @@ export default defineComponent({
   },
   data() {
     return {
-      empleados: [] as Empleado[],
-      campoFocus: "empleado",
+      estadoLoading: "Cargando...",
+
+      pago: {} as Pago,
+      onePago: {} as Pago,
+      one1: {},
+      nextNo1: Number,
+
+      cxp: {} as Cxp,
+      oneCxp: {} as Cxp,
+      one0: {},
+      nextNo0: Number,
+
+      asalariados: [],
+      prepagos: [],
+      // empleados: [] as Empleado[],
+      campoFocus: "fecha",
       mensageError: "Error",
-      mensageExito: "Cuenta por Pagar Registrada Exitosamente",
-      mensageConfirm: "¿Está Seguro que desea Eliminar Esta Cuenta por Pagar?",
+      mensageExito: "Nómina Registrada Exitosamente",
+      mensageConfirm: "¿Está Seguro que desea Eliminar Esta Nómina?",
       encabezado: "",
       modoForm: "",
       funciones: [] as Funcion[],
@@ -159,10 +257,12 @@ export default defineComponent({
       showDatosMadre: false,
       showDatosTutor: false,
       message: {
-        username: "Ronnald",
-        message: "Hola",
+        username: "R",
+        message: "H",
       },
       documento: {} as any,
+      documento2: { nomina: 0 } as any,
+
       error: "",
       respuesta: {},
       actividad: "",
@@ -182,48 +282,254 @@ export default defineComponent({
       showDelete: false,
       currentActivity: "",
       estado: {} as object,
+      pagos: [],
+      totales: {} as any,
     };
   },
 
   async mounted() {
     if (this.$route.fullPath == "/nominas/new") {
       this.modoForm = "add";
-      this.encabezado = "Nueva Cuenta por Pagar";
+      this.encabezado = "Nueva Nómina";
     } else {
       this.modoForm = "show";
-      this.encabezado = "Detalles de Cuenta por Pagar";
+      this.encabezado = "Detalles de Nómina";
     }
 
     if (this.modoForm == "add") {
       this.nomina.no = 1;
-      this.fillFields();
-      this.fixTime();
+      // this.fillFields();
+      // this.fixTime();
     } else {
       this.showDeleteMethod();
       if (typeof this.$route.params.id === "string") {
         await this.loadNomina(this.$route.params.id);
+        this.documento.nomina = this.nomina.no;
+        this.loadNomina2();
       }
       this.fixTime();
     }
 
     this.focus();
-    this.loadEmpleados();
   },
 
+  // updated() {
+  //   this.valorTotal();
+  // },
+
   methods: {
-    async loadEmpleados() {
+    async asigNom() {
+      this.estadoLoading = "Cargando Pagos a Nómina...";
+      // this.toggleLoading();
+      try {
+        const res = await servAsigPago(this.documento2);
+        // this.pagos = res.data;
+      } catch (error) {
+        // console.error(error);
+      }
+      // this.toggleLoading();
+      this.estadoLoading = "Cargando...";
+    },
+
+    async enPago() {
+      // this.estadoLoading = "Seleccionando Cuentas por Pagar para Pago...";
+      // this.toggleLoading();
+      try {
+        const res = await servEnPago(this.documento);
+        // this.pagos = res.data;
+      } catch (error) {
+        // console.error(error);
+      }
+      // this.toggleLoading();
+      // this.estadoLoading = "Cargando...";
+    },
+
+    async paraPago() {
+      this.estadoLoading = "Seleccionando Cuentas por Pagar para Pago...";
       this.toggleLoading();
       try {
-        const res = await getEmpleados();
-        this.empleados = res.data;
+        const res = await servParaPago(this.documento);
+        this.pagos = res.data;
+      } catch (error) {
+        // console.error(error);
+      }
+      this.toggleLoading();
+      this.estadoLoading = "Cargando...";
+    },
+
+    async savePago() {
+      // this.estadoLoading = "Generando Pagos...";
+      // this.toggleLoading();
+      try {
+        try {
+          const res = await getOnePago();
+          this.pago.no = 1;
+          this.onePago = res.data;
+          this.one1 = this.onePago[0];
+          this.nextNo1 = this.one1.no + 1;
+          this.pago.no = this.nextNo1;
+        } catch (error) {
+          // // console.error(error);
+        }
+        this.pago.userReg = this.$store.state.user.usuario;
+        this.pago.nomina = 0;
+        this.pago.fecha = this.nomina.fecha;
+        const res = await createPago(this.pago);
+      } catch (error) {
+        // // console.error(error);
+      }
+      // await this.toggleLoading();
+      document.getElementById(this.campoFocus).focus();
+      this.toggleAlert();
+      // this.estadoLoading = "Generando Pagos...";
+    },
+
+    async saveCxp() {
+      // this.estadoLoading = "Generando Cuenta por Pagar Asalariados...";
+      // this.toggleLoading();
+      try {
+        try {
+          const res = await getOneCxp();
+          this.oneCxp = res.data;
+          this.one0 = this.oneCxp[0];
+          this.nextNo0 = this.one0.no + 1;
+          this.cxp.no = this.nextNo0;
+        } catch (error) {
+          // // console.error(error);
+        }
+        this.cxp.userReg = this.$store.state.user.usuario;
+        this.cxp.pagar = false;
+        this.cxp.pago = 0;
+        this.cxp.origen = "Salario";
+        this.cxp.fecha = this.nomina.fecha;
+        const res = await createCxp(this.cxp);
+      } catch (error) {
+        // // console.error(error);
+      }
+      // await this.toggleLoading();
+      // if (this.error !== this.mensageError) {
+      //   await this.cleanFields();
+      // }
+      // await this.fillFields();
+      document.getElementById(this.campoFocus).focus();
+      this.toggleAlert();
+      // this.estadoLoading = "Cargando...";
+    },
+
+    async loadAsalariados() {
+      this.toggleLoading();
+      try {
+        const res = await GetAsalar();
+        this.asalariados = res.data;
       } catch (error) {
         // console.error(error);
       }
       this.toggleLoading();
     },
 
+    async loadPagos() {
+      this.estadoLoading = "Cargando Pagos...";
+      this.toggleLoading();
+      try {
+        const res = await getPagosNom();
+        this.pagos = res.data;
+      } catch (error) {
+        // console.error(error);
+      }
+      this.toggleLoading();
+      this.estadoLoading = "Cargando...";
+    },
+
+    async loadPrepagos() {
+      this.estadoLoading = "Cargando Prepagos...";
+      this.toggleLoading();
+      try {
+        const res = await GetPrepagos();
+        this.prepagos = res.data;
+      } catch (error) {
+        // console.error(error);
+      }
+      this.toggleLoading();
+      this.estadoLoading = "Cargando...";
+    },
+
+    async generarNomina() {
+      if (
+        confirm(
+          "¿Está Seguro que desea Generar Esta Nómina?: " +
+            this.formatDateAsk(this.nomina.fecha)
+        )
+      ) {
+        // Cargar Asalariados
+        await this.loadAsalariados();
+
+        // Generar CxPs por Cada Asalariado
+        let i: number;
+        this.estadoLoading = "Generando Cuenta por Pagar Asalariados...";
+        this.toggleLoading();
+        for (i = 0; i <= this.asalariados.length - 1; i++) {
+          this.cxp.empleado = this.asalariados[i].nombre;
+          this.cxp.valor = this.asalariados[i].sueldo;
+          await this.saveCxp();
+        }
+        this.toggleLoading();
+        this.estadoLoading = "Cargando...";
+
+        // Marcar Cxps para Pagar
+        this.documento.fechaCorte = this.nomina.fecha;
+        await this.paraPago();
+
+        //Cargar Pre-Pagos
+        await this.loadPrepagos();
+
+        // Generar Pago por Cada Pre-Pago
+        this.estadoLoading = "Generando Pagos...";
+        this.toggleLoading();
+        let j: number;
+        for (j = 0; j <= this.prepagos.length - 1; j++) {
+          this.pago.empleado = this.prepagos[j]._id.empleado;
+          this.pago.cant = this.prepagos[j].count;
+          this.pago.valor = this.prepagos[j].total;
+          await this.savePago();
+          // Marcar Cuentas en Pago
+          this.documento.fechaCorte = this.nomina.fecha;
+          this.documento.pago = 1;
+          this.documento.pago = this.nextNo1;
+          this.documento.empleado = this.pago.empleado = this.prepagos[
+            j
+          ]._id.empleado;
+          await this.enPago();
+          // alert(j + " de " + this.prepagos.length);
+        }
+        this.toggleLoading();
+        this.estadoLoading = "Cargando...";
+
+        //Cargar Pagos
+        await this.loadPagos();
+
+        //Generar Registro de Nómina
+        await this.saveNomina();
+
+        //Asignar Número de Nómina a Pagos
+        await this.saveNomina2();
+        this.documento2.nomina = this.one.no;
+        this.asigNom();
+      }
+    },
+
+    valorTotal() {
+      if (this.showDelete) {
+        this.totales.pagos = this.pagos.reduce(
+          (accum: any, item: any) => accum + item.valor,
+          0
+        );
+
+        this.totales.cantPagos = this.pagos.length;
+      }
+    },
+
     fixTime() {
-      this.nomina.fecha = this.formatDateToFix(this.nomina.fecha, true);
+      this.nomina.fecha = this.formatDateToFix(this.nomina.fecha, false);
     },
 
     formatDateToFix(dateValue: Date, incTime: boolean) {
@@ -248,18 +554,42 @@ export default defineComponent({
       this.toggleLoading();
     },
 
-    async handleUpdate() {
-      // this.toggleLoading();
+    async loadNomina2() {
+      this.toggleLoading();
       try {
-        if (typeof this.$route.params.id === "string") {
-          this.nomina.userMod = this.$store.state.user.usuario;
-          await updateNomina(this.$route.params.id, this.nomina);
-          this.addMessage();
-          this.$router.push("/nominas");
-        }
+        const res = await getPagByNom(this.documento);
+        this.pagos = res.data;
       } catch (error) {
-        //console.error(error);
+        // console.error(error);
       }
+      this.toggleLoading();
+    },
+
+    // async loadPagosByNom() {
+    //   alert("Loading Pagos");
+    //   this.toggleLoading();
+    //   try {
+    //     const res = await getPagByNom();
+    //     this.pagos = res.data;
+    //   } catch (error) {
+    //     // console.error(error);
+    //   }
+    //   this.toggleLoading();
+    // },
+
+    async handleUpdate() {
+      alert("No es Posible Modificar la Nómina");
+      // this.toggleLoading();
+      // try {
+      //   if (typeof this.$route.params.id === "string") {
+      //     this.nomina.userMod = this.$store.state.user.usuario;
+      //     await updateNomina(this.$route.params.id, this.nomina);
+      //     this.addMessage();
+      //     this.$router.push("/nominas");
+      //   }
+      // } catch (error) {
+      //console.error(error);
+      // }
       // this.toggleLoading();
       // this.toggleAlert();
     },
@@ -318,7 +648,7 @@ export default defineComponent({
         (this.nomina.neto = this.nomina.bruto * 0.9);
     },
     formatNumber(value: number) {
-      return numeral(value).format("00000000");
+      return numeral(value).format("0,0.00");
     },
 
     formatDate(dateValue: Date) {
@@ -326,14 +656,20 @@ export default defineComponent({
       return moment(out).format("yyyy-MM-DTHH:mm");
     },
 
+    formatDateAsk(dateValue: Date) {
+      let out = moment(dateValue).add(0, "days");
+      moment.locale("es");
+      return moment(out).format("DD MMMM yyyy");
+    },
+
     formatDatePlus(dateValue: Date) {
       let out = moment(dateValue).add(30, "days");
       return moment(out).format("yyyy-MM-DTHH:mm");
     },
 
-    fillFields() {
-      this.nomina.fecha = this.formatDate(new Date());
-    },
+    // fillFields() {
+    //   this.nomina.fecha = this.formatDate(new Date());
+    // },
 
     async loadOneNomina() {
       try {
@@ -367,7 +703,8 @@ export default defineComponent({
       }
     },
 
-    async saveNomina() {
+    async saveNomina2() {
+      this.estadoLoading = "Verificando Registro de Nómina...";
       this.toggleLoading();
       try {
         try {
@@ -376,11 +713,33 @@ export default defineComponent({
           this.one = this.oneNomina[0];
           this.nextNo = this.one.no + 1;
           this.nomina.no = this.nextNo;
-          this.nomina.principal = this.nextNo;
+        } catch (error) {
+          // // console.error(error);
+        }
+      } catch (error) {
+        // // console.error(error);
+      }
+      await this.toggleLoading();
+      this.estadoLoading = "Cargando...";
+    },
+
+    async saveNomina() {
+      this.estadoLoading = "Creando Registro de Nómina...";
+      this.toggleLoading();
+      try {
+        try {
+          const res = await getOneNomina();
+          this.oneNomina = res.data;
+          this.one = this.oneNomina[0];
+          this.nextNo = this.one.no + 1;
+          this.nomina.no = this.nextNo;
         } catch (error) {
           // // console.error(error);
         }
         this.nomina.userReg = this.$store.state.user.usuario;
+        this.nomina.cant = this.pagos[0].count;
+        this.nomina.valor = this.pagos[0].valor;
+
         const res = await createNomina(this.nomina).then(
           (res) => {
             this.error = this.respuesta = res.data.title;
@@ -399,10 +758,11 @@ export default defineComponent({
         // // console.error(error);
       }
       await this.toggleLoading();
+      this.estadoLoading = "Cargando...";
       if (this.error !== this.mensageError) {
         await this.cleanFields();
       }
-      await this.fillFields();
+      // await this.fillFields();
       document.getElementById(this.campoFocus).focus();
       this.toggleAlert();
     },
@@ -418,9 +778,6 @@ export default defineComponent({
 
     cleanFields() {
       this.nomina.fecha = "";
-      this.nomina.empleado = "";
-      this.nomina.valor = "";
-      this.nomina.origen = "";
     },
 
     toggleLoading() {
@@ -435,6 +792,47 @@ export default defineComponent({
 </script>
 
 <style lang="css" scoped>
+/* Tabla */
+#customers {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#customers td,
+#customers th {
+  border: 1px solid #ddd;
+  padding: 3px;
+  /* cursor: pointer; */
+}
+
+#customers tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+#customers tr:hover {
+  background-color: #ddd;
+}
+
+#customers th {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-align: center;
+  background-color: rgb(147, 147, 147);
+  color: white;
+}
+
+td,
+th {
+  font-size: 75%;
+}
+
+.ta-r {
+  text-align: right;
+}
+
+/* End Table */
+
 /* Start Transition */
 .v-enter-active,
 .v-leave-active {
@@ -671,5 +1069,9 @@ label {
   margin-top: 20px;
   margin-bottom: 20px;
   background-color: rgb(0, 255, 0);
+}
+
+.ta-c {
+  text-align: center;
 }
 </style>

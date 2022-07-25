@@ -221,8 +221,8 @@ export default defineComponent({
   data() {
     return {
       message: {
-        username: "Ronnald",
-        message: "Hola",
+        username: "R",
+        message: "H",
       },
       documento: {} as any,
       error: "",

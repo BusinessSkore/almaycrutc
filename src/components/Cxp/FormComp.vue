@@ -84,6 +84,19 @@
                   <option>Jornada</option>
                 </select>
               </div>
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  
+                  v-model="cxp.pagar"
+                  id="flexCheckChecked"
+                  
+                />
+                <label class="form-check-label" for="flexCheckChecked">
+                  Pagar
+                </label>
+              </div>
             </div>
           </div>
 
@@ -159,8 +172,8 @@ export default defineComponent({
       showDatosMadre: false,
       showDatosTutor: false,
       message: {
-        username: "Ronnald",
-        message: "Hola",
+        username: "R",
+        message: "H",
       },
       documento: {} as any,
       error: "",
@@ -382,7 +395,7 @@ export default defineComponent({
           // // console.error(error);
         }
         this.cxp.userReg = this.$store.state.user.usuario;
-        
+
         this.cxp.pagar = false;
         const res = await createCxp(this.cxp).then(
           (res) => {

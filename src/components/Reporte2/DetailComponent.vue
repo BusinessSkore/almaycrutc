@@ -168,8 +168,8 @@ export default defineComponent({
     return {
       usuarios: [] as Usuario[],
       message: {
-        username: "Ronnald",
-        message: "Hola",
+        username: "R",
+        message: "H",
       },
       reportes: [] as Reporte[],
       showAlert: false,
