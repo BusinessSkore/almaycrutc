@@ -117,15 +117,24 @@
                 <tr>
                   <th>No.</th>
                   <th>Empleado</th>
+                  <th>Cant.</th>
                   <th>Valor</th>
                 </tr>
                 <!-- Body -->
-                <tr v-for="(item, index) in pagos" :key="index">
+                <tr
+                  style="cursor : pointer"
+                  v-for="(item, index) in pagos"
+                  :key="index"
+                  @click="this.$router.push(`/pagos/${item._id}`)"
+                >
                   <td class="ta-r">
                     {{ index + 1 }}
                   </td>
                   <td>
                     {{ item.empleado }}
+                  </td>
+                  <td class="ta-r">
+                    {{ formatNumber2(item.cant) }}
                   </td>
                   <td class="ta-r">
                     {{ formatNumber(item.valor) }}
@@ -534,10 +543,10 @@ export default defineComponent({
 
     formatDateToFix(dateValue: Date, incTime: boolean) {
       if (incTime == true) {
-        let out = moment(dateValue).add(0, "days");
+        let out = moment(dateValue).add(4, "hours");
         return moment(out).format("yyyy-MM-DDTHH:mm");
       } else {
-        let out = moment(dateValue).add(0, "days");
+        let out = moment(dateValue).add(4, "hours");
         return moment(out).format("yyyy-MM-D");
       }
     },
@@ -649,6 +658,9 @@ export default defineComponent({
     },
     formatNumber(value: number) {
       return numeral(value).format("0,0.00");
+    },
+    formatNumber2(value: number) {
+      return numeral(value).format("0,0");
     },
 
     formatDate(dateValue: Date) {

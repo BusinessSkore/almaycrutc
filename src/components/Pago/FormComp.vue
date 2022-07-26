@@ -99,6 +99,43 @@
                 </select>
               </div> -->
             </div>
+            <label v-if="this.modoForm == 'show'" class="form-label"
+              ><b>Cuentas por Pagar</b></label
+            >
+            <div v-if="this.modoForm == 'show'" class="grid">
+              <table id="customers">
+                <!-- Head -->
+                <tr>
+                  <th>No.</th>
+                  <th>Fecha</th>
+                  <th>Orgígen</th>
+                  <th>Valor</th>
+                </tr>
+                <!-- Body -->
+                <tr v-for="(item, index) in pagos" :key="index">
+                  <td class="ta-r">
+                    {{ index + 1 }}
+                  </td>
+                  <td>
+                    {{ formatDate2(item.fecha, true) }}
+                  </td>
+                  <td>
+                    {{ item.origen }}
+                  </td>
+                  <td class="ta-r">
+                    {{ formatNumber(item.valor) }}
+                  </td>
+                </tr>
+                <!-- End -->
+                <!-- <tr style="font-weight: bold">
+                  <td>Total: {{ this.totales.cantPagos }}</td>
+                  <td></td>
+                  <td class="ta-r">
+                    {{ formatNumber(this.totales.pagos) }}
+                  </td>
+                </tr> -->
+              </table>
+            </div>
           </div>
 
           <button
@@ -120,6 +157,14 @@
           </button>
 
           <button
+            v-if="this.modoForm == 'show'"
+            class="btn btn-warning"
+            @click="this.$router.push(`/pagos2/${pago._id}`)"
+          >
+            <i class="fas fa-print"></i> Imprimir
+          </button>
+
+          <button
             v-if="showDelete"
             class="btn btn-danger"
             @click.prevent="handleDelete()"
@@ -133,11 +178,19 @@
 </template>
 
 <script lang="ts">
+// Components
 import Navbar from "@/components/Navbar.vue";
+
+// Vue
 import { defineComponent } from "vue";
+
+// Interfaces
 import { Pago } from "@/interfaces/Pago";
 import { Funcion } from "@/interfaces/Funcion";
 import { Empleado } from "@/interfaces/Empleado";
+
+//Services
+import { createMensaje } from "@/services/almaycru/ChatService";
 import { getEmpleados } from "@/services/almaycru/Empleado";
 import {
   createPago,
@@ -149,7 +202,9 @@ import {
   updatePago,
 } from "@/services/almaycru/Pago";
 import { getFuncions } from "@/services/almaycru/Funcion";
-import { createMensaje } from "@/services/almaycru/ChatService";
+import { getCxpByPag } from "@/services/almaycru/Cxp";
+
+// Modules
 import numeral from "numeral";
 import moment from "moment";
 // import Pusher from "pusher-js";
@@ -216,6 +271,8 @@ export default defineComponent({
       this.showDeleteMethod();
       if (typeof this.$route.params.id === "string") {
         await this.loadPago(this.$route.params.id);
+        this.documento.pago = this.pago.no;
+        this.loadNomina2();
       }
       this.fixTime();
     }
@@ -225,6 +282,17 @@ export default defineComponent({
   },
 
   methods: {
+    async loadNomina2() {
+      this.toggleLoading();
+      try {
+        const res = await getCxpByPag(this.documento);
+        this.pagos = res.data;
+      } catch (error) {
+        // console.error(error);
+      }
+      this.toggleLoading();
+    },
+
     async loadEmpleados() {
       this.toggleLoading();
       try {
@@ -242,10 +310,10 @@ export default defineComponent({
 
     formatDateToFix(dateValue: Date, incTime: boolean) {
       if (incTime == true) {
-        let out = moment(dateValue).add(0, "days");
+        let out = moment(dateValue).add(4, "hours");
         return moment(out).format("yyyy-MM-DDTHH:mm");
       } else {
-        let out = moment(dateValue).add(0, "days");
+        let out = moment(dateValue).add(4, "hours");
         return moment(out).format("yyyy-MM-D");
       }
     },
@@ -332,12 +400,17 @@ export default defineComponent({
         (this.pago.neto = this.pago.bruto * 0.9);
     },
     formatNumber(value: number) {
-      return numeral(value).format("00000000");
+      return numeral(value).format("0,0.00");
     },
 
     formatDate(dateValue: Date) {
       let out = moment(dateValue).add(0, "days");
       return moment(out).format("yyyy-MM-DD");
+    },
+
+    formatDate2(dateValue: Date) {
+      let out = moment(dateValue).add(4, "hours");
+      return moment(out).format("DD/MM/yyyy");
     },
 
     formatDatePlus(dateValue: Date) {
@@ -450,6 +523,47 @@ export default defineComponent({
 </script>
 
 <style lang="css" scoped>
+/* Tabla */
+#customers {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#customers td,
+#customers th {
+  border: 1px solid #ddd;
+  padding: 3px;
+  /* cursor: pointer; */
+}
+
+#customers tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+#customers tr:hover {
+  background-color: #ddd;
+}
+
+#customers th {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-align: center;
+  background-color: rgb(147, 147, 147);
+  color: white;
+}
+
+td,
+th {
+  font-size: 75%;
+}
+
+.ta-r {
+  text-align: right;
+}
+
+/* End Table */
+
 /* Start Transition */
 .v-enter-active,
 .v-leave-active {

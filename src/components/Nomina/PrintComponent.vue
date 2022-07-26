@@ -332,10 +332,10 @@ export default defineComponent({
 
     formatDateToFix(dateValue: Date, incTime: boolean) {
       if (incTime == true) {
-        let out = moment(dateValue).add(0, "days");
+        let out = moment(dateValue).add(4, "hours");
         return moment(out).format("yyyy-MM-DDTHH:mm");
       } else {
-        let out = moment(dateValue).add(0, "days");
+        let out = moment(dateValue).add(4, "hours");
         return moment(out).format("yyyy-MM-D");
       }
     },
@@ -453,7 +453,7 @@ export default defineComponent({
     },
 
     formatDate(dateValue: Date) {
-      let out = moment(dateValue).add(0, "h");
+      let out = moment(dateValue).add(4, "hours");
       return moment(out).format("DD/MM/yyyy");
     },
 

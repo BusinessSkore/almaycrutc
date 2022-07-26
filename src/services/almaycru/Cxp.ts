@@ -4,9 +4,8 @@ import axios from "./axios";
 
 //Básicos----------------------------------------------------------------------------------------------------
 //Cargar Registros
-export const createCxpa = async (
-  cxp: Cxp
-): Promise<AxiosResponse> => await axios.post("/cxps/Savea", cxp);
+export const createCxpa = async (cxp: Cxp): Promise<AxiosResponse> =>
+  await axios.post("/cxps/Savea", cxp);
 
 // Crear un Solo Registro
 export const createCxp = async (cxp: Cxp): Promise<AxiosResponse> =>
@@ -28,8 +27,7 @@ export const getOneCxp = async (): Promise<AxiosResponse<Cxp>> =>
 export const updateCxp = async (
   id: string,
   newCxp: Cxp
-): Promise<AxiosResponse<Cxp>> =>
-  await axios.put(`/cxps/Update/${id}`, newCxp);
+): Promise<AxiosResponse<Cxp>> => await axios.put(`/cxps/Update/${id}`, newCxp);
 
 //Actualizar todos los Registros
 
@@ -38,11 +36,14 @@ export const deleteCxp = async (id: string): Promise<AxiosResponse> =>
   await axios.delete(`/cxps/Delete/${id}`);
 
 //Eliminar todos los Registros
-export const eliminateCxps = async (
-  cxp: Cxp
-): Promise<AxiosResponse> => await axios.post("/cxps/delete", cxp);
+export const eliminateCxps = async (cxp: Cxp): Promise<AxiosResponse> =>
+  await axios.post("/cxps/delete", cxp);
 
 //Reportes----------------------------------------------------------------------------------------------------
+// Obtener Cxp por Pago
+export const getCxpByPag = async (documento: any): Promise<AxiosResponse> =>
+  await axios.post("/cxps/getCxpByPag", documento);
+
 // Get Cxps Agrupadas por Estatus
 export const getcxpsCant = async (): Promise<AxiosResponse<Cxp[]>> =>
   await axios.get("/cxps/getGpedByStat");
