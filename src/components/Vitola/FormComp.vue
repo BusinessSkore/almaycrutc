@@ -61,6 +61,8 @@
                   >
                     <option>Natural</option>
                     <option>Madura</option>
+                    <option>San Andrés</option>
+                    <option>Otra</option>
                   </select>
                 </div>
 
