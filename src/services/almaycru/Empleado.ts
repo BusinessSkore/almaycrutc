@@ -14,8 +14,12 @@ export const createEmpleado = async (
 ): Promise<AxiosResponse> => await axios.post("/empleados/Save", empleado);
 
 // Leer Todos los registros
-export const getEmpleados = async (): Promise<AxiosResponse<Empleado[]>> =>
+export const getEmpleadosAll = async (): Promise<AxiosResponse<Empleado[]>> =>
   await axios.get("/empleados/get");
+
+// Leer Todos los registros
+export const getEmpleados = async (): Promise<AxiosResponse<Empleado[]>> =>
+  await axios.get("/empleados/getAct");
 
 //Leer un solo Registro por ID
 export const getEmpleado = async (
@@ -50,7 +54,7 @@ export const eliminateEmpleados = async (
 // Obtener Empleados Asalariados para Nómina
 
 export const GetAsalar = async (): Promise<AxiosResponse<Empleado[]>> =>
-  await axios.get("/empleados/GetAsalar");
+  await axios.get("/empleados/GetAsalarAct");
 
 // Get Empleados Agrupadas por Estatus
 export const getempleadosCant = async (): Promise<AxiosResponse<Empleado[]>> =>
@@ -68,10 +72,10 @@ export const updateOne = async (empleado: Empleado): Promise<AxiosResponse> =>
 // Leer Todos los registros por Campo
 
 export const getMez = async (): Promise<AxiosResponse<Empleado[]>> =>
-  await axios.get("/empleados/getMez");
+  await axios.get("/empleados/GetMezAct");
 
 export const getPeg = async (): Promise<AxiosResponse<Empleado[]>> =>
-  await axios.get("/empleados/getPeg");
+  await axios.get("/empleados/GetPegAct");
 
 export const getEmp = async (): Promise<AxiosResponse<Empleado[]>> =>
-  await axios.get("/empleados/getEmp");
+  await axios.get("/empleados/GetEmpAct");

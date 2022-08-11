@@ -371,9 +371,7 @@
                     <option>A-</option>
                     <option>B-</option>
                     <option>AB-</option>
-                    <option></option>
-
-                    O-
+                    <option>O-</option>
                   </select>
                 </div>
                 <div>
@@ -477,6 +475,21 @@
                     class="form-control"
                   />
                 </div>
+                <div>
+                  <label
+                    class="ta-l col-form-label col-form-label-sm"
+                    for="status"
+                    >Estatus:</label
+                  ><select
+                    id="status"
+                    type="String"
+                    v-model="empleado.status"
+                    class="form-select"
+                  >
+                    <option>Activo</option>
+                    <option>Inactivo</option>
+                  </select>
+                </div>
 
                 <!-- End Fields -->
               </div>
@@ -489,7 +502,6 @@
               :disabled="
                 !empleado.primerNombre ||
                   !empleado.primerApellido ||
-                  !empleado.segundoApellido ||
                   !empleado.sexo ||
                   !empleado.fechaNacimiento ||
                   !empleado.edad ||
@@ -524,7 +536,6 @@
               :disabled="
                 !empleado.primerNombre ||
                   !empleado.primerApellido ||
-                  !empleado.segundoApellido ||
                   !empleado.sexo ||
                   !empleado.fechaNacimiento ||
                   !empleado.edad ||
@@ -820,6 +831,7 @@ export default defineComponent({
     fillFields() {
       this.empleado.modalidad = "Jornalero";
       this.empleado.metodoPago = "Efectivo";
+      this.empleado.status = "Activo";
     },
 
     async loadOneEmpleado() {

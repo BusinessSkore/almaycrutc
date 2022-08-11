@@ -4,6 +4,7 @@ export interface Empleado {
   no: number;
   userReg: string;
   userMod: string;
+  status: String;
   // Entidad
   cedula: string;
   nombre: string;

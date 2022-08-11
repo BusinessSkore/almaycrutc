@@ -281,10 +281,10 @@ export default defineComponent({
     formatDateToFix(dateValue: Date, incTime: boolean) {
       if (incTime == true) {
         let out = moment(dateValue).add(0, "days");
-        return moment(out).format("yyyy-MM-DTHH:mm");
+        return moment(out).format("yyyy-MM-DDTHH:mm");
       } else {
         let out = moment(dateValue).add(0, "days");
-        return moment(out).format("yyyy-MM-D");
+        return moment(out).format("yyyy-MM-DD");
       }
     },
 

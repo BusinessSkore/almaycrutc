@@ -1,6 +1,7 @@
 <template>
   <table v-if="this.totales.empleados" id="customers">
     <tr>
+      <th>Código</th>
       <th>Cédula</th>
       <th>Nombre</th>
       <th>Función</th>
@@ -12,6 +13,7 @@
       :key="index"
       @click="this.$router.push(`/empleados/${empleado._id}`)"
     >
+      <td>{{ empleado.codigoPonchador }}</td>
       <td>{{ empleado.cedula }}</td>
       <td>{{ empleado.nombre }}</td>
       <td>{{ empleado.funcion }}</td>
@@ -20,6 +22,7 @@
     </tr>
     <tr>
       <td>Total: {{ formatNumber(this.totales.empleados) }}</td>
+      <td></td>
       <td></td>
       <td></td>
       <!-- <td></td> -->

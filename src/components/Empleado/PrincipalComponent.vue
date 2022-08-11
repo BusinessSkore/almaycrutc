@@ -60,7 +60,7 @@ import Filters from "@/components/Empleado/FiltersComponent.vue";
 import ListadoComponent from "@/components/Empleado/ListComponent.vue";
 import Navbar from "@/components/Navbar.vue";
 import { Empleado } from "@/interfaces/Empleado";
-import { getEmpleados } from "@/services/almaycru/Empleado";
+import { getEmpleadosAll } from "@/services/almaycru/Empleado";
 import Pusher from "pusher-js";
 
 export default {
@@ -112,7 +112,7 @@ export default {
     },
     async filterEmpleados(catName: string) {
       try {
-        const res = await getEmpleados();
+        const res = await getEmpleadosAll();
         this.empleados = res.data;
       } catch (error) {
         // console.error(error);
@@ -127,7 +127,7 @@ export default {
     async search(term: string) {
       this.toggleLoading();
       try {
-        const res = await getEmpleados();
+        const res = await getEmpleadosAll();
         this.empleados = res.data;
       } catch (error) {
         // console.error(error);
@@ -143,7 +143,7 @@ export default {
     async loadEmpleados() {
       this.toggleLoading();
       try {
-        const res = await getEmpleados();
+        const res = await getEmpleadosAll();
         this.empleados = res.data;
       } catch (error) {
         // console.error(error);
@@ -154,7 +154,7 @@ export default {
     async loadEmpleados2() {
       this.toggleLoading();
       try {
-        const res = await getEmpleados();
+        const res = await getEmpleadosAll();
         this.empleados = res.data;
       } catch (error) {
         // console.error(error);

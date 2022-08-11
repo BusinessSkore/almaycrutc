@@ -20,7 +20,7 @@
           autofocus
           v-model="term"
           @keypress.enter="search(term)"
-        /><label for="buscar">Buscar por ID:</label>
+        /><label for="buscar">Buscar por Nombre:</label>
       </div>
     </div> -->
   </div>
