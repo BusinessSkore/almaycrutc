@@ -185,7 +185,7 @@ export default defineComponent({
       this.loadEmpleado(this.$route.params.id);
     }
 
-    // this.pusherSubscribe();
+    // // this.pusherSubscribe();
     this.focus();
   },
 
@@ -208,7 +208,7 @@ export default defineComponent({
         if (typeof this.$route.params.id === "string") {
           this.empleado.userMod = this.$store.state.user.usuario;
           await updateEmpleado(this.$route.params.id, this.empleado);
-          this.addMessage();
+          // this.addMessage();
           this.$router.push("/empleados");
         }
       } catch (error) {
@@ -223,7 +223,7 @@ export default defineComponent({
         try {
           if (typeof this.$route.params.id === "string") {
             await deleteEmpleado(this.$route.params.id);
-            this.addMessage();
+            // this.addMessage();
             this.$router.push("/empleados");
           }
         } catch (error) {
@@ -434,7 +434,7 @@ export default defineComponent({
             // this.$router.push("/");
             this.res = res;
             this.respuesta = res.data;
-            this.addMessage();
+            // this.addMessage();
           },
           (err) => {
             // console.log(err.response);

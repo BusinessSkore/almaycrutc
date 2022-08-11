@@ -165,7 +165,7 @@ export default {
 
   mounted() {
     this.loadCxps();
-    this.pusherSubscribe();
+    // this.pusherSubscribe();
   },
 };
 </script>

@@ -6,5 +6,5 @@ export interface Jornada {
   userMod: string;
   // Entidad
   fecha: Date;
-  empleados: [string];
+  empleados: [Object];
 }

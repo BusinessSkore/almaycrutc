@@ -53,6 +53,22 @@ export const getfactsGpedByCli = async (): Promise<AxiosResponse<Rueda[]>> =>
 export const getGpedByVitola = async (): Promise<AxiosResponse<Rueda[]>> =>
   await axios.get("/ruedas/getGpedByVitola");
 
+// Obtener Incentivos 1
+export const getInc1 = async (): Promise<AxiosResponse<Rueda[]>> =>
+  await axios.get("/ruedas/getInc1");
+
+// Obtener Incentivos 2
+export const getInc2 = async (): Promise<AxiosResponse<Rueda[]>> =>
+  await axios.get("/ruedas/getInc2");
+
+// Obtener Incentivos 3
+export const getInc3 = async (): Promise<AxiosResponse<Rueda[]>> =>
+  await axios.get("/ruedas/getInc3");
+
+// Obtener Incentivos 4
+export const getInc4 = async (): Promise<AxiosResponse<Rueda[]>> =>
+  await axios.get("/ruedas/getInc4");
+
 //Ruedaes----------------------------------------------------------------------------------------------------
 //Actualizar Un Registro
 export const updateOne = async (rueda: Rueda): Promise<AxiosResponse> =>

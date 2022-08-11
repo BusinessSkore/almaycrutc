@@ -170,7 +170,7 @@ export default {
     this.usuario.nombre = this.$store.state.user.usuario;
     // this.loadReportes();
     this.loadReportesByUser2();
-    this.pusherSubscribe();
+    // this.pusherSubscribe();
   },
 
   // created() {

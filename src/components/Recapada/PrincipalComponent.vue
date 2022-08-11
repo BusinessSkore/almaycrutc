@@ -164,7 +164,7 @@ export default {
 
   mounted() {
     this.loadRecapadas();
-    this.pusherSubscribe();
+    // this.pusherSubscribe();
   },
 };
 </script>

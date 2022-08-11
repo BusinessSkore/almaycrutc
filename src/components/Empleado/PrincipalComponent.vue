@@ -165,7 +165,7 @@ export default {
 
   mounted() {
     this.loadEmpleados();
-    this.pusherSubscribe();
+    // this.pusherSubscribe();
   },
 };
 </script>

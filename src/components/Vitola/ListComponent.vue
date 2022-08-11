@@ -4,7 +4,7 @@
       <th>Tipo</th>
       <th>Tamaño</th>
       <th>Capa</th>
-      <th>Meta</th>
+      <!-- <th>Meta</th> -->
       <th>Pago</th>
     </tr>
     <tr
@@ -22,9 +22,9 @@
         {{ vitola.capa }}
       </td>
 
-      <td class="der">
+      <!-- <td class="der">
         {{ formatNumber(vitola.costo, false) }}
-      </td>
+      </td> -->
       <td class="der">
         {{ formatNumber(vitola.pago, true) }}
       </td>
@@ -33,7 +33,7 @@
       <td>Total: {{ formatNumber(this.totales.vitolas) }}</td>
       <td></td>
       <td></td>
-      <td></td>
+      <!-- <td></td> -->
       <td></td>
     </tr>
   </table>

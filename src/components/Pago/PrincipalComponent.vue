@@ -165,7 +165,7 @@ export default {
 
   mounted() {
     this.loadPagos();
-    this.pusherSubscribe();
+    // this.pusherSubscribe();
   },
 };
 </script>

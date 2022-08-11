@@ -96,7 +96,7 @@ export default {
 
         await updateReporte(this.reportes[fromIndex]._id, this.nuevoReporte2);
 
-        this.addMessage();
+        // this.addMessage();
       } else {
         alert(descripcion + ", Ya está en su Máxima Prioridad.");
       }

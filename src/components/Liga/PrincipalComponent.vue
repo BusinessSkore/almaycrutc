@@ -165,7 +165,7 @@ export default {
 
   mounted() {
     this.loadLigas();
-    this.pusherSubscribe();
+    // this.pusherSubscribe();
   },
 };
 </script>

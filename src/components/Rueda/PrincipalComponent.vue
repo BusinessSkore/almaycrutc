@@ -164,7 +164,7 @@ export default {
 
   mounted() {
     this.loadRuedas();
-    this.pusherSubscribe();
+    // this.pusherSubscribe();
   },
 };
 </script>

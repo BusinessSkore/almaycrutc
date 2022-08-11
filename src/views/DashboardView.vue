@@ -409,7 +409,7 @@ export default {
     this.loadGpedByVitola();
     // this.loadfacturasCant();
     // this.loadfactsGpedByCli();
-    this.pusherSubscribe();
+    // this.pusherSubscribe();
   },
 
   updated() {

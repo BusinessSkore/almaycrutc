@@ -61,6 +61,31 @@
                   >
                 </select>
               </div>
+
+              <div>
+                <label
+                  class="ta-l col-form-label col-form-label-sm"
+                  for="origen"
+                  >Orígen:</label
+                ><select id="origen" v-model="cxp.origen" class="form-select">
+                  <option>Producción</option>
+                  <option>Recapada</option>
+                  <option>Incentivo</option>
+                  <option>Salario</option>
+                  <option>Jornada</option>
+                  <!-- <option>Horas Extras</option> -->
+                </select>
+              </div>
+              <div>
+                <label class="ta-l col-form-label col-form-label-sm" for="desc"
+                  >Descripción:</label
+                ><input
+                  id="desc"
+                  type="desc"
+                  v-model="cxp.desc"
+                  class="form-control"
+                />
+              </div>
               <div>
                 <label class="ta-l col-form-label col-form-label-sm" for="valor"
                   >Valor:</label
@@ -71,27 +96,12 @@
                   class="form-control"
                 />
               </div>
-              <div>
-                <label
-                  class="ta-l col-form-label col-form-label-sm"
-                  for="origen"
-                  >Orígen:</label
-                ><select id="origen" v-model="cxp.origen" class="form-select">
-                  <option>Producción</option>
-                  <option>Recapada</option>
-                  <option>Insentivo</option>
-                  <option>Salario</option>
-                  <option>Jornada</option>
-                </select>
-              </div>
               <div class="form-check">
                 <input
                   class="form-check-input"
                   type="checkbox"
-                  
                   v-model="cxp.pagar"
                   id="flexCheckChecked"
-                  
                 />
                 <label class="form-check-label" for="flexCheckChecked">
                   Pagar
@@ -267,7 +277,7 @@ export default defineComponent({
         if (typeof this.$route.params.id === "string") {
           this.cxp.userMod = this.$store.state.user.usuario;
           await updateCxp(this.$route.params.id, this.cxp);
-          this.addMessage();
+          // this.addMessage();
           this.$router.push("/cxps");
         }
       } catch (error) {
@@ -282,7 +292,7 @@ export default defineComponent({
         try {
           if (typeof this.$route.params.id === "string") {
             await deleteCxp(this.$route.params.id);
-            this.addMessage();
+            // this.addMessage();
             this.$router.push("/cxps");
           }
         } catch (error) {
@@ -403,7 +413,7 @@ export default defineComponent({
             // this.$router.push("/");
             this.res = res;
             this.respuesta = res.data;
-            this.addMessage();
+            // this.addMessage();
           },
           (err) => {
             // console.log(err.response);

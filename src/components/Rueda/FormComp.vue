@@ -68,7 +68,7 @@
                     >
                   </select>
                 </div>
-                <div>
+                <!-- <div>
                   <label
                     class="ta-l col-form-label col-form-label-sm"
                     for="cantidad"
@@ -80,15 +80,16 @@
                     v-model="rueda.cantidad"
                     class="form-control"
                   />
-                </div>
-                <div>
+                </div> -->
+                <div v-if="this.modoForm == 'add'">
                   <label
                     class="ta-l col-form-label col-form-label-sm"
                     for="monos"
-                    >Monos:</label
+                    >Cantidad:</label
                   ><input
                     id="monos"
                     type="Number"
+                    min="1"
                     v-model="rueda.monos"
                     class="form-control"
                   />
@@ -336,13 +337,15 @@ export default defineComponent({
         }
         this.cxp.userReg = this.$store.state.user.usuario;
         this.cxp.pagar = false;
+        this.cxp.desc = this.rueda.vitola + " " + this.rueda.liga;
+
         const res = await createCxp(this.cxp).then(
           (res) => {
             this.error = this.respuesta = res.data.title;
             // this.$router.push("/");
             this.res = res;
             this.respuesta = res.data;
-            this.addMessage();
+            // this.addMessage();
           },
           (err) => {
             // console.log(err.response);
@@ -461,7 +464,7 @@ export default defineComponent({
         if (typeof this.$route.params.id === "string") {
           this.rueda.userMod = this.$store.state.user.usuario;
           await updateRueda(this.$route.params.id, this.rueda);
-          this.addMessage();
+          // this.addMessage();
           this.$router.push("/ruedas");
         }
       } catch (error) {
@@ -476,7 +479,7 @@ export default defineComponent({
         try {
           if (typeof this.$route.params.id === "string") {
             await deleteRueda(this.$route.params.id);
-            this.addMessage();
+            // this.addMessage();
             this.$router.push("/ruedas");
           }
         } catch (error) {
@@ -541,7 +544,7 @@ export default defineComponent({
     fillFields() {
       this.rueda.fecha = new Date();
       this.rueda.cantidad = 50;
-      this.rueda.monos = 0;
+      this.rueda.monos = 1;
       this.rueda.empleadoMezclador = "ROBERTO EPIFANIO CABRERA SANTOS";
       this.cxp.fecha = new Date();
     },
@@ -580,39 +583,43 @@ export default defineComponent({
 
     async saveRueda() {
       this.toggleLoading();
-      try {
+
+      let i: number;
+      for (i = 0; i <= this.rueda.monos - 1; i++) {
         try {
-          const res = await getOneRueda();
-          this.oneRueda = res.data;
-          this.one = this.oneRueda[0];
-          this.nextNo = this.one.no + 1;
-          this.rueda.no = this.nextNo;
+          try {
+            const res = await getOneRueda();
+            this.oneRueda = res.data;
+            this.one = this.oneRueda[0];
+            this.nextNo = this.one.no + 1;
+            this.rueda.no = this.nextNo;
+          } catch (error) {
+            // // console.error(error);
+          }
+          this.rueda.userReg = this.$store.state.user.usuario;
+          this.cxp.pago = 0;
+          this.cxp.origen = "Producción";
+          this.cxp.empleado = this.rueda.empleadoEmpunero;
+          await this.saveCxp();
+          this.cxp.empleado = this.rueda.empleadoPegador;
+          await this.saveCxp();
+          const res = await createRueda(this.rueda).then(
+            (res) => {
+              this.error = this.respuesta = res.data.title;
+              // this.$router.push("/");
+              this.res = res;
+              this.respuesta = res.data;
+              // this.addMessage();
+            },
+            (err) => {
+              // console.log(err.response);
+              this.error = err.response.data.error;
+            }
+          );
+          // this.$router.push("/ruedas/");
         } catch (error) {
           // // console.error(error);
         }
-        this.rueda.userReg = this.$store.state.user.usuario;
-        this.cxp.pago = 0;
-        this.cxp.origen = "Producción";
-        this.cxp.empleado = this.rueda.empleadoEmpunero;
-        await this.saveCxp();
-        this.cxp.empleado = this.rueda.empleadoPegador;
-        await this.saveCxp();
-        const res = await createRueda(this.rueda).then(
-          (res) => {
-            this.error = this.respuesta = res.data.title;
-            // this.$router.push("/");
-            this.res = res;
-            this.respuesta = res.data;
-            this.addMessage();
-          },
-          (err) => {
-            // console.log(err.response);
-            this.error = err.response.data.error;
-          }
-        );
-        // this.$router.push("/ruedas/");
-      } catch (error) {
-        // // console.error(error);
       }
       await this.toggleLoading();
       if (this.error !== this.mensageError) {

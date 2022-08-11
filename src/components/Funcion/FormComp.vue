@@ -121,7 +121,7 @@ export default defineComponent({
     //   this.loadFuncion(this.$route.params.id);
     // }
 
-    // this.pusherSubscribe();
+    // // this.pusherSubscribe();
 
     this.focus();
   },
@@ -145,7 +145,7 @@ export default defineComponent({
         if (typeof this.$route.params.id === "string") {
           this.funcion.userMod = this.$store.state.user.usuario;
           await updateFuncion(this.$route.params.id, this.funcion);
-          this.addMessage();
+          // this.addMessage();
           this.$router.push("/funcions");
         }
       } catch (error) {
@@ -159,7 +159,7 @@ export default defineComponent({
       try {
         if (typeof this.$route.params.id === "string") {
           await deleteFuncion(this.$route.params.id);
-          this.addMessage();
+          // this.addMessage();
           this.$router.push("/funcions");
         }
       } catch (error) {
@@ -371,7 +371,7 @@ export default defineComponent({
             // this.$router.push("/");
             this.res = res;
             this.respuesta = res.data;
-            this.addMessage();
+            // this.addMessage();
           },
           (err) => {
             // console.log(err.response);

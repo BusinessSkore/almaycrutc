@@ -12,4 +12,5 @@ export interface Cxp {
   origen: String;
   pago: Number;
   pagar: Boolean;
+  desc: String;
 }

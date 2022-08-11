@@ -163,7 +163,7 @@ export default {
 
   mounted() {
     this.loadFacturas();
-    this.pusherSubscribe();
+    // this.pusherSubscribe();
   },
 };
 </script>

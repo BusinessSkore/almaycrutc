@@ -163,7 +163,7 @@ export default {
 
   mounted() {
     this.loadVitolas();
-    this.pusherSubscribe();
+    // this.pusherSubscribe();
   },
 };
 </script>

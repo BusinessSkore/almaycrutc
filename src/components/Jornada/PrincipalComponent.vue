@@ -164,7 +164,7 @@ export default {
 
   mounted() {
     this.loadJornadas();
-    this.pusherSubscribe();
+    // this.pusherSubscribe();
   },
 };
 </script>

@@ -107,7 +107,7 @@
                 ><select id="origen" v-model="pago.origen" class="form-select">
                   <option>Producción</option>
                   <option>Recapada</option>
-                  <option>Insentivo</option>
+                  <option>Incentivo</option>
                   <option>Salario</option>
                   <option>Jornada</option>
                 </select>
@@ -125,7 +125,8 @@
                 <tr>
                   <th>No.</th>
                   <th>Fecha</th>
-                  <th>Orgígen</th>
+                  <th>Orígen</th>
+                  <th>Descripción</th>
                   <th>Valor</th>
                 </tr>
                 <!-- Body -->
@@ -138,6 +139,9 @@
                   </td>
                   <td>
                     {{ item.origen }}
+                  </td>
+                  <td>
+                    {{ item.desc }}
                   </td>
                   <td class="ta-r">
                     {{ formatNumber(item.valor) }}
@@ -363,7 +367,7 @@ export default defineComponent({
         if (typeof this.$route.params.id === "string") {
           this.pago.userMod = this.$store.state.user.usuario;
           await updatePago(this.$route.params.id, this.pago);
-          this.addMessage();
+          // this.addMessage();
           this.$router.push("/pagos");
         }
       } catch (error) {
@@ -378,7 +382,7 @@ export default defineComponent({
         try {
           if (typeof this.$route.params.id === "string") {
             await deletePago(this.$route.params.id);
-            this.addMessage();
+            // this.addMessage();
             this.$router.push("/pagos");
           }
         } catch (error) {
@@ -505,7 +509,7 @@ export default defineComponent({
             // this.$router.push("/");
             this.res = res;
             this.respuesta = res.data;
-            this.addMessage();
+            // this.addMessage();
           },
           (err) => {
             // console.log(err.response);

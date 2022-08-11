@@ -130,7 +130,7 @@
                 >
                   <option>Producción</option>
                   <option>Recapada</option>
-                  <option>Insentivo</option>
+                  <option>Incentivo</option>
                   <option>Salario</option>
                   <option>Jornada</option>
                 </select>
@@ -381,7 +381,7 @@ export default defineComponent({
         if (typeof this.$route.params.id === "string") {
           this.nomina.userMod = this.$store.state.user.usuario;
           await updateNomina(this.$route.params.id, this.nomina);
-          this.addMessage();
+          // this.addMessage();
           this.$router.push("/nominas");
         }
       } catch (error) {
@@ -396,7 +396,7 @@ export default defineComponent({
         try {
           if (typeof this.$route.params.id === "string") {
             await deleteNomina(this.$route.params.id);
-            this.addMessage();
+            // this.addMessage();
             this.$router.push("/nominas");
           }
         } catch (error) {
@@ -518,7 +518,7 @@ export default defineComponent({
             // this.$router.push("/");
             this.res = res;
             this.respuesta = res.data;
-            this.addMessage();
+            // this.addMessage();
           },
           (err) => {
             // console.log(err.response);

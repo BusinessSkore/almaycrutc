@@ -569,7 +569,7 @@ export default defineComponent({
         if (typeof this.$route.params.id === "string") {
           this.factura.userMod = this.$store.state.user.usuario;
           await updateFactura(this.$route.params.id, this.factura);
-          this.addMessage();
+          // this.addMessage();
           // this.$router.push("/facturas");
         }
       } catch (error) {
@@ -582,7 +582,7 @@ export default defineComponent({
       try {
         if (typeof this.$route.params.id === "string") {
           await deleteFactura(this.$route.params.id);
-          this.addMessage();
+          // this.addMessage();
           this.$router.push("/facturas");
         }
       } catch (error) {
@@ -616,7 +616,7 @@ export default defineComponent({
     if (typeof this.$route.params.id === "string") {
       this.loadFactura(this.$route.params.id);
     }
-    this.pusherSubscribe();
+    // this.pusherSubscribe();
   },
 });
 </script>

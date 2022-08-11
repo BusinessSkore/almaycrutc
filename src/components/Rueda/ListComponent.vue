@@ -1,32 +1,34 @@
 <template>
   <table v-if="this.totales.ruedas" id="customers">
     <tr>
+      <th>No.</th>
       <th>Fecha</th>
       <th>Liga</th>
       <!-- <th>Empleados</th> -->
       <th>Vitola</th>
       <!-- <th>Cantidad</th> -->
-      <th>Monos</th>
+      <!-- <th>Monos</th> -->
     </tr>
     <tr
       v-for="(rueda, index) in ruedas"
       :key="index"
       @click="this.$router.push(`/ruedas/${rueda._id}`)"
     >
+      <td>{{ formatSecuence(rueda.no) }}</td>
       <td>{{ formatDate(rueda.fecha) }}</td>
       <td>{{ rueda.liga }}</td>
       <!-- <td>{{ rueda.empleados }}</td> -->
       <td>{{ rueda.vitola }}</td>
       <!-- <td>{{ rueda.cantidad }}</td> -->
-      <td class="der">{{ formatNumber(rueda.monos, false) }}</td>
+      <!-- <td class="der">{{ formatNumber(rueda.monos, false) }}</td> -->
     </tr>
     <tr>
       <td>Total: {{ formatNumber(this.totales.ruedas) }}</td>
       <td></td>
       <td></td>
-      <!-- <td></td>
-      <td></td> -->
-      <td class="der">{{ formatNumber(this.totales.valor, false) }}</td>
+      <td></td>
+      <!-- <td></td> -->
+      <!-- <td class="der">{{ formatNumber(this.totales.valor, false) }}</td> -->
     </tr>
   </table>
 

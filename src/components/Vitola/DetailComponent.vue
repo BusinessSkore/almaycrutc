@@ -67,7 +67,7 @@
                   </select>
                 </div>
 
-                <div>
+                <!-- <div>
                   <label
                     class="ta-l col-form-label col-form-label-sm"
                     for="costo"
@@ -78,7 +78,7 @@
                     v-model="vitola.costo"
                     class="form-control"
                   />
-                </div>
+                </div> -->
                 <div>
                   <label
                     class="ta-l col-form-label col-form-label-sm"
@@ -118,11 +118,7 @@
               class="btn btn-success"
               @click.prevent="handleUpdate()"
               :disabled="
-                !vitola.tamano ||
-                  !vitola.tipo ||
-                  !vitola.pago ||
-                  !vitola.costo ||
-                  !vitola.capa
+                !vitola.tamano || !vitola.tipo || !vitola.pago || !vitola.capa
               "
             >
               <i class="fas fa-save"></i> Guardar
@@ -205,7 +201,7 @@ export default defineComponent({
     if (typeof this.$route.params.id === "string") {
       this.loadVitola(this.$route.params.id);
     }
-    this.pusherSubscribe();
+    // this.pusherSubscribe();
 
     this.focus();
   },
@@ -230,7 +226,7 @@ export default defineComponent({
           this.vitola.userMod = this.$store.state.user.usuario;
           this.vitola.descripcion = this.vitola.tipo + " " + this.vitola.tamano;
           await updateVitola(this.$route.params.id, this.vitola);
-          this.addMessage();
+          // this.addMessage();
           this.$router.push("/vitolas");
         }
       } catch (error) {
@@ -245,7 +241,7 @@ export default defineComponent({
         try {
           if (typeof this.$route.params.id === "string") {
             await deleteVitola(this.$route.params.id);
-            this.addMessage();
+            // this.addMessage();
             this.$router.push("/vitolas");
           }
         } catch (error) {
@@ -456,7 +452,7 @@ export default defineComponent({
             // this.$router.push("/");
             this.res = res;
             this.respuesta = res.data;
-            this.addMessage();
+            // this.addMessage();
           },
           (err) => {
             // console.log(err.response);

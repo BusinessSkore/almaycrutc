@@ -8,6 +8,8 @@
   <!-- {{ this.prepagos }} -->
   <!-- {{ this.pagos }} -->
   <!-- {{ this.nextNo }} -->
+  <!-- {{ this.incentivos2 }}<br /><br /> -->
+  <!-- {{ this.cxp }} -->
 
   <div>
     <Navbar />
@@ -102,7 +104,7 @@
                 >
                   <option>Producción</option>
                   <option>Recapada</option>
-                  <option>Insentivo</option>
+                  <option>Incentivo</option>
                   <option>Salario</option>
                   <option>Jornada</option>
                 </select>
@@ -153,6 +155,15 @@
           </div>
           <!-- {{ this.asalariados }}<br /> -->
           <!-- {{ this.cxp }} -->
+
+          <!-- <button
+            v-if="this.modoForm == 'add'"
+            class="btn btn-info"
+            @click.prevent="generarIncentivos()"
+          >
+            <i class="fas fa-cog"></i> Generar Incentivos
+          </button> -->
+
           <button
             v-if="this.modoForm == 'add'"
             class="btn btn-success"
@@ -227,6 +238,7 @@ import {
 } from "@/services/almaycru/Nomina";
 import { createPago, getOnePago } from "@/services/almaycru/Pago";
 import { createCxp, getOneCxp } from "@/services/almaycru/Cxp";
+import { getInc1, getInc2, getInc3, getInc4 } from "@/services/almaycru/Rueda";
 import { getFuncions } from "@/services/almaycru/Funcion";
 import { createMensaje } from "@/services/almaycru/ChatService";
 import numeral from "numeral";
@@ -240,6 +252,8 @@ export default defineComponent({
   },
   data() {
     return {
+      incentivos: [],
+      incentivos2: [],
       estadoLoading: "Cargando...",
 
       pago: {} as Pago,
@@ -327,6 +341,22 @@ export default defineComponent({
   // },
 
   methods: {
+    getDivisor(vitola: string) {
+      if (vitola == "GRAN TORO 70X7") {
+        return 5;
+      } else {
+        return 6;
+      }
+    },
+
+    getDivisor2(vitola: string) {
+      if (vitola == "GRAN TORO 70X7") {
+        return 6;
+      } else {
+        return 7;
+      }
+    },
+
     async asigNom() {
       this.estadoLoading = "Cargando Pagos a Nómina...";
       // this.toggleLoading();
@@ -406,11 +436,12 @@ export default defineComponent({
         } catch (error) {
           // // console.error(error);
         }
-        this.cxp.userReg = this.$store.state.user.usuario;
-        this.cxp.pagar = false;
-        this.cxp.pago = 0;
-        this.cxp.origen = "Salario";
-        this.cxp.fecha = this.nomina.fecha;
+        // this.cxp.userReg = this.$store.state.user.usuario;
+        // this.cxp.pagar = false;
+        // this.cxp.pago = 0;
+        // this.cxp.origen = "Salario";
+        // this.cxp.desc = "Fijo Semanal";
+        // this.cxp.fecha = this.nomina.fecha;
         const res = await createCxp(this.cxp);
       } catch (error) {
         // // console.error(error);
@@ -462,6 +493,278 @@ export default defineComponent({
       this.estadoLoading = "Cargando...";
     },
 
+    async generarIncentivos() {
+      this.estadoLoading =
+        "Obteniendo Producción de LINGA MOST WANTED de los Empuñeros...";
+      this.toggleLoading();
+      // Obtener Primera Consulta
+      try {
+        const res = await getInc1();
+        this.incentivos = res.data;
+      } catch (error) {
+        // console.error(error);
+      }
+      // Extraer Registros que aplican para Insentivo
+      let i: number;
+      for (i = 0; i <= this.incentivos.length - 1; i++) {
+        if (
+          this.incentivos[i].count /
+            this.getDivisor(this.incentivos[i]._id.vitola) >=
+          1
+        ) {
+          // Definiendo Variables
+          let a: string;
+          let b: string;
+          let c: string;
+          let d: number;
+          let e: number;
+          let f: number;
+          let g: number;
+          let h: number;
+          // Asignando Valor a Variables
+          a = this.incentivos[i]._id.vitola;
+          b = this.incentivos[i]._id.day;
+          c = this.incentivos[i]._id.empleadoEmpunero;
+          d = this.incentivos[i].count;
+          e = this.getDivisor(this.incentivos[i]._id.vitola);
+          f =
+            this.incentivos[i].count /
+            this.getDivisor(this.incentivos[i]._id.vitola);
+          g = Math.trunc(
+            this.incentivos[i].count /
+              this.getDivisor(this.incentivos[i]._id.vitola)
+          );
+
+          h =
+            Math.trunc(
+              this.incentivos[i].count /
+                this.getDivisor(this.incentivos[i]._id.vitola)
+            ) * 200;
+
+          // Creando Objeto
+          this.incentivos2.push({
+            vitola: a,
+            day: b,
+            empleado: c,
+            count: d,
+            divisor: e,
+            countDivisor: f,
+            truncado: g,
+            pago: h,
+          });
+        }
+      }
+      this.toggleLoading();
+      this.estadoLoading = "Cargando...";
+
+      // Limpiando Incentivos
+      this.incentivos = [];
+
+      this.estadoLoading =
+        "Obteniendo Producción de LINGA MOST WANTED de los Pegadores...";
+      this.toggleLoading();
+      // Obtener Primera Consulta
+      try {
+        const res = await getInc2();
+        this.incentivos = res.data;
+      } catch (error) {
+        // console.error(error);
+      }
+      // Extraer Registros que aplican para Insentivo
+      // let i: number;
+      for (i = 0; i <= this.incentivos.length - 1; i++) {
+        if (
+          this.incentivos[i].count /
+            this.getDivisor(this.incentivos[i]._id.vitola) >=
+          1
+        ) {
+          // Definiendo Variables
+          let a: string;
+          let b: string;
+          let c: string;
+          let d: number;
+          let e: number;
+          let g: number;
+          let h: number;
+          // Asignando Valor a Variables
+          a = this.incentivos[i]._id.vitola;
+          b = this.incentivos[i]._id.day;
+          c = this.incentivos[i]._id.empleadoPegador;
+          d = this.incentivos[i].count;
+          e = this.getDivisor(this.incentivos[i]._id.vitola);
+          g = Math.trunc(
+            this.incentivos[i].count /
+              this.getDivisor(this.incentivos[i]._id.vitola)
+          );
+
+          h =
+            Math.trunc(
+              this.incentivos[i].count /
+                this.getDivisor(this.incentivos[i]._id.vitola)
+            ) * 200;
+
+          // Creando Objeto
+          this.incentivos2.push({
+            vitola: a,
+            day: b,
+            empleado: c,
+            count: d,
+            divisor: e,
+            truncado: g,
+            pago: h,
+          });
+        }
+      }
+      this.toggleLoading();
+      this.estadoLoading = "Cargando...";
+
+      // Limpiando Incentivos
+      this.incentivos = [];
+
+      this.estadoLoading =
+        "Obteniendo Producción de Todas las Vitolas de los Empuñeros...";
+      this.toggleLoading();
+      // Obtener Primera Consulta
+      try {
+        const res = await getInc3();
+        this.incentivos = res.data;
+      } catch (error) {
+        // console.error(error);
+      }
+      // Extraer Registros que aplican para Insentivo
+      // let i: number;
+      for (i = 0; i <= this.incentivos.length - 1; i++) {
+        if (
+          this.incentivos[i].count /
+            this.getDivisor2(this.incentivos[i]._id.vitola) >=
+          1
+        ) {
+          // Definiendo Variables
+          let a: string;
+          let b: string;
+          let c: string;
+          let d: number;
+          let e: number;
+          let g: number;
+          let h: number;
+          // Asignando Valor a Variables
+          a = this.incentivos[i]._id.vitola;
+          b = this.incentivos[i]._id.day;
+          c = this.incentivos[i]._id.empleadoEmpunero;
+          d = this.incentivos[i].count;
+          e = this.getDivisor2(this.incentivos[i]._id.vitola);
+          g = Math.trunc(
+            this.incentivos[i].count /
+              this.getDivisor2(this.incentivos[i]._id.vitola)
+          );
+
+          h =
+            Math.trunc(
+              this.incentivos[i].count /
+                this.getDivisor2(this.incentivos[i]._id.vitola)
+            ) * 200;
+
+          // Creando Objeto
+          this.incentivos2.push({
+            vitola: a,
+            day: b,
+            empleado: c,
+            count: d,
+            divisor: e,
+            truncado: g,
+            pago: h,
+          });
+        }
+      }
+      this.toggleLoading();
+      this.estadoLoading = "Cargando...";
+
+      // Limpiando Incentivos
+      this.incentivos = [];
+
+      this.estadoLoading =
+        "Obteniendo Producción de Todas las Vitolas de los Pegadores...";
+      this.toggleLoading();
+      // Obtener Primera Consulta
+      try {
+        const res = await getInc4();
+        this.incentivos = res.data;
+      } catch (error) {
+        // console.error(error);
+      }
+      // Extraer Registros que aplican para Insentivo
+      // let i: number;
+      for (i = 0; i <= this.incentivos.length - 1; i++) {
+        if (
+          this.incentivos[i].count /
+            this.getDivisor2(this.incentivos[i]._id.vitola) >=
+          1
+        ) {
+          // Definiendo Variables
+          let a: string;
+          let b: string;
+          let c: string;
+          let d: number;
+          let e: number;
+          let g: number;
+          let h: number;
+          // Asignando Valor a Variables
+          a = this.incentivos[i]._id.vitola;
+          b = this.incentivos[i]._id.day;
+          c = this.incentivos[i]._id.empleadoPegador;
+          d = this.incentivos[i].count;
+          e = this.getDivisor2(this.incentivos[i]._id.vitola);
+          g = Math.trunc(
+            this.incentivos[i].count /
+              this.getDivisor2(this.incentivos[i]._id.vitola)
+          );
+
+          h =
+            Math.trunc(
+              this.incentivos[i].count /
+                this.getDivisor2(this.incentivos[i]._id.vitola)
+            ) * 200;
+
+          // Creando Objeto
+          this.incentivos2.push({
+            vitola: a,
+            day: b,
+            empleado: c,
+            count: d,
+            divisor: e,
+            truncado: g,
+            pago: h,
+          });
+        }
+      }
+      this.toggleLoading();
+      this.estadoLoading = "Cargando...";
+
+      // Generar CxPs por Cada Incentivo
+      // let i: number;
+      this.estadoLoading = "Generando Cuenta por Pagar Incentivos...";
+      this.toggleLoading();
+      for (i = 0; i <= this.incentivos2.length - 1; i++) {
+        this.cxp.empleado = this.incentivos2[i].empleado;
+        this.cxp.valor = this.incentivos2[i].pago;
+        this.cxp.userReg = this.$store.state.user.usuario;
+        this.cxp.pagar = false;
+        this.cxp.pago = 0;
+        this.cxp.origen = "Incentivo";
+        this.cxp.desc =
+          "ALCANCE DE META (" +
+          this.incentivos2[i].vitola +
+          " PRODUCCION DE " +
+          this.incentivos2[i].count +
+          " )";
+        this.cxp.fecha = this.incentivos2[i].day;
+
+        await this.saveCxp();
+      }
+      this.toggleLoading();
+      this.estadoLoading = "Cargando...";
+    },
+
     async generarNomina() {
       if (
         confirm(
@@ -469,6 +772,9 @@ export default defineComponent({
             this.formatDateAsk(this.nomina.fecha)
         )
       ) {
+        //Generar Incentivos
+        await this.generarIncentivos();
+
         // Cargar Asalariados
         await this.loadAsalariados();
 
@@ -479,6 +785,14 @@ export default defineComponent({
         for (i = 0; i <= this.asalariados.length - 1; i++) {
           this.cxp.empleado = this.asalariados[i].nombre;
           this.cxp.valor = this.asalariados[i].sueldo;
+
+          this.cxp.userReg = this.$store.state.user.usuario;
+          this.cxp.pagar = false;
+          this.cxp.pago = 0;
+          this.cxp.origen = "Salario";
+          this.cxp.desc = "Fijo Semanal";
+          this.cxp.fecha = this.nomina.fecha;
+
           await this.saveCxp();
         }
         this.toggleLoading();
@@ -593,7 +907,7 @@ export default defineComponent({
       //   if (typeof this.$route.params.id === "string") {
       //     this.nomina.userMod = this.$store.state.user.usuario;
       //     await updateNomina(this.$route.params.id, this.nomina);
-      //     this.addMessage();
+      //     // this.addMessage();
       //     this.$router.push("/nominas");
       //   }
       // } catch (error) {
@@ -608,7 +922,7 @@ export default defineComponent({
         try {
           if (typeof this.$route.params.id === "string") {
             await deleteNomina(this.$route.params.id);
-            this.addMessage();
+            // this.addMessage();
             this.$router.push("/nominas");
           }
         } catch (error) {
@@ -758,7 +1072,7 @@ export default defineComponent({
             // this.$router.push("/");
             this.res = res;
             this.respuesta = res.data;
-            this.addMessage();
+            // this.addMessage();
           },
           (err) => {
             // console.log(err.response);

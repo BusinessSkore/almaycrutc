@@ -2,6 +2,7 @@
   <!-- {{ this.jornada }} -->
   <div>
     <Navbar />
+    <!-- {{ this.jornada.empleados }} -->
     <div v-if="showModal7" class="modal7">
       <div class="contenedor7">
         <header>Empleados</header>
@@ -15,6 +16,17 @@
                 v-model="search"
                 class="form-control"
                 @keypress="buscar()"
+              />
+            </div>
+            <div>
+              <p>Horas:</p>
+              <input
+                id="valor"
+                type="number"
+                min="1"
+                max="16"
+                v-model="currentEmpleado.horas"
+                class="form-control"
               />
             </div>
             <div>
@@ -79,7 +91,7 @@
                   style="cursor:pointer"
                   class="fas fa-minus-circle redOption"
                 ></i>
-                {{ empleado }}
+                {{ empleado.nombre + " (" + empleado.horas + " HORAS)" }}
               </li>
             </ol>
           </div>
@@ -140,6 +152,7 @@ export default defineComponent({
   },
   data() {
     return {
+      currentEmpleado: { nombre: "", horas: 8 },
       seguros2: [],
       seguros: [
         "NINGUNO",
@@ -255,13 +268,18 @@ export default defineComponent({
       }
     },
 
-    setSeguro(seguro: Empleado) {
+    setSeguro(seguro: any) {
       if (this.jornada.empleados.includes(seguro.nombre)) {
         alert("Empleado ya Registrado");
       } else {
-        this.jornada.empleados.push(seguro.nombre);
+        this.currentEmpleado.nombre = seguro.nombre;
+        this.jornada.empleados.push({
+          nombre: this.currentEmpleado.nombre,
+          horas: this.currentEmpleado.horas,
+        });
         // this.showModalMethod7();
         this.search = "";
+        this.currentEmpleado.horas = 8;
       }
     },
 
@@ -452,7 +470,7 @@ export default defineComponent({
         if (typeof this.$route.params.id === "string") {
           this.jornada.userMod = this.$store.state.user.usuario;
           await updateJornada(this.$route.params.id, this.jornada);
-          this.addMessage();
+          // this.addMessage();
           this.$router.push("/jornadas");
         }
       } catch (error) {
@@ -467,7 +485,7 @@ export default defineComponent({
         try {
           if (typeof this.$route.params.id === "string") {
             await deleteJornada(this.$route.params.id);
-            this.addMessage();
+            // this.addMessage();
             this.$router.push("/jornadas");
           }
         } catch (error) {
@@ -586,11 +604,33 @@ export default defineComponent({
           }
           this.jornada.userReg = this.$store.state.user.usuario;
           this.cxp.pago = 0;
-          this.cxp.origen = "Jornada";
-          this.cxp.valor = 600;
+
           let i: number;
           for (i = 0; i <= this.jornada.empleados.length - 1; i++) {
-            this.cxp.empleado = this.jornada.empleados[i];
+            this.cxp.empleado = this.jornada.empleados[i].nombre;
+            this.cxp.origen = "Jornada";
+
+            if (this.jornada.empleados[i].horas == 8) {
+              this.cxp.valor = 600;
+              this.cxp.desc =
+                this.jornada.empleados[i].horas +
+                " HORAS (Jornada Normal Completa)";
+            } else if (this.jornada.empleados[i].horas > 8) {
+              this.cxp.valor =
+                600 + (this.jornada.empleados[i].horas - 8) * 100;
+              this.cxp.desc =
+                this.jornada.empleados[i].horas +
+                " HORAS ( " +
+                (this.jornada.empleados[i].horas - 8) +
+                " HORAS EXTRAS X RD$ 100.00)";
+            } else {
+              this.cxp.valor = (600 / 8) * this.jornada.empleados[i].horas;
+              this.cxp.desc =
+                this.jornada.empleados[i].horas +
+                " HORAS ( - " +
+                (8 - this.jornada.empleados[i].horas) +
+                " HORAS NO LABORADAS X RD$ 75.00)";
+            }
             await this.saveCxp();
           }
 
@@ -600,7 +640,7 @@ export default defineComponent({
               // this.$router.push("/");
               this.res = res;
               this.respuesta = res.data;
-              this.addMessage();
+              // this.addMessage();
             },
             (err: { response: { data: { error: any } } }) => {
               // console.log(err.response);

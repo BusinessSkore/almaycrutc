@@ -165,7 +165,7 @@ export default {
 
   mounted() {
     this.loadNominas();
-    this.pusherSubscribe();
+    // this.pusherSubscribe();
   },
 };
 </script>

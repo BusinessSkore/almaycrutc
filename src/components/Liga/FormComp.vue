@@ -173,7 +173,7 @@ export default defineComponent({
         if (typeof this.$route.params.id === "string") {
           this.liga.userMod = this.$store.state.user.usuario;
           await updateLiga(this.$route.params.id, this.liga);
-          this.addMessage();
+          // this.addMessage();
           this.$router.push("/ligas");
         }
       } catch (error) {
@@ -188,7 +188,7 @@ export default defineComponent({
         try {
           if (typeof this.$route.params.id === "string") {
             await deleteLiga(this.$route.params.id);
-            this.addMessage();
+            // this.addMessage();
             this.$router.push("/ligas");
           }
         } catch (error) {
@@ -308,7 +308,7 @@ export default defineComponent({
             // this.$router.push("/");
             this.res = res;
             this.respuesta = res.data;
-            this.addMessage();
+            // this.addMessage();
           },
           (err) => {
             // console.log(err.response);

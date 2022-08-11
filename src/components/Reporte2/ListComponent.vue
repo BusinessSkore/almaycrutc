@@ -148,7 +148,7 @@ export default {
 
         await updateReporte(this.ids.segundo.id, this.nuevoReporte2);
 
-        await this.addMessage();
+        // await this.addMessage();
       } else {
         alert(descripcion + ", Ya está en su Máxima Prioridad.");
       }

@@ -80,6 +80,7 @@
                   ><input
                     id="cantidad"
                     type="Number"
+                    min="1"
                     v-model="recapada.cantidad"
                     class="form-control"
                     @change="calcValor()"
@@ -339,13 +340,21 @@ export default defineComponent({
         }
         this.cxp.userReg = this.$store.state.user.usuario;
         this.cxp.pagar = false;
+        this.cxp.desc =
+          this.recapada.vitola +
+          " " +
+          this.recapada.liga +
+          " (RD$ " +
+          this.vitolaSelected[0].pago / 50 +
+          " x " +
+          this.recapada.cantidad + ")";
         const res = await createCxp(this.cxp).then(
           (res) => {
             this.error = this.respuesta = res.data.title;
             // this.$router.push("/");
             this.res = res;
             this.respuesta = res.data;
-            this.addMessage();
+            // this.addMessage();
           },
           (err) => {
             // console.log(err.response);
@@ -465,7 +474,7 @@ export default defineComponent({
         if (typeof this.$route.params.id === "string") {
           this.recapada.userMod = this.$store.state.user.usuario;
           await updateRecapada(this.$route.params.id, this.recapada);
-          this.addMessage();
+          // this.addMessage();
           this.$router.push("/recapadas");
         }
       } catch (error) {
@@ -480,7 +489,7 @@ export default defineComponent({
         try {
           if (typeof this.$route.params.id === "string") {
             await deleteRecapada(this.$route.params.id);
-            this.addMessage();
+            // this.addMessage();
             this.$router.push("/recapadas");
           }
         } catch (error) {
@@ -544,7 +553,7 @@ export default defineComponent({
 
     fillFields() {
       this.recapada.fecha = new Date();
-      this.recapada.cantidad = 0;
+      this.recapada.cantidad = 1;
       // this.recapada.monos = 0;
       // this.recapada.empleadoMezclador = "ROBERTO EPIFANIO CABRERA SANTOS";
       this.cxp.fecha = new Date();
@@ -607,7 +616,7 @@ export default defineComponent({
             // this.$router.push("/");
             this.res = res;
             this.respuesta = res.data;
-            this.addMessage();
+            // this.addMessage();
           },
           (err) => {
             // console.log(err.response);
@@ -642,7 +651,7 @@ export default defineComponent({
       // this.recapada.empleadoEmpunero = "";
       this.recapada.empleadoPegador = "";
       this.recapada.vitola = "";
-      this.recapada.cantidad = "";
+      this.recapada.cantidad = 1;
       // this.recapada.monos = "";
     },
 

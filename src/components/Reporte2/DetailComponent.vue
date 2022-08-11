@@ -273,7 +273,7 @@ export default defineComponent({
         //console.error(error);
       }
       this.toggleLoading();
-      await this.addMessage();
+      // await this.addMessage();
       this.$router.push("/reporte2s");
       // this.toggleAlert();
     },
@@ -288,7 +288,7 @@ export default defineComponent({
         //console.error(error);
       }
       this.toggleLoading();
-      await this.addMessage();
+      // await this.addMessage();
     },
 
     toggleLoading() {
