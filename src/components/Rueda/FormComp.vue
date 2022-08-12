@@ -338,7 +338,7 @@ export default defineComponent({
         this.cxp.userReg = this.$store.state.user.usuario;
         this.cxp.pagar = false;
         this.cxp.desc = this.rueda.vitola + " " + this.rueda.liga;
-
+        // this.cxp.fecha = this.rueda.fecha;
         const res = await createCxp(this.cxp).then(
           (res) => {
             this.error = this.respuesta = res.data.title;
@@ -433,7 +433,7 @@ export default defineComponent({
 
     fixTime() {
       this.rueda.fecha = this.formatDateToFix(this.rueda.fecha, true);
-      this.cxp.fecha = this.formatDateToFix(this.cxp.fecha, true);
+      // this.cxp.fecha = this.formatDateToFix(this.cxp.fecha, true);
     },
 
     formatDateToFix(dateValue: Date, incTime: boolean) {
@@ -546,7 +546,7 @@ export default defineComponent({
       this.rueda.cantidad = 50;
       this.rueda.monos = 1;
       this.rueda.empleadoMezclador = "ROBERTO EPIFANIO CABRERA SANTOS";
-      this.cxp.fecha = this.rueda.fecha;
+      // this.cxp.fecha = this.rueda.fecha;
     },
 
     async loadOneRueda() {
@@ -598,6 +598,7 @@ export default defineComponent({
           }
           this.rueda.userReg = this.$store.state.user.usuario;
           this.cxp.pago = 0;
+          this.cxp.fecha = this.rueda.fecha;
           this.cxp.origen = "Producción";
           this.cxp.empleado = this.rueda.empleadoEmpunero;
           await this.saveCxp();
