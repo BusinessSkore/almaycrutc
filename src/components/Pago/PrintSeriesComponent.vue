@@ -127,6 +127,7 @@
                   <th>Fecha</th>
                   <th>Orígen</th>
                   <th>Descripción</th>
+                  <th>Cant.</th>
                   <th>Valor</th>
                 </tr>
                 <!-- Body -->
@@ -135,13 +136,16 @@
                     {{ index + 1 }}
                   </td>
                   <td>
-                    {{ formatDate2(item.fecha, true) }}
+                    {{ formatDate2(item._id.day, true) }}
                   </td>
                   <td>
-                    {{ item.origen }}
+                    {{ item._id.origen }}
                   </td>
                   <td>
-                    {{ item.desc }}
+                    {{ item._id.desc }}
+                  </td>
+                  <td class="ta-r">
+                    {{ formatNumber2(item.count) }}
                   </td>
                   <td class="ta-r">
                     {{ formatNumber(item.valor) }}

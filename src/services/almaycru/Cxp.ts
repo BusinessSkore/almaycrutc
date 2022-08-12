@@ -42,7 +42,7 @@ export const eliminateCxps = async (cxp: Cxp): Promise<AxiosResponse> =>
 //Reportes----------------------------------------------------------------------------------------------------
 // Obtener Cxp por Pago
 export const getCxpByPag = async (documento: any): Promise<AxiosResponse> =>
-  await axios.post("/cxps/getCxpByPag", documento);
+  await axios.post("/cxps/getCxpByPagGrped", documento);
 
 // Get Cxps Agrupadas por Estatus
 export const getcxpsCant = async (): Promise<AxiosResponse<Cxp[]>> =>
