@@ -546,7 +546,7 @@ export default defineComponent({
       this.rueda.cantidad = 50;
       this.rueda.monos = 1;
       this.rueda.empleadoMezclador = "ROBERTO EPIFANIO CABRERA SANTOS";
-      this.cxp.fecha = new Date();
+      this.cxp.fecha = this.rueda.fecha;
     },
 
     async loadOneRueda() {
