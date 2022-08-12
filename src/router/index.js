@@ -102,6 +102,7 @@ import JornadaFormComp from "../components/Jornada/FormComp.vue";
 // Pago -------------------------------------------------------------------
 import PagoComponent from "../components/Pago/PrincipalComponent.vue";
 import PagoPrintComponent from "../components/Pago/PrintComponent.vue";
+import PagoPrintSeriesComponent from "../components/Pago/PrintSeriesComponent.vue";
 import PagoFormComp from "../components/Pago/FormComp.vue";
 // ----------------------------------------------------------------------------
 
@@ -666,6 +667,14 @@ const routes = [
         path: "/pagos2/:id",
         name: "pago-details2",
         component: PagoPrintComponent,
+        meta: {
+          roles: ["Power User", "Administrador"],
+        },
+      },
+      {
+        path: "/pagosSeries/:id",
+        name: "pago-detailsSeries",
+        component: PagoPrintSeriesComponent,
         meta: {
           roles: ["Power User", "Administrador"],
         },

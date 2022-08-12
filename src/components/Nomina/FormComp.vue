@@ -10,6 +10,8 @@
   <!-- {{ this.nextNo }} -->
   <!-- {{ this.incentivos2 }}<br /><br /> -->
   <!-- {{ this.cxp }} -->
+  <!-- {{ this.$store.state.user.pagosID }} -->
+  <!-- {{ this.$store.state.user.nomina }} -->
 
   <div>
     <Navbar />
@@ -200,6 +202,14 @@
           </button>
 
           <button
+            v-if="this.modoForm == 'show'"
+            class="btn btn-info"
+            @click.prevent="imprimirPagos()"
+          >
+            <i class="fas fa-print"></i> Imprimir Pagos
+          </button>
+
+          <button
             v-if="showDelete"
             class="btn btn-danger"
             @click.prevent="handleDelete()"
@@ -252,6 +262,7 @@ export default defineComponent({
   },
   data() {
     return {
+      pagosID: [],
       incentivos: [],
       incentivos2: [],
       estadoLoading: "Cargando...",
@@ -311,6 +322,14 @@ export default defineComponent({
   },
 
   async mounted() {
+    if (this.$store.state.user.isPrinting == true) {
+      // alert("isPrinting = true");
+      this.$router.push(
+        `/pagosSeries/${
+          this.$store.state.user.pagosID[this.$store.state.user.currentPago]
+        }`
+      );
+    }
     if (this.$route.fullPath == "/nominas/new") {
       this.modoForm = "add";
       this.encabezado = "Nueva Nómina";
@@ -341,6 +360,30 @@ export default defineComponent({
   // },
 
   methods: {
+    imprimirPagos() {
+      this.$store.state.user.nomina = this.nomina._id;
+      this.$store.state.user.isPrinting = true;
+      this.$store.state.user.pagosID = [];
+      let i: number;
+      for (i = 0; i <= this.pagos.length - 1; i++) {
+        // alert(this.pagos[i]._id);
+        this.$store.state.user.pagosID.push(this.pagos[i]._id);
+        // this.$router.push(`/pagosSeries/${this.pagos[i]._id}`);
+      }
+      this.$store.state.user.currentPago = 0;
+      this.$router.push(
+        `/pagosSeries/${
+          this.$store.state.user.pagosID[this.$store.state.user.currentPago]
+        }`
+      );
+
+      // let pagoID: string;
+      // pagoID = "62f64afa0f33da854731150e";
+      // this.$router.push(`/pagos2/${pagoID}`);
+
+      // pagoID = "62f64b160f33da854731156a";
+      // this.$router.push(`/pagos2/${pagoID}`);
+    },
     getDivisor(vitola: string) {
       if (vitola == "GRAN TORO 70X7") {
         return 5;
