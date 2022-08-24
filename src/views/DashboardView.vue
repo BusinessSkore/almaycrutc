@@ -70,7 +70,47 @@
                 class="card-body"
               >
                 <p style="font-weight: bold">Ruedas por Vitola</p>
-                <table id="customers">
+                <div>
+                  <div>
+                    <label
+                      class="ta-l col-form-label col-form-label-sm"
+                      for="fechaInicio"
+                      >Desde:</label
+                    ><input
+                      id="fechaInicio"
+                      type="Date"
+                      @change="loadGpedByVitola()"
+                      v-model="documento.fechaInicio"
+                      class="form-control"
+                    />
+                  </div>
+                  <div>
+                    <label
+                      class="ta-l col-form-label col-form-label-sm"
+                      for="fechaCorte"
+                      >Hasta:</label
+                    ><input
+                      id="fechaCorte"
+                      type="Date"
+                      @change="loadGpedByVitola()"
+                      v-model="documento.fechaCorte"
+                      class="form-control"
+                    />
+                  </div>
+                  <!-- <button
+                    class="btn btn-success"
+                    @click.prevent="loadGpedByVitola()"
+                    :disabled="
+                      !documento.fechaCorte ||
+                        !documento.fechaInicio ||
+                        cargando
+                    "
+                  >
+                    <i class="fas fa-search"></i> Consultar
+                  </button> -->
+                  <br />
+                </div>
+                <table v-if="!cargando" id="customers">
                   <tr>
                     <th>Vitola</th>
                     <th>Cant.</th>
@@ -213,6 +253,7 @@ export default {
       mejorasPend: [] as any,
       totales: {} as any,
       cargando: false,
+      documento: {} as any,
     };
   },
 
@@ -363,7 +404,7 @@ export default {
     async loadGpedByVitola() {
       // this.toggleLoading();
       try {
-        const res = await getGpedByVitola();
+        const res = await getGpedByVitola(this.documento);
         this.gpedByVitola = res.data;
       } catch (error) {
         // console.error(error);

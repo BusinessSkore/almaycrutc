@@ -50,8 +50,10 @@ export const getfactsGpedByCli = async (): Promise<AxiosResponse<Rueda[]>> =>
   await axios.get("/ruedas/getfactsGpedByCli");
 
 // Get Ruedas Agrupadas por Vitola
-export const getGpedByVitola = async (): Promise<AxiosResponse<Rueda[]>> =>
-  await axios.get("/ruedas/getGpedByVitola");
+export const getGpedByVitola = async (
+  documento: any
+): Promise<AxiosResponse<Rueda[]>> =>
+  await axios.post("/ruedas/getGpedByVitola", documento);
 
 // Obtener Incentivos 1
 export const getInc1 = async (): Promise<AxiosResponse<Rueda[]>> =>
