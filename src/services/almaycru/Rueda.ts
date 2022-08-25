@@ -56,20 +56,28 @@ export const getGpedByVitola = async (
   await axios.post("/ruedas/getGpedByVitola", documento);
 
 // Obtener Incentivos 1
-export const getInc1 = async (): Promise<AxiosResponse<Rueda[]>> =>
-  await axios.get("/ruedas/getInc1");
+export const getInc1 = async (
+  documento: any
+): Promise<AxiosResponse<Rueda[]>> =>
+  await axios.post("/ruedas/getInc1", documento);
 
 // Obtener Incentivos 2
-export const getInc2 = async (): Promise<AxiosResponse<Rueda[]>> =>
-  await axios.get("/ruedas/getInc2");
+export const getInc2 = async (
+  documento: any
+): Promise<AxiosResponse<Rueda[]>> =>
+  await axios.post("/ruedas/getInc2", documento);
 
 // Obtener Incentivos 3
-export const getInc3 = async (): Promise<AxiosResponse<Rueda[]>> =>
-  await axios.get("/ruedas/getInc3");
+export const getInc3 = async (
+  documento: any
+): Promise<AxiosResponse<Rueda[]>> =>
+  await axios.post("/ruedas/getInc3", documento);
 
 // Obtener Incentivos 4
-export const getInc4 = async (): Promise<AxiosResponse<Rueda[]>> =>
-  await axios.get("/ruedas/getInc4");
+export const getInc4 = async (
+  documento: any
+): Promise<AxiosResponse<Rueda[]>> =>
+  await axios.get("/ruedas/getInc4", documento);
 
 //Ruedaes----------------------------------------------------------------------------------------------------
 //Actualizar Un Registro

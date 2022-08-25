@@ -33,8 +33,18 @@
               <!-- Start Fields -->
               <!-- {{ this.nomina.fecha }} -->
               <div>
+                <label class="ta-l col-form-label col-form-label-sm" for="desde"
+                  >Desde:</label
+                ><input
+                  id="desde"
+                  type="date"
+                  v-model="nomina.desde"
+                  class="form-control"
+                />
+              </div>
+              <div>
                 <label class="ta-l col-form-label col-form-label-sm" for="fecha"
-                  >Fecha:</label
+                  >Hasta:</label
                 ><input
                   id="fecha"
                   type="date"
@@ -170,7 +180,7 @@
             v-if="this.modoForm == 'add'"
             class="btn btn-success"
             @click.prevent="generarNomina()"
-            :disabled="!nomina.fecha"
+            :disabled="!nomina.fecha || !nomina.desde"
           >
             <i class="fas fa-cog"></i> Generar Nómina
           </button>
@@ -280,7 +290,7 @@ export default defineComponent({
       asalariados: [],
       prepagos: [],
       // empleados: [] as Empleado[],
-      campoFocus: "fecha",
+      campoFocus: "desde",
       mensageError: "Error",
       mensageExito: "Nómina Registrada Exitosamente",
       mensageConfirm: "¿Está Seguro que desea Eliminar Esta Nómina?",
@@ -542,7 +552,7 @@ export default defineComponent({
       this.toggleLoading();
       // Obtener Primera Consulta
       try {
-        const res = await getInc1();
+        const res = await getInc1(this.nomina);
         this.incentivos = res.data;
       } catch (error) {
         // console.error(error);
@@ -608,7 +618,7 @@ export default defineComponent({
       this.toggleLoading();
       // Obtener Primera Consulta
       try {
-        const res = await getInc2();
+        const res = await getInc2(this.nomina);
         this.incentivos = res.data;
       } catch (error) {
         // console.error(error);
@@ -669,7 +679,7 @@ export default defineComponent({
       this.toggleLoading();
       // Obtener Primera Consulta
       try {
-        const res = await getInc3();
+        const res = await getInc3(this.nomina);
         this.incentivos = res.data;
       } catch (error) {
         // console.error(error);
@@ -730,7 +740,7 @@ export default defineComponent({
       this.toggleLoading();
       // Obtener Primera Consulta
       try {
-        const res = await getInc4();
+        const res = await getInc4(this.nomina);
         this.incentivos = res.data;
       } catch (error) {
         // console.error(error);
@@ -811,7 +821,9 @@ export default defineComponent({
     async generarNomina() {
       if (
         confirm(
-          "¿Está Seguro que desea Generar Esta Nómina?: " +
+          "¿Está Seguro que desea Generar Esta Nómina?: Desde " +
+            this.formatDateAsk(this.nomina.desde) +
+            " Hasta " +
             this.formatDateAsk(this.nomina.fecha)
         )
       ) {
@@ -842,6 +854,7 @@ export default defineComponent({
         this.estadoLoading = "Cargando...";
 
         // Marcar Cxps para Pagar
+        this.documento.fechaInicio = this.nomina.desde;
         this.documento.fechaCorte = this.nomina.fecha;
         await this.paraPago();
 
@@ -1028,7 +1041,7 @@ export default defineComponent({
     formatDateAsk(dateValue: Date) {
       let out = moment(dateValue).add(0, "days");
       moment.locale("es");
-      return moment(out).format("DD MMMM yyyy");
+      return moment(out).format("DD MMMM");
     },
 
     formatDatePlus(dateValue: Date) {

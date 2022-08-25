@@ -6,6 +6,7 @@ export interface Nomina {
   userMod: string;
   // Entidad
   fecha: Date;
+  desde: Date;
   cant: Number;
   valor: Number;
 }
