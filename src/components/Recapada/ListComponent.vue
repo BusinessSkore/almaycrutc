@@ -2,31 +2,28 @@
   <table v-if="this.totales.recapadas" id="customers">
     <tr>
       <th>Fecha</th>
-      <th>Liga</th>
-      <!-- <th>Empleados</th> -->
+      <th>Empleado</th>
       <th>Vitola</th>
-      <!-- <th>Cantidad</th> -->
-      <th>Cantidad</th>
+      <th>Cant.</th>
+      <th>Cigarros</th>
     </tr>
     <tr
       v-for="(recapada, index) in recapadas"
       :key="index"
       @click="this.$router.push(`/recapadas/${recapada._id}`)"
     >
-      <td>{{ formatDate(recapada.fecha) }}</td>
-      <td>{{ recapada.liga }}</td>
-      <!-- <td>{{ recapada.empleados }}</td> -->
-      <td>{{ recapada.vitola }}</td>
-      <!-- <td>{{ recapada.cantidad }}</td> -->
+      <td>{{ formatDate(recapada._id.day) }}</td>
+      <td>{{ recapada._id.empleadoPegador }}</td>
+      <td>{{ recapada._id.vitola }}</td>
+      <td class="der">{{ formatNumber(recapada.count, false) }}</td>
       <td class="der">{{ formatNumber(recapada.cantidad, false) }}</td>
     </tr>
     <tr>
       <td>Total: {{ formatNumber(this.totales.recapadas) }}</td>
       <td></td>
       <td></td>
-      <!-- <td></td>
-      <td></td> -->
-      <td class="der">{{ formatNumber(this.totales.valor, false) }}</td>
+      <td class="der">{{ formatNumber(this.totales.cant, false) }}</td>
+      <td class="der">{{ formatNumber(this.totales.cantidad, false) }}</td>
     </tr>
   </table>
 
@@ -182,6 +179,14 @@ export default {
         (accum: any, item: any) => accum + item.monos,
         0
       );
+      this.totales.cant = this.recapadas.reduce(
+        (accum: any, item: any) => accum + item.count,
+        0
+      );
+      this.totales.cantidad = this.recapadas.reduce(
+        (accum: any, item: any) => accum + item.cantidad,
+        0
+      );
     },
 
     formatNumber(value: number, decimal: boolean) {
@@ -201,8 +206,8 @@ export default {
     },
 
     formatDate(dateValue: Date) {
-      let out = moment(dateValue).add(0, "h");
-      return moment(out).format("D/MM/yyyy HH:mm");
+      let out = moment(dateValue).add(4, "hours");
+      return moment(out).format("D/MM/yyyy");
     },
   },
 

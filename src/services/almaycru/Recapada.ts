@@ -4,19 +4,25 @@ import axios from "./axios";
 
 //Básicos----------------------------------------------------------------------------------------------------
 //Cargar Registros
-export const createRecapadaa = async (recapada: Recapada): Promise<AxiosResponse> =>
-  await axios.post("/recapadas/Savea", recapada);
+export const createRecapadaa = async (
+  recapada: Recapada
+): Promise<AxiosResponse> => await axios.post("/recapadas/Savea", recapada);
 
 // Crear un Solo Registro
-export const createRecapada = async (recapada: Recapada): Promise<AxiosResponse> =>
-  await axios.post("/recapadas/Save", recapada);
+export const createRecapada = async (
+  recapada: Recapada
+): Promise<AxiosResponse> => await axios.post("/recapadas/Save", recapada);
 
 // Leer Todos los registros
-export const getRecapadas = async (): Promise<AxiosResponse<Recapada[]>> =>
-  await axios.get("/recapadas/get");
+export const getRecapadas = async (
+  criterio: any
+): Promise<AxiosResponse<Recapada[]>> =>
+  await axios.post("/recapadas/get", criterio);
 
 //Leer un solo Registro por ID
-export const getRecapada = async (id: string): Promise<AxiosResponse<Recapada>> =>
+export const getRecapada = async (
+  id: string
+): Promise<AxiosResponse<Recapada>> =>
   await axios.get(`/recapadas/GetById/${id}`);
 
 //Leer el último Registro
@@ -37,8 +43,9 @@ export const deleteRecapada = async (id: string): Promise<AxiosResponse> =>
   await axios.delete(`/recapadas/Delete/${id}`);
 
 //Eliminar todos los Registros
-export const eliminateRecapadas = async (recapada: Recapada): Promise<AxiosResponse> =>
-  await axios.post("/recapadas/delete", recapada);
+export const eliminateRecapadas = async (
+  recapada: Recapada
+): Promise<AxiosResponse> => await axios.post("/recapadas/delete", recapada);
 
 //Reportes----------------------------------------------------------------------------------------------------
 // Get Recapadas Agrupadas por Estatus

@@ -46,6 +46,36 @@
               _mstvisible="2"
             ></i>
           </h4>
+          <div class="grid">
+            <div>
+              <label class="ta-l col-form-label col-form-label-sm" for="desde"
+                >Desde:</label
+              ><input
+                id="desde"
+                type="date"
+                v-model="criterio.desde"
+                class="form-control"
+              />
+            </div>
+            <div>
+              <label class="ta-l col-form-label col-form-label-sm" for="hasta"
+                >Hasta:</label
+              ><input
+                id="hasta"
+                type="date"
+                v-model="criterio.hasta"
+                class="form-control"
+              />
+            </div>
+
+            <button
+              class="btn btn-success"
+              @click.prevent="loadRecapadas()"
+              :disabled="!criterio.desde || !criterio.hasta"
+            >
+              <i class="fas fa-search"></i> Buscar
+            </button>
+          </div>
           <ListadoComponent :recapadas="recapadas" v-show="!cargando" />
         </div>
       </div>
@@ -83,6 +113,7 @@ export default {
       recapadas: [] as Recapada[],
       str: "",
       type: "",
+      criterio: {} as any,
     };
   },
 
@@ -111,7 +142,7 @@ export default {
     },
     async filterRecapadas(catName: string) {
       try {
-        const res = await getRecapadas();
+        const res = await getRecapadas(this.criterio);
         this.recapadas = res.data;
       } catch (error) {
         // console.error(error);
@@ -126,7 +157,7 @@ export default {
     async search(term: string) {
       this.toggleLoading();
       try {
-        const res = await getRecapadas();
+        const res = await getRecapadas(this.criterio);
         this.recapadas = res.data;
       } catch (error) {
         // console.error(error);
@@ -142,7 +173,7 @@ export default {
     async loadRecapadas() {
       this.toggleLoading();
       try {
-        const res = await getRecapadas();
+        const res = await getRecapadas(this.criterio);
         this.recapadas = res.data;
       } catch (error) {
         // console.error(error);
@@ -153,7 +184,7 @@ export default {
     async loadRecapadas2() {
       this.toggleLoading();
       try {
-        const res = await getRecapadas();
+        const res = await getRecapadas(this.criterio);
         this.recapadas = res.data;
       } catch (error) {
         // console.error(error);
@@ -163,7 +194,7 @@ export default {
   },
 
   mounted() {
-    this.loadRecapadas();
+    // this.loadRecapadas();
     // this.pusherSubscribe();
   },
 };
