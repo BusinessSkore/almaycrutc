@@ -1,169 +1,166 @@
 <template v-show="!cargando">
   <div>
     <!-- Spinner -->
-    <Transition>
-      <div v-if="cargando" class="spin">
-        <img class="img" src="@/assets/images/logo.png" />
-      </div>
-    </Transition>
+
+    <div v-if="cargando" class="spin">
+      <img class="img" src="@/assets/images/logo.png" />
+    </div>
+
     <Navbar />
     <!------------------------------------------------ General ------------------------------------------------->
-    <Transition>
-      <div v-show="!cargando" class="general">
-        <!-- Modal -->
-        <Transition>
-          <div v-if="showModal" class="modal">
-            <div class="contenedor">
-              <header>Filtros</header>
-              <div class="contenido">
-                <label @click="this.showModalMethod()" for="btn-modal">X</label>
-                <div class="contenido">
-                  <Filters
-                    :filterCxps="filterCxps"
-                    :search="search"
-                    :filteredCxps="filteredCxps"
-                  />
-                </div>
-              </div>
+
+    <div v-show="!cargando" class="general">
+      <!-- Modal -->
+
+      <div v-if="showModal" class="modal">
+        <div class="contenedor">
+          <header>Filtros</header>
+          <div class="contenido">
+            <label @click="this.showModalMethod()" for="btn-modal">X</label>
+            <div class="contenido">
+              <Filters
+                :filterCxps="filterCxps"
+                :search="search"
+                :filteredCxps="filteredCxps"
+              />
             </div>
           </div>
-        </Transition>
-        <!-- Cuerpo -->
-        <div class="grid">
-          <div class="cxps">
-            <!-- <label
+        </div>
+      </div>
+
+      <!-- Cuerpo -->
+      <div class="grid">
+        <div class="cxps">
+          <!-- <label
           style="cursor:pointer"
           @click="this.showModalMethod()"
           for="btn-modal"
           >Opciones</label
         > -->
-            <h4>
-              Cuentas por Pagar
-              <i
-                style="cursor:pointer"
-                @click="this.$router.push(`/cxps/new`)"
-                class="fas fa-plus"
-                _mstvisible="2"
-              ></i>
-            </h4>
-            <div>
-              <div class="form-check form-switch">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  v-model="onlyRange"
-                  id="esVol"
-                />
-                <label class="form-check-label" for="esVol"
-                  >Filtro Completo</label
-                >
-              </div>
-            </div>
-            <div v-if="onlyRange" class="grid">
-              <div>
-                <label class="ta-l col-form-label col-form-label-sm" for="desde"
-                  >Desde:</label
-                ><input
-                  id="desde"
-                  type="date"
-                  v-model="criterio.desde"
-                  class="form-control"
-                />
-              </div>
-              <div>
-                <label class="ta-l col-form-label col-form-label-sm" for="hasta"
-                  >Hasta:</label
-                ><input
-                  id="hasta"
-                  type="date"
-                  v-model="criterio.hasta"
-                  class="form-control"
-                />
-              </div>
-              <div>
-                <label
-                  class="ta-l col-form-label col-form-label-sm"
-                  for="empleado"
-                  >Empleado:</label
-                ><select
-                  id="empleado"
-                  v-model="criterio.empleado"
-                  class="form-select"
-                >
-                  <option
-                    v-for="(empleado, index) in empleados"
-                    :key="index"
-                    :value="empleado.nombre"
-                    >{{ empleado.nombre }}</option
-                  >
-                </select>
-              </div>
-              <div>
-                <label
-                  class="ta-l col-form-label col-form-label-sm"
-                  for="origen"
-                  >Orígen:</label
-                ><select
-                  id="origen"
-                  v-model="criterio.origen"
-                  class="form-select"
-                >
-                  <option>Producción</option>
-                  <option>Recapada</option>
-                  <option>Incentivo</option>
-                  <option>Salario</option>
-                  <option>Jornada</option>
-                  <option>Otro</option>
-                </select>
-              </div>
-              <button
-                class="btn btn-success"
-                @click.prevent="loadCxps()"
-                :disabled="
-                  !criterio.desde ||
-                    !criterio.hasta ||
-                    !criterio.empleado ||
-                    !criterio.origen
-                "
+          <h4>
+            Cuentas por Pagar
+            <i
+              style="cursor:pointer"
+              @click="this.$router.push(`/cxps/new`)"
+              class="fas fa-plus"
+              _mstvisible="2"
+            ></i>
+          </h4>
+          <div>
+            <div class="form-check form-switch">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                v-model="onlyRange"
+                id="esVol"
+              />
+              <label class="form-check-label" for="esVol"
+                >Filtro Completo</label
               >
-                <i class="fas fa-search"></i> Buscar
-              </button>
             </div>
-            <div v-if="!onlyRange" class="grid">
-              <div>
-                <label class="ta-l col-form-label col-form-label-sm" for="desde"
-                  >Desde:</label
-                ><input
-                  id="desde"
-                  type="date"
-                  v-model="criterioTwo.desde"
-                  class="form-control"
-                />
-              </div>
-              <div>
-                <label class="ta-l col-form-label col-form-label-sm" for="hasta"
-                  >Hasta:</label
-                ><input
-                  id="hasta"
-                  type="date"
-                  v-model="criterioTwo.hasta"
-                  class="form-control"
-                />
-              </div>
-
-              <button
-                class="btn btn-success"
-                @click.prevent="loadCxpsTwo()"
-                :disabled="!criterioTwo.desde || !criterioTwo.hasta"
-              >
-                <i class="fas fa-search"></i> Buscar
-              </button>
-            </div>
-            <ListadoComponent :cxps="cxps" v-show="!cargando" />
           </div>
+          <div v-if="onlyRange" class="grid">
+            <div>
+              <label class="ta-l col-form-label col-form-label-sm" for="desde"
+                >Desde:</label
+              ><input
+                id="desde"
+                type="date"
+                v-model="criterio.desde"
+                class="form-control"
+              />
+            </div>
+            <div>
+              <label class="ta-l col-form-label col-form-label-sm" for="hasta"
+                >Hasta:</label
+              ><input
+                id="hasta"
+                type="date"
+                v-model="criterio.hasta"
+                class="form-control"
+              />
+            </div>
+            <div>
+              <label
+                class="ta-l col-form-label col-form-label-sm"
+                for="empleado"
+                >Empleado:</label
+              ><select
+                id="empleado"
+                v-model="criterio.empleado"
+                class="form-select"
+              >
+                <option
+                  v-for="(empleado, index) in empleados"
+                  :key="index"
+                  :value="empleado.nombre"
+                  >{{ empleado.nombre }}</option
+                >
+              </select>
+            </div>
+            <div>
+              <label class="ta-l col-form-label col-form-label-sm" for="origen"
+                >Orígen:</label
+              ><select
+                id="origen"
+                v-model="criterio.origen"
+                class="form-select"
+              >
+                <option>Producción</option>
+                <option>Recapada</option>
+                <option>Incentivo</option>
+                <option>Salario</option>
+                <option>Jornada</option>
+                <option>Otro</option>
+              </select>
+            </div>
+            <button
+              class="btn btn-success"
+              @click.prevent="loadCxps()"
+              :disabled="
+                !criterio.desde ||
+                  !criterio.hasta ||
+                  !criterio.empleado ||
+                  !criterio.origen
+              "
+            >
+              <i class="fas fa-search"></i> Buscar
+            </button>
+          </div>
+          <div v-if="!onlyRange" class="grid">
+            <div>
+              <label class="ta-l col-form-label col-form-label-sm" for="desde"
+                >Desde:</label
+              ><input
+                id="desde"
+                type="date"
+                v-model="criterioTwo.desde"
+                class="form-control"
+              />
+            </div>
+            <div>
+              <label class="ta-l col-form-label col-form-label-sm" for="hasta"
+                >Hasta:</label
+              ><input
+                id="hasta"
+                type="date"
+                v-model="criterioTwo.hasta"
+                class="form-control"
+              />
+            </div>
+
+            <button
+              class="btn btn-success"
+              @click.prevent="loadCxpsTwo()"
+              :disabled="!criterioTwo.desde || !criterioTwo.hasta"
+            >
+              <i class="fas fa-search"></i> Buscar
+            </button>
+          </div>
+          <ListadoComponent :cxps="cxps" v-show="!cargando" />
         </div>
       </div>
-    </Transition>
+    </div>
   </div>
   <!---------------------------------------------------------------------------------------------------------->
 </template>
