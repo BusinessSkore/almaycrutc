@@ -46,7 +46,20 @@
                 _mstvisible="2"
               ></i>
             </h4>
-            <div class="grid">
+            <div>
+              <div class="form-check form-switch">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  v-model="onlyRange"
+                  id="esVol"
+                />
+                <label class="form-check-label" for="esVol"
+                  >Filtro Completo</label
+                >
+              </div>
+            </div>
+            <div v-if="onlyRange" class="grid">
               <div>
                 <label class="ta-l col-form-label col-form-label-sm" for="desde"
                   >Desde:</label
@@ -116,7 +129,7 @@
                 <i class="fas fa-search"></i> Buscar
               </button>
             </div>
-            <div class="grid">
+            <div v-if="!onlyRange" class="grid">
               <div>
                 <label class="ta-l col-form-label col-form-label-sm" for="desde"
                   >Desde:</label
@@ -189,6 +202,7 @@ export default {
       criterio: {} as any,
       criterioTwo: {} as any,
       empleados: [] as Empleado[],
+      onlyRange: true,
     };
   },
 
