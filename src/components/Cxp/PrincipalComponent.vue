@@ -46,6 +46,76 @@
                 _mstvisible="2"
               ></i>
             </h4>
+            <div class="grid">
+              <div>
+                <label class="ta-l col-form-label col-form-label-sm" for="desde"
+                  >Desde:</label
+                ><input
+                  id="desde"
+                  type="date"
+                  v-model="criterio.desde"
+                  class="form-control"
+                />
+              </div>
+              <div>
+                <label class="ta-l col-form-label col-form-label-sm" for="hasta"
+                  >Hasta:</label
+                ><input
+                  id="hasta"
+                  type="date"
+                  v-model="criterio.hasta"
+                  class="form-control"
+                />
+              </div>
+              <div>
+                <label
+                  class="ta-l col-form-label col-form-label-sm"
+                  for="empleado"
+                  >Empleado:</label
+                ><select
+                  id="empleado"
+                  v-model="criterio.empleado"
+                  class="form-select"
+                >
+                  <option
+                    v-for="(empleado, index) in empleados"
+                    :key="index"
+                    :value="empleado.nombre"
+                    >{{ empleado.nombre }}</option
+                  >
+                </select>
+              </div>
+              <div>
+                <label
+                  class="ta-l col-form-label col-form-label-sm"
+                  for="origen"
+                  >Orígen:</label
+                ><select
+                  id="origen"
+                  v-model="criterio.origen"
+                  class="form-select"
+                >
+                  <option>Producción</option>
+                  <option>Recapada</option>
+                  <option>Incentivo</option>
+                  <option>Salario</option>
+                  <option>Jornada</option>
+                  <option>Otro</option>
+                </select>
+              </div>
+              <button
+                class="btn btn-success"
+                @click.prevent="loadCxps()"
+                :disabled="
+                  !criterio.desde ||
+                    !criterio.hasta ||
+                    !criterio.empleado ||
+                    !criterio.origen
+                "
+              >
+                <i class="fas fa-search"></i> Buscar
+              </button>
+            </div>
             <ListadoComponent :cxps="cxps" v-show="!cargando" />
           </div>
         </div>
@@ -61,6 +131,8 @@ import ListadoComponent from "@/components/Cxp/ListComponent.vue";
 import Navbar from "@/components/Navbar.vue";
 import { Cxp } from "@/interfaces/Cxp";
 import { getCxps } from "@/services/almaycru/Cxp";
+import { getEmpleados } from "@/services/almaycru/Empleado";
+import { Empleado } from "@/interfaces/Empleado";
 import Pusher from "pusher-js";
 
 export default {
@@ -84,10 +156,23 @@ export default {
       cxps: [] as Cxp[],
       str: "",
       type: "",
+      criterio: {} as any,
+      empleados: [] as Empleado[],
     };
   },
 
   methods: {
+    async loadEmpleados() {
+      this.toggleLoading();
+      try {
+        const res = await getEmpleados();
+        this.empleados = res.data;
+      } catch (error) {
+        // console.error(error);
+      }
+      this.toggleLoading();
+    },
+
     pusherSubscribe() {
       // Start pusher subscribe
       var pusher = new Pusher("d7b50b87118775ed0b11", {
@@ -112,7 +197,7 @@ export default {
     },
     async filterCxps(catName: string) {
       try {
-        const res = await getCxps();
+        const res = await getCxps(this.criterio);
         this.cxps = res.data;
       } catch (error) {
         // console.error(error);
@@ -127,7 +212,7 @@ export default {
     async search(term: string) {
       this.toggleLoading();
       try {
-        const res = await getCxps();
+        const res = await getCxps(this.criterio);
         this.cxps = res.data;
       } catch (error) {
         // console.error(error);
@@ -143,7 +228,7 @@ export default {
     async loadCxps() {
       this.toggleLoading();
       try {
-        const res = await getCxps();
+        const res = await getCxps(this.criterio);
         this.cxps = res.data;
       } catch (error) {
         // console.error(error);
@@ -154,7 +239,7 @@ export default {
     async loadCxps2() {
       this.toggleLoading();
       try {
-        const res = await getCxps();
+        const res = await getCxps(this.criterio);
         this.cxps = res.data;
       } catch (error) {
         // console.error(error);
@@ -164,7 +249,8 @@ export default {
   },
 
   mounted() {
-    this.loadCxps();
+    this.loadEmpleados();
+    // this.loadCxps();
     // this.pusherSubscribe();
   },
 };

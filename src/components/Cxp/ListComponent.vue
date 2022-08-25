@@ -1,44 +1,22 @@
 <template>
   <table v-if="this.totales.cxps" id="customers">
     <tr>
-      <th>Fecha / Hora</th>
-      <!-- <th>Pago</th> -->
-      <th>Empleado</th>
-      <th>Orígen</th>
+      <th>Fecha</th>
+      <th>Descripción</th>
+      <th>Cant.</th>
       <th>Valor</th>
-      <th v-if="this.$store.state.user.type == 'Power User'">Pagar</th>
     </tr>
-    <tr
-      v-for="(cxp, index) in cxps"
-      :key="index"
-      @click="this.$router.push(`/cxps/${cxp._id}`)"
-    >
-      <td>{{ formatDate(cxp.fecha) }}</td>
-      <!-- <td>{{ cxp.pagoNo }}</td> -->
-      <td>{{ cxp.empleado }}</td>
-      <td>{{ cxp.origen }}</td>
+    <tr v-for="(cxp, index) in cxps" :key="index">
+      <td>{{ formatDate(cxp._id.day) }}</td>
+      <td>{{ cxp._id.desc }}</td>
+      <td class="der">{{ formatNumber(cxp.count, false) }}</td>
       <td class="der">{{ formatNumber(cxp.valor, true) }}</td>
-      <td v-if="this.$store.state.user.type == 'Power User'">
-        <div class="form-check">
-          <input
-            class="form-check-input"
-            type="checkbox"
-            v-model="cxp.pagar"
-            id="flexCheckDefault"
-          />
-          <!-- <label class="form-check-label" for="flexCheckDefault">
-            Default checkbox
-          </label> -->
-        </div>
-      </td>
     </tr>
     <tr>
       <td>Total: {{ formatNumber(this.totales.cxps) }}</td>
-      <!-- <td></td> -->
       <td></td>
-      <td></td>
+      <td class="der">{{ formatNumber(this.totales.count, false) }}</td>
       <td class="der">{{ formatNumber(this.totales.valor, true) }}</td>
-      <td v-if="this.$store.state.user.type == 'Power User'"></td>
     </tr>
   </table>
 
@@ -194,6 +172,10 @@ export default {
         (accum: any, item: any) => accum + item.valor,
         0
       );
+      this.totales.count = this.cxps.reduce(
+        (accum: any, item: any) => accum + item.count,
+        0
+      );
     },
 
     formatNumber(value: number, decimal: boolean) {
@@ -214,7 +196,7 @@ export default {
 
     formatDate(dateValue: Date) {
       let out = moment(dateValue).add(4, "h");
-      return moment(out).format("DD/MM/yyyy HH:mm");
+      return moment(out).format("DD/MM/yyyy");
     },
   },
 

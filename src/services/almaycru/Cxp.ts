@@ -12,8 +12,8 @@ export const createCxp = async (cxp: Cxp): Promise<AxiosResponse> =>
   await axios.post("/cxps/Save", cxp);
 
 // Leer Todos los registros
-export const getCxps = async (): Promise<AxiosResponse<Cxp[]>> =>
-  await axios.get("/cxps/get");
+export const getCxps = async (criterio: any): Promise<AxiosResponse<Cxp[]>> =>
+  await axios.post("/cxps/get", criterio);
 
 //Leer un solo Registro por ID
 export const getCxp = async (id: string): Promise<AxiosResponse<Cxp>> =>

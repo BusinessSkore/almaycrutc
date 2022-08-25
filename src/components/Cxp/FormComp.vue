@@ -73,6 +73,7 @@
                   <option>Incentivo</option>
                   <option>Salario</option>
                   <option>Jornada</option>
+                  <option>Otro</option>
                   <!-- <option>Horas Extras</option> -->
                 </select>
               </div>
