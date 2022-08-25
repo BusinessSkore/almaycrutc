@@ -116,6 +116,36 @@
                 <i class="fas fa-search"></i> Buscar
               </button>
             </div>
+            <div class="grid">
+              <div>
+                <label class="ta-l col-form-label col-form-label-sm" for="desde"
+                  >Desde:</label
+                ><input
+                  id="desde"
+                  type="date"
+                  v-model="criterioTwo.desde"
+                  class="form-control"
+                />
+              </div>
+              <div>
+                <label class="ta-l col-form-label col-form-label-sm" for="hasta"
+                  >Hasta:</label
+                ><input
+                  id="hasta"
+                  type="date"
+                  v-model="criterioTwo.hasta"
+                  class="form-control"
+                />
+              </div>
+
+              <button
+                class="btn btn-success"
+                @click.prevent="loadCxpsTwo()"
+                :disabled="!criterioTwo.desde || !criterioTwo.hasta"
+              >
+                <i class="fas fa-search"></i> Buscar
+              </button>
+            </div>
             <ListadoComponent :cxps="cxps" v-show="!cargando" />
           </div>
         </div>
@@ -130,7 +160,7 @@ import Filters from "@/components/Cxp/FiltersComponent.vue";
 import ListadoComponent from "@/components/Cxp/ListComponent.vue";
 import Navbar from "@/components/Navbar.vue";
 import { Cxp } from "@/interfaces/Cxp";
-import { getCxps } from "@/services/almaycru/Cxp";
+import { getCxps, getCxpsTwo } from "@/services/almaycru/Cxp";
 import { getEmpleados } from "@/services/almaycru/Empleado";
 import { Empleado } from "@/interfaces/Empleado";
 import Pusher from "pusher-js";
@@ -157,6 +187,7 @@ export default {
       str: "",
       type: "",
       criterio: {} as any,
+      criterioTwo: {} as any,
       empleados: [] as Empleado[],
     };
   },
@@ -208,11 +239,40 @@ export default {
         });
       }
     },
+    async filterCxpsTwo(catName: string) {
+      try {
+        const res = await getCxpsTwo(this.criterioTwo);
+        this.cxps = res.data;
+      } catch (error) {
+        // console.error(error);
+      }
+      if (catName !== "Todos") {
+        this.cxps = this.cxps.filter((cxp: Cxp) => {
+          return cxp.empleado === catName;
+        });
+      }
+    },
 
     async search(term: string) {
       this.toggleLoading();
       try {
         const res = await getCxps(this.criterio);
+        this.cxps = res.data;
+      } catch (error) {
+        // console.error(error);
+      }
+      if (term !== "Todos") {
+        this.cxps = this.cxps.filter((cxp: Cxp) => {
+          return cxp.empleado.toLowerCase().includes(term.toLowerCase());
+        });
+      }
+      this.toggleLoading();
+    },
+
+    async searchTwo(term: string) {
+      this.toggleLoading();
+      try {
+        const res = await getCxpsTwo(this.criterioTwo);
         this.cxps = res.data;
       } catch (error) {
         // console.error(error);
@@ -236,10 +296,32 @@ export default {
       this.toggleLoading();
     },
 
+    async loadCxpsTwo() {
+      this.toggleLoading();
+      try {
+        const res = await getCxpsTwo(this.criterioTwo);
+        this.cxps = res.data;
+      } catch (error) {
+        // console.error(error);
+      }
+      this.toggleLoading();
+    },
+
     async loadCxps2() {
       this.toggleLoading();
       try {
         const res = await getCxps(this.criterio);
+        this.cxps = res.data;
+      } catch (error) {
+        // console.error(error);
+      }
+      this.toggleLoading();
+    },
+
+    async loadCxpsTwo2() {
+      this.toggleLoading();
+      try {
+        const res = await getCxpsTwo(this.criterioTwo);
         this.cxps = res.data;
       } catch (error) {
         // console.error(error);

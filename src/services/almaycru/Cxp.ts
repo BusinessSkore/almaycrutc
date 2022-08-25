@@ -15,6 +15,10 @@ export const createCxp = async (cxp: Cxp): Promise<AxiosResponse> =>
 export const getCxps = async (criterio: any): Promise<AxiosResponse<Cxp[]>> =>
   await axios.post("/cxps/get", criterio);
 
+// Leer Todos los registros
+export const getCxpsTwo = async (criterio: any): Promise<AxiosResponse<Cxp[]>> =>
+  await axios.post("/cxps/gettwo", criterio);
+
 //Leer un solo Registro por ID
 export const getCxp = async (id: string): Promise<AxiosResponse<Cxp>> =>
   await axios.get(`/cxps/GetById/${id}`);

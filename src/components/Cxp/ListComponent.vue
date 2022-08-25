@@ -2,18 +2,24 @@
   <table v-if="this.totales.cxps" id="customers">
     <tr>
       <th>Fecha</th>
+      <th>Empleado</th>
+      <th>Orígen</th>
       <th>Descripción</th>
       <th>Cant.</th>
       <th>Valor</th>
     </tr>
     <tr v-for="(cxp, index) in cxps" :key="index">
       <td>{{ formatDate(cxp._id.day) }}</td>
+      <td>{{ cxp._id.empleado }}</td>
+      <td>{{ cxp._id.origen }}</td>
       <td>{{ cxp._id.desc }}</td>
       <td class="der">{{ formatNumber(cxp.count, false) }}</td>
       <td class="der">{{ formatNumber(cxp.valor, true) }}</td>
     </tr>
     <tr>
       <td>Total: {{ formatNumber(this.totales.cxps) }}</td>
+      <td></td>
+      <td></td>
       <td></td>
       <td class="der">{{ formatNumber(this.totales.count, false) }}</td>
       <td class="der">{{ formatNumber(this.totales.valor, true) }}</td>
