@@ -23,6 +23,36 @@
     </Transition>
 
     <div v-show="!cargando" class="general">
+      <!-- Modal -->
+      <Transition>
+        <div v-if="showModal" class="modal">
+          <div class="contenedor">
+            <header>Confirmación</header>
+            <div class="contenido">
+              <label @click="this.showModalMethod()" for="btn-modal">X</label>
+              <div class="contenido">
+                <p>
+                  ¿Está Seguro que desea Generar Esta Nómina?: Desde
+                  {{ this.formatDateAsk(this.nomina.desde) }} Hasta
+                  {{ this.formatDateAsk(this.nomina.fecha) }}
+                </p>
+                <button
+                  class="btn btn-success"
+                  @click.prevent="generarNomina()"
+                >
+                  Aceptar
+                </button>
+                <button
+                  class="btn btn-danger"
+                  @click.prevent="showModalMethod()"
+                >
+                  Cancelar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Transition>
       <h6 :class="isError(error)">{{ error }}</h6>
       <form>
         <fieldset>
@@ -179,7 +209,7 @@
           <button
             v-if="this.modoForm == 'add'"
             class="btn btn-success"
-            @click.prevent="generarNomina()"
+            @click.prevent="askGenerarNomina()"
             :disabled="!nomina.fecha || !nomina.desde"
           >
             <i class="fas fa-cog"></i> Generar Nómina
@@ -370,6 +400,9 @@ export default defineComponent({
   // },
 
   methods: {
+    showModalMethod() {
+      this.showModal = !this.showModal;
+    },
     imprimirPagos() {
       this.$store.state.user.nomina = this.nomina._id;
       this.$store.state.user.isPrinting = true;
@@ -818,82 +851,77 @@ export default defineComponent({
       this.estadoLoading = "Cargando...";
     },
 
+    askGenerarNomina() {
+      this.showModal = true;
+    },
+
     async generarNomina() {
-      if (
-        confirm(
-          "¿Está Seguro que desea Generar Esta Nómina?: Desde " +
-            this.formatDateAsk(this.nomina.desde) +
-            " Hasta " +
-            this.formatDateAsk(this.nomina.fecha)
-        )
-      ) {
-        //Generar Incentivos
-        await this.generarIncentivos();
+      //Generar Incentivos
+      await this.generarIncentivos();
 
-        // Cargar Asalariados
-        await this.loadAsalariados();
+      // Cargar Asalariados
+      await this.loadAsalariados();
 
-        // Generar CxPs por Cada Asalariado
-        let i: number;
-        this.estadoLoading = "Generando Cuenta por Pagar Asalariados...";
-        this.toggleLoading();
-        for (i = 0; i <= this.asalariados.length - 1; i++) {
-          this.cxp.empleado = this.asalariados[i].nombre;
-          this.cxp.valor = this.asalariados[i].sueldo;
+      // Generar CxPs por Cada Asalariado
+      let i: number;
+      this.estadoLoading = "Generando Cuenta por Pagar Asalariados...";
+      this.toggleLoading();
+      for (i = 0; i <= this.asalariados.length - 1; i++) {
+        this.cxp.empleado = this.asalariados[i].nombre;
+        this.cxp.valor = this.asalariados[i].sueldo;
 
-          this.cxp.userReg = this.$store.state.user.usuario;
-          this.cxp.pagar = false;
-          this.cxp.pago = 0;
-          this.cxp.origen = "Salario";
-          this.cxp.desc = "Fijo Semanal";
-          this.cxp.fecha = this.nomina.fecha;
+        this.cxp.userReg = this.$store.state.user.usuario;
+        this.cxp.pagar = false;
+        this.cxp.pago = 0;
+        this.cxp.origen = "Salario";
+        this.cxp.desc = "Fijo Semanal";
+        this.cxp.fecha = this.nomina.fecha;
 
-          await this.saveCxp();
-        }
-        this.toggleLoading();
-        this.estadoLoading = "Cargando...";
-
-        // Marcar Cxps para Pagar
-        this.documento.fechaInicio = this.nomina.desde;
-        this.documento.fechaCorte = this.nomina.fecha;
-        await this.paraPago();
-
-        //Cargar Pre-Pagos
-        await this.loadPrepagos();
-
-        // Generar Pago por Cada Pre-Pago
-        this.estadoLoading = "Generando Pagos...";
-        this.toggleLoading();
-        let j: number;
-        for (j = 0; j <= this.prepagos.length - 1; j++) {
-          this.pago.empleado = this.prepagos[j]._id.empleado;
-          this.pago.cant = this.prepagos[j].count;
-          this.pago.valor = this.prepagos[j].total;
-          await this.savePago();
-          // Marcar Cuentas en Pago
-          this.documento.fechaCorte = this.nomina.fecha;
-          this.documento.pago = 1;
-          this.documento.pago = this.nextNo1;
-          this.documento.empleado = this.pago.empleado = this.prepagos[
-            j
-          ]._id.empleado;
-          await this.enPago();
-          // alert(j + " de " + this.prepagos.length);
-        }
-        this.toggleLoading();
-        this.estadoLoading = "Cargando...";
-
-        //Cargar Pagos
-        await this.loadPagos();
-
-        //Generar Registro de Nómina
-        await this.saveNomina();
-
-        //Asignar Número de Nómina a Pagos
-        await this.saveNomina2();
-        this.documento2.nomina = this.one.no;
-        this.asigNom();
+        await this.saveCxp();
       }
+      this.toggleLoading();
+      this.estadoLoading = "Cargando...";
+
+      // Marcar Cxps para Pagar
+      this.documento.fechaInicio = this.nomina.desde;
+      this.documento.fechaCorte = this.nomina.fecha;
+      await this.paraPago();
+
+      //Cargar Pre-Pagos
+      await this.loadPrepagos();
+
+      // Generar Pago por Cada Pre-Pago
+      this.estadoLoading = "Generando Pagos...";
+      this.toggleLoading();
+      let j: number;
+      for (j = 0; j <= this.prepagos.length - 1; j++) {
+        this.pago.empleado = this.prepagos[j]._id.empleado;
+        this.pago.cant = this.prepagos[j].count;
+        this.pago.valor = this.prepagos[j].total;
+        await this.savePago();
+        // Marcar Cuentas en Pago
+        this.documento.fechaCorte = this.nomina.fecha;
+        this.documento.pago = 1;
+        this.documento.pago = this.nextNo1;
+        this.documento.empleado = this.pago.empleado = this.prepagos[
+          j
+        ]._id.empleado;
+        await this.enPago();
+        // alert(j + " de " + this.prepagos.length);
+      }
+      this.toggleLoading();
+      this.estadoLoading = "Cargando...";
+
+      //Cargar Pagos
+      await this.loadPagos();
+
+      //Generar Registro de Nómina
+      await this.saveNomina();
+
+      //Asignar Número de Nómina a Pagos
+      await this.saveNomina2();
+      this.documento2.nomina = this.one.no;
+      this.asigNom();
     },
 
     valorTotal() {
@@ -1174,6 +1202,51 @@ export default defineComponent({
 </script>
 
 <style lang="css" scoped>
+/* Modal */
+.modal {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  /* background: rgba(0, 0, 0, 0.1); */
+  transition: all 500ms ease;
+}
+
+.contenedor {
+  width: 400px;
+  height: 300;
+  margin: auto;
+  background: #fff;
+  box-shadow: 1px 7px 25px rgba(0, 0, 0, 0.6);
+  transition: all 500ms ease;
+  position: relative;
+}
+
+.contenedor header {
+  padding: 10px;
+  background: rgb(147, 147, 147);
+  color: #fff;
+}
+
+.contenedor label {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  color: #fff;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.contenido {
+  padding: 7px;
+}
+
+/* End Modal */
+
 /* Tabla */
 #customers {
   font-family: Arial, Helvetica, sans-serif;
