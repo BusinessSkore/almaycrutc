@@ -1,4 +1,5 @@
 import { Cxp } from "@/interfaces/Cxp";
+import { Nomina } from "@/interfaces/Nomina";
 import { AxiosResponse } from "axios";
 import axios from "./axios";
 
@@ -16,8 +17,9 @@ export const getCxps = async (criterio: any): Promise<AxiosResponse<Cxp[]>> =>
   await axios.post("/cxps/get", criterio);
 
 // Leer Todos los registros
-export const getCxpsTwo = async (criterio: any): Promise<AxiosResponse<Cxp[]>> =>
-  await axios.post("/cxps/gettwo", criterio);
+export const getCxpsTwo = async (
+  criterio: any
+): Promise<AxiosResponse<Cxp[]>> => await axios.post("/cxps/gettwo", criterio);
 
 //Leer un solo Registro por ID
 export const getCxp = async (id: string): Promise<AxiosResponse<Cxp>> =>
@@ -67,9 +69,21 @@ export const servParaPago = async (documento: any): Promise<AxiosResponse> =>
   await axios.post("/cxps/paraPago", documento);
 
 //Seleccionar Cuentas para Pago
-export const GetPrepagos = async (): Promise<AxiosResponse> =>
-  await axios.get("/cxps/getprepagos");
+export const GetPrepagos = async (documento: any): Promise<AxiosResponse> =>
+  await axios.post("/cxps/getprepagos", documento);
 
 //Actualizar Un Registro
 export const updateOne = async (cxp: Cxp): Promise<AxiosResponse> =>
   await axios.post("/cxps/updateOne", cxp);
+
+//Eliminar Registros segun Filtros
+export const deleteIncentivos = async (nomina: Nomina): Promise<AxiosResponse> =>
+  await axios.post("/cxps/deleteIncentivos", nomina);
+
+//Eliminar Registros segun Filtros
+export const deleteAsalariados = async (nomina: Nomina): Promise<AxiosResponse> =>
+  await axios.post("/cxps/deleteAsalariados", nomina);
+
+//Eliminar Registros segun Filtros
+export const resetPagos = async (nomina: Nomina): Promise<AxiosResponse> =>
+  await axios.post("/cxps/resetPagos", nomina);

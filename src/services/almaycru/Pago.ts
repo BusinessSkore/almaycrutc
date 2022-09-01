@@ -1,4 +1,5 @@
 import { Pago } from "@/interfaces/Pago";
+import { Nomina } from "@/interfaces/Nomina";
 import { AxiosResponse } from "axios";
 import axios from "./axios";
 
@@ -39,6 +40,10 @@ export const deletePago = async (id: string): Promise<AxiosResponse> =>
 //Eliminar todos los Registros
 export const eliminatePagos = async (pago: Pago): Promise<AxiosResponse> =>
   await axios.post("/pagos/delete", pago);
+
+//Eliminar todos los Registros
+export const deletebynom = async (nomina: Nomina): Promise<AxiosResponse> =>
+  await axios.post("/pagos/deletebynom", nomina);
 
 //Reportes----------------------------------------------------------------------------------------------------
 // Obtener Pagos para Nómina

@@ -275,7 +275,13 @@ import {
   servAsigPago,
 } from "@/services/almaycru/Pago";
 import { GetAsalar } from "@/services/almaycru/Empleado";
-import { GetPrepagos } from "@/services/almaycru/Cxp";
+import { deletebynom } from "@/services/almaycru/Pago";
+import {
+  GetPrepagos,
+  deleteIncentivos,
+  deleteAsalariados,
+  resetPagos,
+} from "@/services/almaycru/Cxp";
 import { servParaPago, servEnPago } from "@/services/almaycru/Cxp";
 import {
   createNomina,
@@ -431,7 +437,7 @@ export default defineComponent({
       if (vitola == "GRAN TORO 70X7") {
         return 5;
       } else {
-        return 5;
+        return 6;
       }
     },
 
@@ -439,7 +445,7 @@ export default defineComponent({
       if (vitola == "GRAN TORO 70X7") {
         return 5;
       } else {
-        return 5;
+        return 6;
       }
     },
 
@@ -570,7 +576,7 @@ export default defineComponent({
       this.estadoLoading = "Cargando Prepagos...";
       this.toggleLoading();
       try {
-        const res = await GetPrepagos();
+        const res = await GetPrepagos(this.nomina);
         this.prepagos = res.data;
       } catch (error) {
         // console.error(error);
@@ -887,7 +893,7 @@ export default defineComponent({
       this.documento.fechaCorte = this.nomina.fecha;
       await this.paraPago();
 
-      //Cargar Pre-Pagos
+      //Cargar Pre-Pagos------------------------------------------------------------------------------------------------------------------------------------------------------
       await this.loadPrepagos();
 
       // Generar Pago por Cada Pre-Pago
@@ -922,6 +928,7 @@ export default defineComponent({
       await this.saveNomina2();
       this.documento2.nomina = this.one.no;
       this.asigNom();
+      this.askGenerarNomina();
     },
 
     valorTotal() {
@@ -937,6 +944,7 @@ export default defineComponent({
 
     fixTime() {
       this.nomina.fecha = this.formatDateToFix(this.nomina.fecha, false);
+      this.nomina.desde = this.formatDateToFix(this.nomina.desde, false);
     },
 
     formatDateToFix(dateValue: Date, incTime: boolean) {
@@ -1003,6 +1011,35 @@ export default defineComponent({
 
     async handleDelete() {
       if (confirm(this.mensageConfirm)) {
+        // Eliminar Pagos Por Número de Nomina
+        try {
+          await deletebynom(this.nomina);
+        } catch (error) {
+          //console.error(error);
+        }
+
+        // Eliminar Incentivos por Producción
+        try {
+          await deleteIncentivos(this.nomina);
+        } catch (error) {
+          //console.error(error);
+        }
+
+        // Eliminar Asalariados
+        try {
+          await deleteAsalariados(this.nomina);
+        } catch (error) {
+          //console.error(error);
+        }
+
+        // Reestablecer pagos del Rango (Pago:0, pagar: false)
+        try {
+          await resetPagos(this.nomina);
+        } catch (error) {
+          //console.error(error);
+        }
+
+        // Eliminar Registro de Nómina
         try {
           if (typeof this.$route.params.id === "string") {
             await deleteNomina(this.$route.params.id);
@@ -1016,7 +1053,10 @@ export default defineComponent({
     },
 
     showDeleteMethod() {
-      if (this.$store.state.user.type == "Power User") {
+      if (
+        this.$store.state.user.type == "Power User" ||
+        this.$store.state.user.usuario == "Charina Cruz "
+      ) {
         this.showDelete = true;
       }
     },
