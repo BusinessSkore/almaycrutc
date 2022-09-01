@@ -431,15 +431,15 @@ export default defineComponent({
       if (vitola == "GRAN TORO 70X7") {
         return 5;
       } else {
-        return 6;
+        return 5;
       }
     },
 
     getDivisor2(vitola: string) {
       if (vitola == "GRAN TORO 70X7") {
-        return 6;
+        return 5;
       } else {
-        return 7;
+        return 5;
       }
     },
 

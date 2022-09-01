@@ -1,7 +1,8 @@
 <template>
   <table v-if="this.totales.nominas" id="customers">
     <tr>
-      <th>Fecha</th>
+      <th>Desde</th>
+      <th>Hasta</th>
       <th>Pagos</th>
       <th>Valor</th>
     </tr>
@@ -10,12 +11,14 @@
       :key="index"
       @click="this.$router.push(`/nominas/${nomina._id}`)"
     >
+      <td>{{ formatDate(nomina.desde) }}</td>
       <td>{{ formatDate(nomina.fecha) }}</td>
       <td class="der">{{ formatNumber(nomina.cant, false) }}</td>
       <td class="der">{{ formatNumber(nomina.valor, true) }}</td>
     </tr>
     <tr>
       <td>Total: {{ formatNumber(this.totales.nominas) }}</td>
+      <td></td>
       <td></td>
       <td class="der">{{ formatNumber(this.totales.valor, true) }}</td>
     </tr>

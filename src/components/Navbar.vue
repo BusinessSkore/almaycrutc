@@ -12,7 +12,7 @@
         >
 
         <label class="versionNumber"
-          ><span class="version">V 6.3.0</span></label
+          ><span class="version">V 6.5.0</span></label
         >
 
         <label class="name" @click="this.hamburger()" for="btn-modal"
