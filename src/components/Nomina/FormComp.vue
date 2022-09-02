@@ -863,7 +863,7 @@ export default defineComponent({
 
     async generarNomina() {
       //Generar Incentivos
-      await this.generarIncentivos();
+      // await this.generarIncentivos();
 
       // Cargar Asalariados
       await this.loadAsalariados();
