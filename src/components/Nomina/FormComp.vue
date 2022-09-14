@@ -14,7 +14,7 @@
   <!-- {{ this.$store.state.user.nomina }} -->
 
   <div>
-    <div v-if="showDelete">
+    <div v-if="this.$store.state.user.type == 'Power User'">
       <h1>Incentivos: {{ this.incentivos }}</h1>
       <h1>Incentivos 2: {{ this.incentivos2 }}</h1>
     </div>
@@ -254,7 +254,7 @@
           </button>
 
           <button
-            v-if="showDelete"
+            v-if="this.$store.state.user.type == 'Power User'"
             class="btn btn-danger"
             @click.prevent="handleDelete()"
           >
