@@ -12,6 +12,8 @@
   <!-- {{ this.cxp }} -->
   <!-- {{ this.$store.state.user.pagosID }} -->
   <!-- {{ this.$store.state.user.nomina }} -->
+  <h1>Incentivos: {{ this.incentivos }}</h1>
+  <h1>Incentivos 2: {{ this.incentivos2 }}</h1>
 
   <div>
     <Navbar />
@@ -256,6 +258,13 @@
           >
             <i class="fas fa-trash-alt"></i> Eliminar
           </button>
+          <button
+            
+            class="btn btn-infor"
+            @click.prevent="checkFunction()"
+          >
+            <i class="fas fa-check"></i> Verificar
+          </button>
         </fieldset>
       </form>
     </div>
@@ -406,6 +415,61 @@ export default defineComponent({
   // },
 
   methods: {
+    async checkFunction() {
+      try {
+        const res = await getInc4(this.nomina);
+        this.incentivos = res.data;
+      } catch (error) {
+        // console.error(error);
+      }
+      // Extraer Registros que aplican para Insentivo
+      let i: number;
+      for (i = 0; i <= this.incentivos.length - 1; i++) {
+        if (
+          this.incentivos[i].count /
+            this.getDivisor2(this.incentivos[i]._id.vitola) >=
+          1
+        ) {
+          // Definiendo Variables
+          let a: string;
+          let b: string;
+          let c: string;
+          let d: number;
+          let e: number;
+          let g: number;
+          let h: number;
+          // Asignando Valor a Variables
+          a = this.incentivos[i]._id.vitola;
+          b = this.incentivos[i]._id.day;
+          c = this.incentivos[i]._id.empleadoPegador;
+          d = this.incentivos[i].count;
+          e = this.getDivisor2(this.incentivos[i]._id.vitola);
+          g = Math.trunc(
+            this.incentivos[i].count /
+              this.getDivisor2(this.incentivos[i]._id.vitola)
+          );
+
+          h =
+            Math.trunc(
+              this.incentivos[i].count /
+                this.getDivisor2(this.incentivos[i]._id.vitola)
+            ) * 200;
+
+          // Creando Objeto
+          this.incentivos2.push({
+            vitola: a,
+            day: b,
+            empleado: c,
+            count: d,
+            divisor: e,
+            truncado: g,
+            pago: h,
+          });
+        }
+      }
+      alert("The function has been verifyed");
+    },
+
     showModalMethod() {
       this.showModal = !this.showModal;
     },
@@ -443,9 +507,9 @@ export default defineComponent({
 
     getDivisor2(vitola: string) {
       if (vitola == "GRAN TORO 70X7") {
-        return 5;
-      } else {
         return 6;
+      } else {
+        return 7;
       }
     },
 
@@ -655,7 +719,7 @@ export default defineComponent({
       this.estadoLoading =
         "Obteniendo Producción de LINGA MOST WANTED de los Pegadores...";
       this.toggleLoading();
-      // Obtener Primera Consulta
+      // Obtener Segunda Consulta
       try {
         const res = await getInc2(this.nomina);
         this.incentivos = res.data;
@@ -716,7 +780,7 @@ export default defineComponent({
       this.estadoLoading =
         "Obteniendo Producción de Todas las Vitolas de los Empuñeros...";
       this.toggleLoading();
-      // Obtener Primera Consulta
+      // Obtener Tercera Consulta
       try {
         const res = await getInc3(this.nomina);
         this.incentivos = res.data;
@@ -777,7 +841,7 @@ export default defineComponent({
       this.estadoLoading =
         "Obteniendo Producción de Todas las Vitolas de los Pegadores...";
       this.toggleLoading();
-      // Obtener Primera Consulta
+      // Obtener Cuarta Consulta
       try {
         const res = await getInc4(this.nomina);
         this.incentivos = res.data;

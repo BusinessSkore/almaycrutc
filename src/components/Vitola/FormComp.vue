@@ -34,6 +34,7 @@
                     <option>ROBUSTO</option>
                     <option>LANCERO</option>
                     <option>GRAN TORO</option>
+                    <option>CHURCHILL</option>
                   </select>
                 </div>
                 <div>
