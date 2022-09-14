@@ -12,10 +12,12 @@
   <!-- {{ this.cxp }} -->
   <!-- {{ this.$store.state.user.pagosID }} -->
   <!-- {{ this.$store.state.user.nomina }} -->
-  <h1>Incentivos: {{ this.incentivos }}</h1>
-  <h1>Incentivos 2: {{ this.incentivos2 }}</h1>
 
   <div>
+    <div v-if="showDelete">
+      <h1>Incentivos: {{ this.incentivos }}</h1>
+      <h1>Incentivos 2: {{ this.incentivos2 }}</h1>
+    </div>
     <Navbar />
     <Transition>
       <div v-if="cargando" class="spin">
@@ -258,11 +260,7 @@
           >
             <i class="fas fa-trash-alt"></i> Eliminar
           </button>
-          <button
-            
-            class="btn btn-infor"
-            @click.prevent="checkFunction()"
-          >
+          <button class="btn btn-infor" @click.prevent="checkFunction()">
             <i class="fas fa-check"></i> Verificar
           </button>
         </fieldset>
