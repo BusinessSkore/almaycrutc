@@ -59,7 +59,7 @@
               >
             </div>
           </div>
-          <div v-if="onlyRange" class="grid">
+          <div v-if="onlyRange" class="grid-Search">
             <div>
               <label class="ta-l col-form-label col-form-label-sm" for="desde"
                 >Desde:</label
@@ -391,6 +391,14 @@ export default {
   width: 100%;
   max-width: 1500px;
   margin: 0px auto;
+}
+
+.grid-Search {
+  display: grid;
+  grid-auto-flow: dense;
+  grid-template-rows: auto auto;
+  gap: 3px;
+  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
 }
 
 .grid {

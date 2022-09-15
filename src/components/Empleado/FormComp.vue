@@ -773,10 +773,10 @@ export default defineComponent({
     formatDateToFix(dateValue: Date, incTime: boolean) {
       if (incTime == true) {
         let out = moment(dateValue).add(0, "days");
-        return moment(out).format("yyyy-MM-DTHH:mm");
+        return moment(out).format("yyyy-MM-DDTHH:mm");
       } else {
         let out = moment(dateValue).add(0, "days");
-        return moment(out).format("yyyy-MM-D");
+        return moment(out).format("yyyy-MM-DD");
       }
     },
 
@@ -879,7 +879,7 @@ export default defineComponent({
         } catch (error) {
           // // console.error(error);
         }
-        this.empleado.status = this.$store.state.user.defaultStatus;
+        // this.empleado.status = this.$store.state.user.defaultStatus;
         this.empleado.userReg = this.$store.state.user.usuario;
         this.empleado.nombre =
           this.empleado.primerNombre +

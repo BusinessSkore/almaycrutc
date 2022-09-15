@@ -4,24 +4,25 @@
       <th>Fecha</th>
       <th>Empleado</th>
       <th>Vitola</th>
-      <th>Cant.</th>
+      <!-- <th>Cant.</th> -->
       <th>Cigarros</th>
     </tr>
     <tr
       v-for="(recapada, index) in recapadas"
       :key="index"
+      @click="this.$router.push(`/recapadas/${recapada._id}`)"
     >
-      <td>{{ formatDate(recapada._id.day) }}</td>
-      <td>{{ recapada._id.empleadoPegador }}</td>
-      <td>{{ recapada._id.vitola }}</td>
-      <td class="der">{{ formatNumber(recapada.count, false) }}</td>
+      <td>{{ formatDate(recapada.fecha) }}</td>
+      <td>{{ recapada.empleadoPegador }}</td>
+      <td>{{ recapada.vitola }}</td>
+      <!-- <td class="der">{{ formatNumber(recapada.count, false) }}</td> -->
       <td class="der">{{ formatNumber(recapada.cantidad, false) }}</td>
     </tr>
     <tr>
       <td>Total: {{ formatNumber(this.totales.recapadas) }}</td>
       <td></td>
       <td></td>
-      <td class="der">{{ formatNumber(this.totales.cant, false) }}</td>
+      <!-- <td class="der">{{ formatNumber(this.totales.cant, false) }}</td> -->
       <td class="der">{{ formatNumber(this.totales.cantidad, false) }}</td>
     </tr>
   </table>
@@ -349,7 +350,7 @@ th {
 #customers td {
   border: 1px solid #ddd;
   padding: 3px;
-  /* cursor: pointer; */
+  cursor: pointer;
 }
 
 #customers th {

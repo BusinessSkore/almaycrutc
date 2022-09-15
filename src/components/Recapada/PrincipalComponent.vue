@@ -76,7 +76,10 @@
               <i class="fas fa-search"></i> Buscar
             </button>
           </div>
-          <ListadoComponent :recapadas="recapadas" v-show="!cargando" />
+          <h4>Agrupadas</h4>
+          <ListadoComponent :recapadas="recapadas" v-show="!cargando" /><br />
+          <h4>Detalladas</h4>
+          <ListadoComponent2 :recapadas="recapadas2" v-show="!cargando" />
         </div>
       </div>
     </div>
@@ -87,9 +90,10 @@
 <script lang="ts">
 import Filters from "@/components/Recapada/FiltersComponent.vue";
 import ListadoComponent from "@/components/Recapada/ListComponent.vue";
+import ListadoComponent2 from "@/components/Recapada/ListComponent2.vue";
 import Navbar from "@/components/Navbar.vue";
 import { Recapada } from "@/interfaces/Recapada";
-import { getRecapadas } from "@/services/almaycru/Recapada";
+import { getRecapadas, getRecapadas2 } from "@/services/almaycru/Recapada";
 import Pusher from "pusher-js";
 
 export default {
@@ -98,6 +102,7 @@ export default {
   components: {
     Filters,
     ListadoComponent,
+    ListadoComponent2,
     Navbar,
   },
 
@@ -111,6 +116,7 @@ export default {
       showModal: false,
       cargando: false,
       recapadas: [] as Recapada[],
+      recapadas2: [] as Recapada[],
       str: "",
       type: "",
       criterio: {} as any,
@@ -174,7 +180,9 @@ export default {
       this.toggleLoading();
       try {
         const res = await getRecapadas(this.criterio);
+        const res2 = await getRecapadas2(this.criterio);
         this.recapadas = res.data;
+        this.recapadas2 = res2.data;
       } catch (error) {
         // console.error(error);
       }

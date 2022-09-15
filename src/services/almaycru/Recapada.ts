@@ -13,11 +13,17 @@ export const createRecapada = async (
   recapada: Recapada
 ): Promise<AxiosResponse> => await axios.post("/recapadas/Save", recapada);
 
-// Leer Todos los registros
+// Leer Todos los registros Detallados
 export const getRecapadas = async (
   criterio: any
 ): Promise<AxiosResponse<Recapada[]>> =>
   await axios.post("/recapadas/get", criterio);
+
+// Leer Todos los registros Agrupados
+export const getRecapadas2 = async (
+  criterio: any
+): Promise<AxiosResponse<Recapada[]>> =>
+  await axios.post("/recapadas/getall", criterio);
 
 //Leer un solo Registro por ID
 export const getRecapada = async (
