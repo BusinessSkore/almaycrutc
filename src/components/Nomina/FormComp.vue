@@ -1080,12 +1080,12 @@ export default defineComponent({
           //console.error(error);
         }
 
-        // Eliminar Incentivos por Producción
-        try {
-          await deleteIncentivos(this.nomina);
-        } catch (error) {
-          //console.error(error);
-        }
+        // // Eliminar Incentivos por Producción
+        // try {
+        //   await deleteIncentivos(this.nomina);
+        // } catch (error) {
+        //   //console.error(error);
+        // }
 
         // Eliminar Asalariados
         try {
