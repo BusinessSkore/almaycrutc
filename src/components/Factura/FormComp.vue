@@ -134,6 +134,7 @@
                   class="form-control"
                 />
               </div>
+              <!-- A partir de aqui se calcula tal cosa -->
               <div>
                 <label
                   class="ta-l col-form-label col-form-label-sm"
@@ -205,10 +206,7 @@ import {
   getOneFactura,
 } from "@/services/almaycru/FacturaService";
 
-import {
-  APIgetFactura,
-  getFacturas,
-} from "@/services/odoo/FacturaService";
+import { APIgetFactura, getFacturas } from "@/services/odoo/FacturaService";
 import { createMensaje } from "@/services/almaycru/ChatService";
 import numeral from "numeral";
 import moment from "moment";

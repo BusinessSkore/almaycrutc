@@ -77,7 +77,7 @@ export const getInc3 = async (
 export const getInc4 = async (
   documento: any
 ): Promise<AxiosResponse<Rueda[]>> =>
-  await axios.get("/ruedas/getInc4", documento);
+  await axios.post("/ruedas/getInc4", documento);
 
 //Ruedaes----------------------------------------------------------------------------------------------------
 //Actualizar Un Registro

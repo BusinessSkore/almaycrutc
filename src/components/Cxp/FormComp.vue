@@ -31,6 +31,22 @@
                   class="form-control"
                 />
               </div>
+              <div>
+                <label
+                  class="ta-l col-form-label col-form-label-sm"
+                  for="origen"
+                  >Orígen:</label
+                ><select id="origen" v-model="cxp.origen" class="form-select">
+                  <option>Producción</option>
+                  <option>Recapada</option>
+                  <option>Incentivo</option>
+                  <option>Salario</option>
+                  <option>Jornada</option>
+                  <option>Descuento</option>
+                  <option>Otro</option>
+                  <!-- <option>Horas Extras</option> -->
+                </select>
+              </div>
               <!-- <div>
                 <label
                   class="ta-l col-form-label col-form-label-sm"
@@ -63,21 +79,6 @@
               </div>
 
               <div>
-                <label
-                  class="ta-l col-form-label col-form-label-sm"
-                  for="origen"
-                  >Orígen:</label
-                ><select id="origen" v-model="cxp.origen" class="form-select">
-                  <option>Producción</option>
-                  <option>Recapada</option>
-                  <option>Incentivo</option>
-                  <option>Salario</option>
-                  <option>Jornada</option>
-                  <option>Otro</option>
-                  <!-- <option>Horas Extras</option> -->
-                </select>
-              </div>
-              <div>
                 <label class="ta-l col-form-label col-form-label-sm" for="desc"
                   >Descripción:</label
                 ><input
@@ -87,6 +88,7 @@
                   class="form-control"
                 />
               </div>
+
               <div>
                 <label class="ta-l col-form-label col-form-label-sm" for="valor"
                   >Valor:</label
@@ -356,7 +358,7 @@ export default defineComponent({
     },
 
     fillFields() {
-      this.cxp.fecha = this.formatDate(new Date());
+      // this.cxp.fecha = this.formatDate(new Date());
       this.cxp.pago = 0;
     },
 
@@ -444,10 +446,11 @@ export default defineComponent({
     },
 
     cleanFields() {
-      this.cxp.fecha = "";
-      this.cxp.empleado = "";
+      // this.cxp.fecha = "";
+      // this.cxp.empleado = "";
       this.cxp.valor = "";
-      this.cxp.origen = "";
+      this.cxp.desc = "";
+      // this.cxp.origen = "";
     },
 
     toggleLoading() {

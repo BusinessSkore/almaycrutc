@@ -12,7 +12,7 @@
         >
 
         <label class="versionNumber"
-          ><span class="version">V 6.7.0</span></label
+          ><span class="version">V 6.9.0</span></label
         >
 
         <label class="name" @click="this.hamburger()" for="btn-modal"
@@ -147,7 +147,7 @@
           class="navbar-option"
           @click="this.hamburger('Cxp')"
           href="#"
-          ><i class="fas fa-dollar-sign"></i> CxP</a
+          ><i class="fas fa-dollar-sign"></i> Novedades</a
         >
         <!-- End Option -->
 

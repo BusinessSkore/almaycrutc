@@ -38,7 +38,7 @@
           >Opciones</label
         > -->
           <h4>
-            Cuentas por Pagar
+            Novedades
             <i
               style="cursor:pointer"
               @click="this.$router.push(`/cxps/new`)"
@@ -111,6 +111,7 @@
                 <option>Incentivo</option>
                 <option>Salario</option>
                 <option>Jornada</option>
+                <option>Descuento</option>
                 <option>Otro</option>
               </select>
             </div>

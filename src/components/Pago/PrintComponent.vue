@@ -117,7 +117,7 @@
               <p><span class="bold"> Empleado: </span>{{ pago.empleado }}</p>
             </div>
             <label v-if="this.modoForm == 'show'" class="form-label"
-              ><b>Cuentas por Pagar</b></label
+              ><b>Novedades</b></label
             >
             <div v-if="this.modoForm == 'show'" class="grid">
               <table id="customers">

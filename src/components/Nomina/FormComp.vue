@@ -525,7 +525,7 @@ export default defineComponent({
     },
 
     async enPago() {
-      // this.estadoLoading = "Seleccionando Cuentas por Pagar para Pago...";
+      // this.estadoLoading = "Seleccionando Novedades para Pago...";
       // this.toggleLoading();
       try {
         const res = await servEnPago(this.documento);
@@ -538,7 +538,7 @@ export default defineComponent({
     },
 
     async paraPago() {
-      this.estadoLoading = "Seleccionando Cuentas por Pagar para Pago...";
+      this.estadoLoading = "Seleccionando Novedades para Pago...";
       this.toggleLoading();
       try {
         const res = await servParaPago(this.documento);
