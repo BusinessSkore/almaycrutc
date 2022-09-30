@@ -168,7 +168,8 @@
         <a
           v-if="
             this.$store.state.user.type == 'Power User' ||
-              this.$store.state.user.type == 'Administrador'
+              this.$store.state.user.type == 'Administrador' ||
+              this.$store.state.user.type == 'Encargado'
           "
           class="navbar-option"
           @click="this.hamburger('Nóminas')"

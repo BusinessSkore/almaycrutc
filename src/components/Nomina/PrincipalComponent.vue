@@ -40,6 +40,10 @@
             <h4>
               Nóminas
               <i
+                v-if="
+                  this.$store.state.user.type == 'Power User' ||
+                    this.$store.state.user.type == 'Administrador'
+                "
                 style="cursor:pointer"
                 @click="this.$router.push(`/nominas/new`)"
                 class="fas fa-plus"

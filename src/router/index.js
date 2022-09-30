@@ -660,7 +660,7 @@ const routes = [
         name: "pago-details",
         component: PagoFormComp,
         meta: {
-          roles: ["Power User", "Administrador"],
+          roles: ["Power User", "Administrador", "Encargado"],
         },
       },
       {
@@ -668,7 +668,7 @@ const routes = [
         name: "pago-details2",
         component: PagoPrintComponent,
         meta: {
-          roles: ["Power User", "Administrador"],
+          roles: ["Power User", "Administrador", "Encargado"],
         },
       },
       {
@@ -676,7 +676,7 @@ const routes = [
         name: "pago-detailsSeries",
         component: PagoPrintSeriesComponent,
         meta: {
-          roles: ["Power User", "Administrador"],
+          roles: ["Power User", "Administrador", "Encargado"],
         },
       },
       {
@@ -695,7 +695,7 @@ const routes = [
         name: "nominas",
         component: NominaComponent,
         meta: {
-          roles: ["Power User", "Administrador"],
+          roles: ["Power User", "Administrador", "Encargado"],
         },
       },
       {
@@ -703,7 +703,7 @@ const routes = [
         name: "nomina-details",
         component: NominaFormComp,
         meta: {
-          roles: ["Power User", "Administrador"],
+          roles: ["Power User", "Administrador", "Encargado"],
         },
       },
       {
@@ -711,7 +711,7 @@ const routes = [
         name: "nomina-details2",
         component: NominaPrintComponent,
         meta: {
-          roles: ["Power User", "Administrador"],
+          roles: ["Power User", "Administrador", "Encargado"],
         },
       },
       {
