@@ -132,6 +132,19 @@
               this.$store.state.user.type == 'Encargado'
           "
           class="navbar-option"
+          @click="this.hamburger('Monos')"
+          href="#"
+          ><i class="fas fa-times-circle"></i> Monos</a
+        >
+        <!-- End Option -->
+        <!-- Start Option -->
+        <a
+          v-if="
+            this.$store.state.user.type == 'Power User' ||
+              this.$store.state.user.type == 'Administrador' ||
+              this.$store.state.user.type == 'Encargado'
+          "
+          class="navbar-option"
           @click="this.hamburger('Jornadas')"
           href="#"
           ><i class="fas fa-calendar-check"></i> Jornadas</a
@@ -215,6 +228,7 @@ export default defineComponent({
   methods: {
     hamburger(texto: string) {
       switch (texto) {
+
         case "Nóminas":
           this.$router.push("/nominas");
           break;
@@ -226,6 +240,9 @@ export default defineComponent({
           break;
         case "Recapadas":
           this.$router.push("/recapadas");
+          break;
+        case "Monos":
+          this.$router.push("/monos");
           break;
         case "Ruedas":
           this.$router.push("/ruedas");

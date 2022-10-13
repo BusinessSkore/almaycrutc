@@ -93,6 +93,12 @@ import RecapadaPrintComponent from "../components/Recapada/PrintComponent.vue";
 import RecapadaFormComp from "../components/Recapada/FormComp.vue";
 // ----------------------------------------------------------------------------
 
+// Mono -------------------------------------------------------------------
+import MonoComponent from "../components/Mono/PrincipalComponent.vue";
+import MonoPrintComponent from "../components/Mono/PrintComponent.vue";
+import MonoFormComp from "../components/Mono/FormComp.vue";
+// ----------------------------------------------------------------------------
+
 // Jornada -------------------------------------------------------------------
 import JornadaComponent from "../components/Jornada/PrincipalComponent.vue";
 import JornadaPrintComponent from "../components/Jornada/PrintComponent.vue";
@@ -603,6 +609,41 @@ const routes = [
         path: "/recapadas/new",
         name: "recapadas-form",
         component: RecapadaFormComp,
+        meta: {
+          roles: ["Power User", "Administrador", "Encargado"],
+        },
+      },
+
+      // ----------------------------------------------------------------------------
+      // Mono --------------------------------------------------------------------
+      {
+        path: "/monos",
+        name: "monos",
+        component: MonoComponent,
+        meta: {
+          roles: ["Power User", "Administrador", "Encargado"],
+        },
+      },
+      {
+        path: "/monos/:id",
+        name: "mono-details",
+        component: MonoFormComp,
+        meta: {
+          roles: ["Power User", "Administrador", "Encargado"],
+        },
+      },
+      {
+        path: "/monos2/:id",
+        name: "mono-details2",
+        component: MonoPrintComponent,
+        meta: {
+          roles: ["Power User", "Administrador", "Encargado"],
+        },
+      },
+      {
+        path: "/monos/new",
+        name: "monos-form",
+        component: MonoFormComp,
         meta: {
           roles: ["Power User", "Administrador", "Encargado"],
         },
