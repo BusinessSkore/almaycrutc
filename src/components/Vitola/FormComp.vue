@@ -35,6 +35,7 @@
                     <option>LANCERO</option>
                     <option>GRAN TORO</option>
                     <option>CHURCHILL</option>
+                    <option>PETIT CHURCHILL</option>
                   </select>
                 </div>
                 <div>
