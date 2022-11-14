@@ -14,4 +14,13 @@ export interface Empleado {
   metodoPago: string;
   cuenta: string;
   codigoPonchador: string;
+  productionIncome: Boolean;
+  workingDayIncome: Boolean;
+  workingDayValueIncome: number;
+  salaryIncome: Boolean;
+  salaryAmountIncome: number;
+  tssOutcome: Boolean;
+  extraSFSOutcome: Boolean;
+  extraSFSValueOutcome: number;
+  loanOutcome: Boolean;
 }

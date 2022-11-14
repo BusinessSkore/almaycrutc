@@ -73,6 +73,111 @@
                   />
                 </div>
               </div>
+              <label class="form-label"><b>Configuración de Pago</b></label>
+              <div class="grid">
+                <div class="form-check form-switch">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    v-model="empleado.productionIncome"
+                    id="productionIncome"
+                  />
+                  <label class="form-check-label" for="productionIncome"
+                    >Ingresos por Producción</label
+                  >
+                </div>
+                <div class="form-check form-switch">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    v-model="empleado.workingDayIncome"
+                    id="workingDayIncome"
+                  />
+                  <label class="form-check-label" for="workingDayIncome"
+                    >Ingresos por Jornada</label
+                  >
+                </div>
+                <div v-if="empleado.workingDayIncome">
+                  <label
+                    class="ta-l col-form-label col-form-label-sm"
+                    for="workingDayValueIncome"
+                    >Valor de Jornada:</label
+                  ><input
+                    id="workingDayValueIncome"
+                    type="number"
+                    v-model="empleado.workingDayValueIncome"
+                    class="form-control"
+                  />
+                </div>
+                <div class="form-check form-switch">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    v-model="empleado.salaryIncome"
+                    id="salaryIncome"
+                  />
+                  <label class="form-check-label" for="salaryIncome"
+                    >Ingresos por Salario</label
+                  >
+                </div>
+                <div v-if="empleado.salaryIncome">
+                  <label
+                    class="ta-l col-form-label col-form-label-sm"
+                    for="salaryAmountIncome"
+                    >Valor de Salario:</label
+                  ><input
+                    id="salaryAmountIncome"
+                    type="number"
+                    v-model="empleado.salaryAmountIncome"
+                    class="form-control"
+                  />
+                </div>
+                <div class="form-check form-switch">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    v-model="empleado.tssOutcome"
+                    id="tssOutcome"
+                  />
+                  <label class="form-check-label" for="tssOutcome"
+                    >Descuento de TSS</label
+                  >
+                </div>
+                <div class="form-check form-switch">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    v-model="empleado.extraSFSOutcome"
+                    id="extraSFSOutcome"
+                  />
+                  <label class="form-check-label" for="extraSFSOutcome"
+                    >Descuento Seguro Adicional</label
+                  >
+                </div>
+                <div v-if="empleado.extraSFSOutcome">
+                  <label
+                    class="ta-l col-form-label col-form-label-sm"
+                    for="extraSFSValueOutcome"
+                    >Valor de Seguro Adicional:</label
+                  ><input
+                    id="extraSFSValueOutcome"
+                    type="number"
+                    v-model="empleado.extraSFSValueOutcome"
+                    class="form-control"
+                  />
+                </div>
+                <div class="form-check form-switch">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    v-model="empleado.loanOutcome"
+                    id="loanOutcome"
+                  />
+                  <label class="form-check-label" for="loanOutcome"
+                    >Descuento de Préstamo</label
+                  >
+                </div>
+              </div>
               <label class="form-label"><b>Datos Financieros</b></label>
               <div class="grid">
                 <div>
