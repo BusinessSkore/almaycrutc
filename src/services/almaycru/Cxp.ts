@@ -21,6 +21,11 @@ export const getCxpsTwo = async (
   criterio: any
 ): Promise<AxiosResponse<Cxp[]>> => await axios.post("/cxps/gettwo", criterio);
 
+// Leer Todos los registros
+export const GetIncent = async (
+  criterio: any
+): Promise<AxiosResponse<Cxp[]>> => await axios.post("/cxps/GetIncent", criterio);
+
 //Leer un solo Registro por ID
 export const getCxp = async (id: string): Promise<AxiosResponse<Cxp>> =>
   await axios.get(`/cxps/GetById/${id}`);
@@ -83,6 +88,10 @@ export const deleteIncentivos = async (nomina: Nomina): Promise<AxiosResponse> =
 //Eliminar Registros segun Filtros
 export const deleteAsalariados = async (nomina: Nomina): Promise<AxiosResponse> =>
   await axios.post("/cxps/deleteAsalariados", nomina);
+
+//Eliminar Registros segun Filtros
+export const deleteDeudores = async (nomina: Nomina): Promise<AxiosResponse> =>
+  await axios.post("/cxps/deleteDeudores", nomina);
 
 //Eliminar Registros segun Filtros
 export const resetPagos = async (nomina: Nomina): Promise<AxiosResponse> =>

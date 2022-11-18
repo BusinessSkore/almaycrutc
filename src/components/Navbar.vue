@@ -150,6 +150,18 @@
           ><i class="fas fa-calendar-check"></i> Jornadas</a
         >
         <!-- End Option -->
+        <!-- Start Option -->
+        <a
+          v-if="
+            this.$store.state.user.type == 'Power User' ||
+              this.$store.state.user.type == 'Administrador'
+          "
+          class="navbar-option"
+          @click="this.hamburger('Prestamos')"
+          href="#"
+          ><i class="fas fa-money-check-alt"></i> Préstamos</a
+        >
+        <!-- End Option -->
 
         <!-- Start Option -->
         <a
@@ -228,7 +240,9 @@ export default defineComponent({
   methods: {
     hamburger(texto: string) {
       switch (texto) {
-
+        case "Prestamos":
+          this.$router.push("/prestamos");
+          break;
         case "Nóminas":
           this.$router.push("/nominas");
           break;

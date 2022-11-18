@@ -51,6 +51,16 @@ export const eliminateEmpleados = async (
 
 //Reportes----------------------------------------------------------------------------------------------------
 
+// Obtener Empleados Descontables de TSS para Nómina
+
+export const GetDesconTss = async (): Promise<AxiosResponse<Empleado[]>> =>
+  await axios.get("/empleados/GetDesconTssAct");
+
+// Obtener Empleados Deudores para Nómina
+
+export const GetDeud = async (): Promise<AxiosResponse<Empleado[]>> =>
+  await axios.get("/empleados/GetDeudAct");
+
 // Obtener Empleados Asalariados para Nómina
 
 export const GetAsalar = async (): Promise<AxiosResponse<Empleado[]>> =>

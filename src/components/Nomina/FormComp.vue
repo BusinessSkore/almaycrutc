@@ -1,22 +1,10 @@
 <template v-show="!cargando">
-  <!-- {{ this.$route.fullPath }} -->
-  <!-- {{this.modoForm}} -->
-  <!-- {{ this.empleados }} -->
-  <!-- {{ this.nomina }} -->
-  <!-- {{ this.documento }}<br /> -->
-  <!-- {{ this.documento2 }} -->
-  <!-- {{ this.prepagos }} -->
-  <!-- {{ this.pagos }} -->
-  <!-- {{ this.nextNo }} -->
-  <!-- {{ this.incentivos2 }}<br /><br /> -->
-  <!-- {{ this.cxp }} -->
-  <!-- {{ this.$store.state.user.pagosID }} -->
-  <!-- {{ this.$store.state.user.nomina }} -->
+  <!-- {{ { incentivados: this.incentivados } }} -->
 
   <div>
     <div v-if="this.$store.state.user.type == 'Power User'">
-      <h1>Incentivos: {{ this.incentivos }}</h1>
-      <h1>Incentivos 2: {{ this.incentivos2 }}</h1>
+      <!-- <h1>Incentivos: {{ this.incentivos }}</h1>
+      <h1>Incentivos 2: {{ this.incentivos2 }}</h1> -->
     </div>
     <Navbar />
     <Transition>
@@ -281,12 +269,15 @@ import {
   getPagosNom,
   servAsigPago,
 } from "@/services/almaycru/Pago";
-import { GetAsalar } from "@/services/almaycru/Empleado";
+import { GetAsalar, GetDeud, GetDesconTss } from "@/services/almaycru/Empleado";
+import { GetIncent } from "@/services/almaycru/Cxp";
+import { GetResult, GetRestoreResult } from "@/services/almaycru/Prestamo";
 import { deletebynom } from "@/services/almaycru/Pago";
 import {
   GetPrepagos,
   deleteIncentivos,
   deleteAsalariados,
+  deleteDeudores,
   resetPagos,
 } from "@/services/almaycru/Cxp";
 import { servParaPago, servEnPago } from "@/services/almaycru/Cxp";
@@ -331,6 +322,13 @@ export default defineComponent({
       nextNo0: Number,
 
       asalariados: [],
+      deudores: [],
+      incentivados: [],
+      descontadosTss: [],
+      resultIncentivo: {},
+      resultDescontadosTss: {},
+      result: {},
+      restoreResult: {},
       prepagos: [],
       // empleados: [] as Empleado[],
       campoFocus: "desde",
@@ -413,6 +411,50 @@ export default defineComponent({
   // },
 
   methods: {
+    verifyAlcanzoLimiteSuperior(produccion: number) {
+      let alcanzoLimiteSuperior;
+      let alcance = this.calcAlcance(produccion);
+      let limiteSuperior = this.incentivados.parametros.limiteSuperior;
+      if (alcance >= limiteSuperior) {
+        alcanzoLimiteSuperior = true;
+      } else {
+        alcanzoLimiteSuperior = false;
+      }
+      return alcanzoLimiteSuperior;
+    },
+
+    calcAlcance(produccion: number) {
+      let alcance;
+      let meta = this.incentivados.parametros.limiteSuperior;
+      alcance = produccion / meta;
+      return alcance;
+    },
+
+    calcMonto(produccion: number) {
+      let monto;
+      let factor = this.calcFactor(produccion);
+      let basePago = this.incentivados.parametros.basePago;
+      monto = factor * basePago;
+      return monto;
+    },
+
+    calcFactor(produccion: number) {
+      let factor;
+      let alcance = this.calcAlcance(produccion);
+      let limiteInferior = this.incentivados.parametros.limiteInferior;
+      let limiteSuperior = this.incentivados.parametros.limiteSuperior;
+      let alcanzoLimiteSuperior = this.verifyAlcanzoLimiteSuperior(produccion);
+      if (alcance < limiteInferior) {
+        factor = 0;
+      } else {
+        if (alcanzoLimiteSuperior) {
+          factor = limiteSuperior;
+        } else {
+          factor = alcance;
+        }
+      }
+      return factor;
+    },
     async checkFunction() {
       try {
         const res = await getInc4(this.nomina);
@@ -619,6 +661,73 @@ export default defineComponent({
         // console.error(error);
       }
       this.toggleLoading();
+    },
+
+    async loadIncentivados() {
+      this.toggleLoading();
+      try {
+        const res = await GetIncent(this.nomina);
+        this.incentivados = res.data;
+      } catch (error) {
+        // console.error(error);
+      }
+      this.toggleLoading();
+    },
+
+    async loadDescontadosTss() {
+      this.toggleLoading();
+      try {
+        const res = await GetDesconTss();
+        this.descontadosTss = res.data;
+      } catch (error) {
+        // console.error(error);
+      }
+      this.toggleLoading();
+    },
+
+    async loadDeudores() {
+      this.toggleLoading();
+      try {
+        const res = await GetDeud();
+        this.deudores = res.data;
+      } catch (error) {
+        // console.error(error);
+      }
+      this.toggleLoading();
+    },
+
+    async loadResult(empleado: any) {
+      this.toggleLoading();
+      try {
+        const res = await GetResult(empleado);
+        this.result = res.data;
+      } catch (error) {
+        // console.error(error);
+      }
+      this.toggleLoading();
+    },
+
+    async restoreLoadResult(empleado: any) {
+      this.toggleLoading();
+      try {
+        const res = await GetRestoreResult(empleado);
+        this.restoreResult = res.data;
+      } catch (error) {
+        // console.error(error);
+      }
+      this.toggleLoading();
+    },
+
+    async calcResult(incentivado: any) {
+      this.resultIncentivo.empleado = incentivado._id.empleado;
+      this.resultIncentivo.valor = this.calcMonto(incentivado.count);
+      this.resultIncentivo.produccion = incentivado.count;
+    },
+
+    async calcResultTss(descontableTss: any) {
+      this.resultDescontadosTss.empleado = descontableTss.nombre;
+      this.resultDescontadosTss.valor = this.calcMonto(descontableTss.count);
+      this.resultDescontadosTss.produccion = descontableTss.count;
     },
 
     async loadPagos() {
@@ -924,6 +1033,7 @@ export default defineComponent({
     },
 
     async generarNomina() {
+      // await this.showModalMethod()
       //Generar Incentivos
       // await this.generarIncentivos();
 
@@ -949,6 +1059,87 @@ export default defineComponent({
       }
       this.toggleLoading();
       this.estadoLoading = "Cargando...";
+
+      // Cargar Deudores
+      await this.loadDeudores();
+
+      // Generar CxPs por Cada Deudor
+      this.estadoLoading = "Generando Cobros de Préstamos...";
+      this.toggleLoading();
+      for (i = 0; i <= this.deudores.length - 1; i++) {
+        let deudorActual = this.deudores[i].nombre;
+        await this.loadResult({ empleado: deudorActual });
+        this.cxp.empleado = deudorActual;
+        this.cxp.valor = this.result.montoCuotas * -1;
+        this.cxp.userReg = this.$store.state.user.usuario;
+        this.cxp.pagar = false;
+        this.cxp.pago = 0;
+        this.cxp.origen = "Descuento";
+        this.cxp.desc = `PRESTAMO PERSONAL, CUOTA ${
+          this.result.noCuota
+        } (${this.formatNumber(this.result.acumulado)} DE ${this.formatNumber(
+          this.result.monto
+        )})`;
+        this.cxp.fecha = this.nomina.fecha;
+
+        await this.saveCxp();
+      }
+      this.toggleLoading();
+      this.estadoLoading = "Cargando...";
+
+      // Cargar Incentivados
+      await this.loadIncentivados();
+
+      // Generar CxPs por Cada Incentivado
+      this.estadoLoading = "Generando Pagos de Incentivos...";
+      this.toggleLoading();
+      for (i = 0; i <= this.incentivados.result.length - 1; i++) {
+        await this.calcResult(this.incentivados.result[i]);
+
+        this.cxp.empleado = this.resultIncentivo.empleado;
+        this.cxp.valor = this.resultIncentivo.valor;
+        this.cxp.userReg = this.$store.state.user.usuario;
+        this.cxp.pagar = false;
+        this.cxp.pago = 0;
+        this.cxp.origen = "Incentivo";
+        this.cxp.desc = `ALCANCE DE META SEMANAL (PRODUCCION DE) ${this.formatNumber2(
+          this.resultIncentivo.produccion * 50
+        )}`;
+        this.cxp.fecha = this.nomina.fecha;
+
+        if (this.cxp.valor) {
+          await this.saveCxp();
+        }
+      }
+      this.toggleLoading();
+      this.estadoLoading = "Cargando...";
+
+      // // Cargar Descontados TSS
+      // await this.loadDescontadosTss();
+
+      // // Generar CxPs por Cada Descontable de TSS
+      // this.estadoLoading = "Generando Descuentos de TSS...";
+      // this.toggleLoading();
+      // for (i = 0; i <= this.descontadosTss.length - 1; i++) {
+      //   await this.calcResultTss(this.descontadosTss[i]);
+
+      //   this.cxp.empleado = this.resultDescontadosTss.empleado;
+      //   this.cxp.valor = this.resultIncentivo.valor;
+      //   this.cxp.userReg = this.$store.state.user.usuario;
+      //   this.cxp.pagar = false;
+      //   this.cxp.pago = 0;
+      //   this.cxp.origen = "Incentivo";
+      //   this.cxp.desc = `ALCANCE DE META SEMANAL (PRODUCCION DE) ${this.formatNumber2(
+      //     this.resultIncentivo.produccion * 50
+      //   )}`;
+      //   this.cxp.fecha = this.nomina.fecha;
+
+      //   if (this.cxp.valor) {
+      //     await this.saveCxp();
+      //   }
+      // }
+      // this.toggleLoading();
+      // this.estadoLoading = "Cargando...";
 
       // Marcar Cxps para Pagar
       this.documento.fechaInicio = this.nomina.desde;
@@ -990,7 +1181,8 @@ export default defineComponent({
       await this.saveNomina2();
       this.documento2.nomina = this.one.no;
       this.asigNom();
-      this.askGenerarNomina();
+      // this.askGenerarNomina();
+      this.$router.push("/nominas");
     },
 
     valorTotal() {
@@ -1092,6 +1284,20 @@ export default defineComponent({
           await deleteAsalariados(this.nomina);
         } catch (error) {
           //console.error(error);
+        }
+
+        // Eliminar Deudores
+        try {
+          await deleteDeudores(this.nomina);
+        } catch (error) {
+          //console.error(error);
+        }
+
+        await this.loadDeudores();
+        let i;
+        for (i = 0; i <= this.deudores.length - 1; i++) {
+          let deudorActual = this.deudores[i].nombre;
+          await this.restoreLoadResult({ empleado: deudorActual });
         }
 
         // Reestablecer pagos del Rango (Pago:0, pagar: false)

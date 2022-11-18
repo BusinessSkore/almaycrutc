@@ -105,6 +105,12 @@ import JornadaPrintComponent from "../components/Jornada/PrintComponent.vue";
 import JornadaFormComp from "../components/Jornada/FormComp.vue";
 // ----------------------------------------------------------------------------
 
+// Prestamo -------------------------------------------------------------------
+import PrestamoComponent from "../components/Prestamo/PrincipalComponent.vue";
+import PrestamoPrintComponent from "../components/Prestamo/PrintComponent.vue";
+import PrestamoFormComp from "../components/Prestamo/FormComp.vue";
+// ----------------------------------------------------------------------------
+
 // Pago -------------------------------------------------------------------
 import PagoComponent from "../components/Pago/PrincipalComponent.vue";
 import PagoPrintComponent from "../components/Pago/PrintComponent.vue";
@@ -761,6 +767,42 @@ const routes = [
         component: NominaFormComp,
         meta: {
           roles: ["Power User", "Administrador"],
+        },
+      },
+
+      // ----------------------------------------------------------------------------
+
+      // Prestamo --------------------------------------------------------------------
+      {
+        path: "/prestamos",
+        name: "prestamos",
+        component: PrestamoComponent,
+        meta: {
+          roles: ["Power User", "Administrador", "Encargado"],
+        },
+      },
+      {
+        path: "/prestamos/:id",
+        name: "prestamo-details",
+        component: PrestamoFormComp,
+        meta: {
+          roles: ["Power User", "Administrador", "Encargado"],
+        },
+      },
+      {
+        path: "/prestamos2/:id",
+        name: "prestamo-details2",
+        component: PrestamoPrintComponent,
+        meta: {
+          roles: ["Power User", "Administrador", "Encargado"],
+        },
+      },
+      {
+        path: "/prestamos/new",
+        name: "prestamos-form",
+        component: PrestamoFormComp,
+        meta: {
+          roles: ["Power User", "Administrador", "Encargado"],
         },
       },
 

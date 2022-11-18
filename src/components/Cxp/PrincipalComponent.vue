@@ -251,6 +251,7 @@ export default {
         });
       }
     },
+    
     async filterCxpsTwo(catName: string) {
       try {
         const res = await getCxpsTwo(this.criterioTwo);
