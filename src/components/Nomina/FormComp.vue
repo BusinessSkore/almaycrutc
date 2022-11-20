@@ -1,6 +1,4 @@
 <template v-show="!cargando">
-  "this.incentivados": {{ this.incentivados }}<br />
-  "this.resultIncentivo": {{ this.resultIncentivo }}<br />
   <div>
     <div v-if="this.$store.state.user.type == 'Power User'"></div>
     <Navbar />

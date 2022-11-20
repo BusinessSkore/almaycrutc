@@ -1,5 +1,4 @@
 <template v-show="!cargando">
-  <!-- {{ this.jornada }} -->
   <div>
     <Navbar />
     <!-- {{ this.jornada.empleados }} -->
@@ -273,9 +272,14 @@ export default defineComponent({
         alert("Empleado ya Registrado");
       } else {
         this.currentEmpleado.nombre = seguro.nombre;
+        this.currentEmpleado.workingDayIncome = seguro.workingDayIncome;
+        this.currentEmpleado.workingDayValueIncome =
+          seguro.workingDayValueIncome;
         this.jornada.empleados.push({
           nombre: this.currentEmpleado.nombre,
           horas: this.currentEmpleado.horas,
+          generaPago: this.currentEmpleado.workingDayIncome,
+          montoPago: this.currentEmpleado.workingDayValueIncome,
         });
         // this.showModalMethod7();
         this.search = "";
@@ -607,31 +611,36 @@ export default defineComponent({
 
           let i: number;
           for (i = 0; i <= this.jornada.empleados.length - 1; i++) {
-            this.cxp.empleado = this.jornada.empleados[i].nombre;
-            this.cxp.origen = "Jornada";
+            if (this.jornada.empleados[i].generaPago) {
+              this.cxp.empleado = this.jornada.empleados[i].nombre;
+              this.cxp.origen = "Jornada";
+              let workingDayValueIncome = this.jornada.empleados[i].montoPago;
 
-            if (this.jornada.empleados[i].horas == 8) {
-              this.cxp.valor = 600;
-              this.cxp.desc =
-                this.jornada.empleados[i].horas +
-                " HORAS (Jornada Normal Completa)";
-            } else if (this.jornada.empleados[i].horas > 8) {
-              this.cxp.valor =
-                600 + (this.jornada.empleados[i].horas - 8) * 100;
-              this.cxp.desc =
-                this.jornada.empleados[i].horas +
-                " HORAS ( " +
-                (this.jornada.empleados[i].horas - 8) +
-                " HORAS EXTRAS X RD$ 100.00)";
-            } else {
-              this.cxp.valor = (600 / 8) * this.jornada.empleados[i].horas;
-              this.cxp.desc =
-                this.jornada.empleados[i].horas +
-                " HORAS ( - " +
-                (8 - this.jornada.empleados[i].horas) +
-                " HORAS NO LABORADAS X RD$ 75.00)";
+              if (this.jornada.empleados[i].horas == 8) {
+                this.cxp.valor = workingDayValueIncome;
+                this.cxp.desc =
+                  this.jornada.empleados[i].horas +
+                  " HORAS (Jornada Normal Completa)";
+              } else if (this.jornada.empleados[i].horas > 8) {
+                this.cxp.valor =
+                  workingDayValueIncome +
+                  (this.jornada.empleados[i].horas - 8) * 100;
+                this.cxp.desc =
+                  this.jornada.empleados[i].horas +
+                  " HORAS ( " +
+                  (this.jornada.empleados[i].horas - 8) +
+                  " HORAS EXTRAS X RD$ 100.00)";
+              } else {
+                this.cxp.valor =
+                  (workingDayValueIncome / 8) * this.jornada.empleados[i].horas;
+                this.cxp.desc =
+                  this.jornada.empleados[i].horas +
+                  " HORAS ( - " +
+                  (8 - this.jornada.empleados[i].horas) +
+                  " HORAS NO LABORADAS X RD$ 75.00)";
+              }
+              await this.saveCxp();
             }
-            await this.saveCxp();
           }
 
           const res = await createJornada(this.jornada).then(
