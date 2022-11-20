@@ -92,6 +92,12 @@ export const deleteIncentivos = async (
 ): Promise<AxiosResponse> => await axios.post("/cxps/deleteIncentivos", nomina);
 
 //Eliminar Registros segun Filtros
+export const deleteIncentivados = async (
+  nomina: Nomina
+): Promise<AxiosResponse> =>
+  await axios.post("/cxps/deleteIncentivados", nomina);
+
+//Eliminar Registros segun Filtros
 export const deleteAsalariados = async (
   nomina: Nomina
 ): Promise<AxiosResponse> =>

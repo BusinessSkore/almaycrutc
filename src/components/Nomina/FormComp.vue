@@ -1,4 +1,6 @@
 <template v-show="!cargando">
+  "this.incentivados": {{ this.incentivados }}<br />
+  "this.resultIncentivo": {{ this.resultIncentivo }}<br />
   <div>
     <div v-if="this.$store.state.user.type == 'Power User'"></div>
     <Navbar />
@@ -280,6 +282,7 @@ import {
   deleteAsalariados,
   deleteDeudores,
   resetPagos,
+  deleteIncentivados
 } from "@/services/almaycru/Cxp";
 import { servParaPago, servEnPago } from "@/services/almaycru/Cxp";
 import {
@@ -429,7 +432,7 @@ export default defineComponent({
 
     calcAlcance(produccion: number) {
       let alcance;
-      let meta = this.incentivados.parametros.limiteSuperior;
+      let meta = this.incentivados.parametros.meta;
       alcance = produccion / meta;
       return alcance;
     },
@@ -1111,32 +1114,30 @@ export default defineComponent({
 
       //Incentivos por Producción------------------------------------------------------------------------------------------------------------------------------------------------------
 
-      // // Cargar Incentivados
-      // await this.loadIncentivados();
+      // Cargar Incentivados
+      await this.loadIncentivados();
 
       // // Generar CxPs por Cada Incentivado
-      // this.estadoLoading = "Generando Pagos de Incentivos...";
-      // this.toggleLoading();
-      // for (i = 0; i <= this.incentivados.result.length - 1; i++) {
-      //   await this.calcResult(this.incentivados.result[i]);
-
-      //   this.cxp.empleado = this.resultIncentivo.empleado;
-      //   this.cxp.valor = this.resultIncentivo.valor;
-      //   this.cxp.userReg = this.$store.state.user.usuario;
-      //   this.cxp.pagar = false;
-      //   this.cxp.pago = 0;
-      //   this.cxp.origen = "Incentivo";
-      //   this.cxp.desc = `ALCANCE DE META SEMANAL (PRODUCCION DE) ${this.formatNumber2(
-      //     this.resultIncentivo.produccion * 50
-      //   )}`;
-      //   this.cxp.fecha = this.nomina.fecha;
-
-      //   if (this.cxp.valor) {
-      //     await this.saveCxp();
-      //   }
-      // }
-      // this.toggleLoading();
-      // this.estadoLoading = "Cargando...";
+      this.estadoLoading = "Generando Pagos de Incentivos...";
+      this.toggleLoading();
+      for (i = 0; i <= this.incentivados.result.length - 1; i++) {
+        await this.calcResult(this.incentivados.result[i]);
+        this.cxp.empleado = this.resultIncentivo.empleado;
+        this.cxp.valor = this.resultIncentivo.valor;
+        this.cxp.userReg = this.$store.state.user.usuario;
+        this.cxp.pagar = false;
+        this.cxp.pago = 0;
+        this.cxp.origen = "Incentivo";
+        this.cxp.desc = `ALCANCE DE META SEMANAL (PRODUCCION DE ${this.formatNumber2(
+          this.resultIncentivo.produccion * 50
+        )})`;
+        this.cxp.fecha = this.nomina.fecha;
+        if (this.cxp.valor) {
+          await this.saveCxp();
+        }
+      }
+      this.toggleLoading();
+      this.estadoLoading = "Cargando...";
 
       //Descuentos de Seguridad Social------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -1181,7 +1182,8 @@ export default defineComponent({
       this.toggleLoading();
       for (i = 0; i <= this.descontadosSegAdicTss.length - 1; i++) {
         this.cxp.empleado = this.descontadosSegAdicTss[i].nombre;
-        this.cxp.valor = this.descontadosSegAdicTss[i].extraSFSValueOutcome * -1;
+        this.cxp.valor =
+          this.descontadosSegAdicTss[i].extraSFSValueOutcome * -1;
 
         this.cxp.userReg = this.$store.state.user.usuario;
         this.cxp.pagar = false;
@@ -1336,6 +1338,13 @@ export default defineComponent({
         // Eliminar Asalariados
         try {
           await deleteAsalariados(this.nomina);
+        } catch (error) {
+          //console.error(error);
+        }
+
+        // Eliminar Incentivos
+        try {
+          await deleteIncentivados(this.nomina);
         } catch (error) {
           //console.error(error);
         }
