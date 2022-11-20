@@ -8,6 +8,12 @@ import axios from "./axios";
 export const createCxpa = async (cxp: Cxp): Promise<AxiosResponse> =>
   await axios.post("/cxps/Savea", cxp);
 
+// Leer Todos los registros
+export const GetResultTss = async (
+  criterio: any
+): Promise<AxiosResponse<Cxp[]>> =>
+  await axios.post("/cxps/GetResultTss", criterio);
+
 // Crear un Solo Registro
 export const createCxp = async (cxp: Cxp): Promise<AxiosResponse> =>
   await axios.post("/cxps/Save", cxp);
@@ -22,9 +28,8 @@ export const getCxpsTwo = async (
 ): Promise<AxiosResponse<Cxp[]>> => await axios.post("/cxps/gettwo", criterio);
 
 // Leer Todos los registros
-export const GetIncent = async (
-  criterio: any
-): Promise<AxiosResponse<Cxp[]>> => await axios.post("/cxps/GetIncent", criterio);
+export const GetIncent = async (criterio: any): Promise<AxiosResponse<Cxp[]>> =>
+  await axios.post("/cxps/GetIncent", criterio);
 
 //Leer un solo Registro por ID
 export const getCxp = async (id: string): Promise<AxiosResponse<Cxp>> =>
@@ -82,11 +87,14 @@ export const updateOne = async (cxp: Cxp): Promise<AxiosResponse> =>
   await axios.post("/cxps/updateOne", cxp);
 
 //Eliminar Registros segun Filtros
-export const deleteIncentivos = async (nomina: Nomina): Promise<AxiosResponse> =>
-  await axios.post("/cxps/deleteIncentivos", nomina);
+export const deleteIncentivos = async (
+  nomina: Nomina
+): Promise<AxiosResponse> => await axios.post("/cxps/deleteIncentivos", nomina);
 
 //Eliminar Registros segun Filtros
-export const deleteAsalariados = async (nomina: Nomina): Promise<AxiosResponse> =>
+export const deleteAsalariados = async (
+  nomina: Nomina
+): Promise<AxiosResponse> =>
   await axios.post("/cxps/deleteAsalariados", nomina);
 
 //Eliminar Registros segun Filtros

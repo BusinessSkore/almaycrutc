@@ -1,11 +1,6 @@
 <template v-show="!cargando">
-  <!-- {{ { incentivados: this.incentivados } }} -->
-
   <div>
-    <div v-if="this.$store.state.user.type == 'Power User'">
-      <!-- <h1>Incentivos: {{ this.incentivos }}</h1>
-      <h1>Incentivos 2: {{ this.incentivos2 }}</h1> -->
-    </div>
+    <div v-if="this.$store.state.user.type == 'Power User'"></div>
     <Navbar />
     <Transition>
       <div v-if="cargando" class="spin">
@@ -230,7 +225,7 @@
             class="btn btn-warning"
             @click="this.$router.push(`/nominas2/${nomina._id}`)"
           >
-            <i class="fas fa-print"></i> Imprimir
+            <i class="fas fa-print"></i> Imprimir Nómina
           </button>
 
           <button
@@ -248,9 +243,9 @@
           >
             <i class="fas fa-trash-alt"></i> Eliminar
           </button>
-          <button class="btn btn-infor" @click.prevent="checkFunction()">
+          <!-- <button class="btn btn-infor" @click.prevent="checkFunction()">
             <i class="fas fa-check"></i> Verificar
-          </button>
+          </button> -->
         </fieldset>
       </form>
     </div>
@@ -272,6 +267,7 @@ import {
 import { GetAsalar, GetDeud, GetDesconTss } from "@/services/almaycru/Empleado";
 import { GetIncent } from "@/services/almaycru/Cxp";
 import { GetResult, GetRestoreResult } from "@/services/almaycru/Prestamo";
+import { GetResultTss } from "@/services/almaycru/Cxp";
 import { deletebynom } from "@/services/almaycru/Pago";
 import {
   GetPrepagos,
@@ -306,6 +302,7 @@ export default defineComponent({
   },
   data() {
     return {
+      criterioTwo: {} as any,
       pagosID: [],
       incentivos: [],
       incentivos2: [],
@@ -328,6 +325,7 @@ export default defineComponent({
       resultIncentivo: {},
       resultDescontadosTss: {},
       result: {},
+      resultTss: {},
       restoreResult: {},
       prepagos: [],
       // empleados: [] as Empleado[],
@@ -696,6 +694,17 @@ export default defineComponent({
       this.toggleLoading();
     },
 
+    async loadResultTss() {
+      // this.toggleLoading();
+      try {
+        const res = await GetResultTss(this.criterioTwo);
+        this.resultTss = res.data;
+      } catch (error) {
+        // console.error(error);
+      }
+      // this.toggleLoading();
+    },
+
     async loadResult(empleado: any) {
       this.toggleLoading();
       try {
@@ -722,12 +731,6 @@ export default defineComponent({
       this.resultIncentivo.empleado = incentivado._id.empleado;
       this.resultIncentivo.valor = this.calcMonto(incentivado.count);
       this.resultIncentivo.produccion = incentivado.count;
-    },
-
-    async calcResultTss(descontableTss: any) {
-      this.resultDescontadosTss.empleado = descontableTss.nombre;
-      this.resultDescontadosTss.valor = this.calcMonto(descontableTss.count);
-      this.resultDescontadosTss.produccion = descontableTss.count;
     },
 
     async loadPagos() {
@@ -1033,9 +1036,7 @@ export default defineComponent({
     },
 
     async generarNomina() {
-      // await this.showModalMethod()
-      //Generar Incentivos
-      // await this.generarIncentivos();
+      this.showModalMethod();
 
       // Cargar Asalariados
       await this.loadAsalariados();
@@ -1087,43 +1088,18 @@ export default defineComponent({
       this.toggleLoading();
       this.estadoLoading = "Cargando...";
 
-      // Cargar Incentivados
-      await this.loadIncentivados();
+      //Incentivos por Producción------------------------------------------------------------------------------------------------------------------------------------------------------
 
-      // Generar CxPs por Cada Incentivado
-      this.estadoLoading = "Generando Pagos de Incentivos...";
-      this.toggleLoading();
-      for (i = 0; i <= this.incentivados.result.length - 1; i++) {
-        await this.calcResult(this.incentivados.result[i]);
+      // // Cargar Incentivados
+      // await this.loadIncentivados();
 
-        this.cxp.empleado = this.resultIncentivo.empleado;
-        this.cxp.valor = this.resultIncentivo.valor;
-        this.cxp.userReg = this.$store.state.user.usuario;
-        this.cxp.pagar = false;
-        this.cxp.pago = 0;
-        this.cxp.origen = "Incentivo";
-        this.cxp.desc = `ALCANCE DE META SEMANAL (PRODUCCION DE) ${this.formatNumber2(
-          this.resultIncentivo.produccion * 50
-        )}`;
-        this.cxp.fecha = this.nomina.fecha;
-
-        if (this.cxp.valor) {
-          await this.saveCxp();
-        }
-      }
-      this.toggleLoading();
-      this.estadoLoading = "Cargando...";
-
-      // // Cargar Descontados TSS
-      // await this.loadDescontadosTss();
-
-      // // Generar CxPs por Cada Descontable de TSS
-      // this.estadoLoading = "Generando Descuentos de TSS...";
+      // // Generar CxPs por Cada Incentivado
+      // this.estadoLoading = "Generando Pagos de Incentivos...";
       // this.toggleLoading();
-      // for (i = 0; i <= this.descontadosTss.length - 1; i++) {
-      //   await this.calcResultTss(this.descontadosTss[i]);
+      // for (i = 0; i <= this.incentivados.result.length - 1; i++) {
+      //   await this.calcResult(this.incentivados.result[i]);
 
-      //   this.cxp.empleado = this.resultDescontadosTss.empleado;
+      //   this.cxp.empleado = this.resultIncentivo.empleado;
       //   this.cxp.valor = this.resultIncentivo.valor;
       //   this.cxp.userReg = this.$store.state.user.usuario;
       //   this.cxp.pagar = false;
@@ -1140,6 +1116,41 @@ export default defineComponent({
       // }
       // this.toggleLoading();
       // this.estadoLoading = "Cargando...";
+
+      //Descuentos de Seguridad Social------------------------------------------------------------------------------------------------------------------------------------------------------
+
+      // Cargar Descontados TSS
+      await this.loadDescontadosTss();
+
+      // Generar CxPs por Cada Descontable de TSS
+      this.estadoLoading = "Generando Descuentos de TSS...";
+      this.toggleLoading();
+      for (i = 0; i <= this.descontadosTss.length - 1; i++) {
+        this.criterioTwo.empleado = this.descontadosTss[i].nombre;
+        this.criterioTwo.desde = this.nomina.desde;
+        this.criterioTwo.hasta = this.nomina.fecha;
+        await this.loadResultTss();
+        this.cxp.empleado = this.criterioTwo.empleado;
+        this.cxp.valor = this.resultTss.valor * 0.0287 * -1;
+        this.cxp.userReg = this.$store.state.user.usuario;
+        this.cxp.pagar = false;
+        this.cxp.pago = 0;
+        this.cxp.origen = "Descuento";
+        this.cxp.desc = `ADMINISTRADORA DE FONDOS DE PENSIONES`;
+        this.cxp.fecha = this.nomina.fecha;
+
+        if (this.cxp.valor) {
+          await this.saveCxp();
+        }
+
+        this.cxp.valor = this.resultTss.valor * 0.0304 * -1;
+        this.cxp.desc = `SEGURO FAMILIAR DE SALUD`;
+        if (this.cxp.valor) {
+          await this.saveCxp();
+        }
+      }
+      this.toggleLoading();
+      this.estadoLoading = "Cargando...";
 
       // Marcar Cxps para Pagar
       this.documento.fechaInicio = this.nomina.desde;
