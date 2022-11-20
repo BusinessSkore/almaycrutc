@@ -264,7 +264,12 @@ import {
   getPagosNom,
   servAsigPago,
 } from "@/services/almaycru/Pago";
-import { GetAsalar, GetDeud, GetDesconTss } from "@/services/almaycru/Empleado";
+import {
+  GetAsalar,
+  GetDeud,
+  GetDesconTss,
+  GetDesconSegAdiTss,
+} from "@/services/almaycru/Empleado";
 import { GetIncent } from "@/services/almaycru/Cxp";
 import { GetResult, GetRestoreResult } from "@/services/almaycru/Prestamo";
 import { GetResultTss } from "@/services/almaycru/Cxp";
@@ -322,6 +327,7 @@ export default defineComponent({
       deudores: [],
       incentivados: [],
       descontadosTss: [],
+      descontadosSegAdicTss: [],
       resultIncentivo: {},
       resultDescontadosTss: {},
       result: {},
@@ -666,6 +672,17 @@ export default defineComponent({
       try {
         const res = await GetIncent(this.nomina);
         this.incentivados = res.data;
+      } catch (error) {
+        // console.error(error);
+      }
+      this.toggleLoading();
+    },
+
+    async loadDescontadosSegAdicTss() {
+      this.toggleLoading();
+      try {
+        const res = await GetDesconSegAdiTss();
+        this.descontadosSegAdicTss = res.data;
       } catch (error) {
         // console.error(error);
       }
@@ -1038,6 +1055,8 @@ export default defineComponent({
     async generarNomina() {
       this.showModalMethod();
 
+      //Ingresos de Asalariados------------------------------------------------------------------------------------------------------------------------------------------------------
+
       // Cargar Asalariados
       await this.loadAsalariados();
 
@@ -1060,6 +1079,8 @@ export default defineComponent({
       }
       this.toggleLoading();
       this.estadoLoading = "Cargando...";
+
+      //Descuento de Préstamos------------------------------------------------------------------------------------------------------------------------------------------------------
 
       // Cargar Deudores
       await this.loadDeudores();
@@ -1148,6 +1169,28 @@ export default defineComponent({
         if (this.cxp.valor) {
           await this.saveCxp();
         }
+      }
+      this.toggleLoading();
+      this.estadoLoading = "Cargando...";
+
+      // Cargar Descontados Seguro Adicional TSS
+      await this.loadDescontadosSegAdicTss();
+
+      // Generar CxPs por Cada Descontable de Seguro Adicional de TSS
+      this.estadoLoading = "Generando Descuentos de Seguro Adicional TSS...";
+      this.toggleLoading();
+      for (i = 0; i <= this.descontadosSegAdicTss.length - 1; i++) {
+        this.cxp.empleado = this.descontadosSegAdicTss[i].nombre;
+        this.cxp.valor = this.descontadosSegAdicTss[i].extraSFSValueOutcome * -1;
+
+        this.cxp.userReg = this.$store.state.user.usuario;
+        this.cxp.pagar = false;
+        this.cxp.pago = 0;
+        this.cxp.origen = "Descuento";
+        this.cxp.desc = "SEGURO FAMILIAR DE SALUD, DEPENDIENTE ADICIONAL";
+        this.cxp.fecha = this.nomina.fecha;
+
+        await this.saveCxp();
       }
       this.toggleLoading();
       this.estadoLoading = "Cargando...";

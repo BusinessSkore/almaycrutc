@@ -51,6 +51,11 @@ export const eliminateEmpleados = async (
 
 //Reportes----------------------------------------------------------------------------------------------------
 
+// Obtener Empleados Descontables de Seguro Adicional TSS para Nómina
+
+export const GetDesconSegAdiTss = async (): Promise<AxiosResponse<Empleado[]>> =>
+  await axios.get("/empleados/GetDesconSegAdiTssAct");
+
 // Obtener Empleados Descontables de TSS para Nómina
 
 export const GetDesconTss = async (): Promise<AxiosResponse<Empleado[]>> =>
