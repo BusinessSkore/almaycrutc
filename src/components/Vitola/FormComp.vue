@@ -36,6 +36,7 @@
                     <option>GRAN TORO</option>
                     <option>CHURCHILL</option>
                     <option>PETIT CHURCHILL</option>
+                    <option>SHORT TORO</option>
                   </select>
                 </div>
                 <div>

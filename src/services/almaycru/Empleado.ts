@@ -66,6 +66,10 @@ export const GetDesconTss = async (): Promise<AxiosResponse<Empleado[]>> =>
 export const GetDeud = async (): Promise<AxiosResponse<Empleado[]>> =>
   await axios.get("/empleados/GetDeudAct");
 
+// Obtener Empleados Que no Generan por Producción
+export const GetNoProd = async (): Promise<AxiosResponse<Empleado[]>> =>
+  await axios.get("/empleados/GetNoProdAct");
+
 // Obtener Empleados Asalariados para Nómina
 
 export const GetAsalar = async (): Promise<AxiosResponse<Empleado[]>> =>

@@ -1,6 +1,4 @@
 <template v-show="!cargando">
-  <!-- {{ this.$route.fullPath }} -->
-  <!-- {{this.modoForm}} -->
   <Transition>
     <div>
       <Navbar />
@@ -937,6 +935,15 @@ export default defineComponent({
       this.empleado.modalidad = "Jornalero";
       this.empleado.metodoPago = "Efectivo";
       this.empleado.status = "Activo";
+      this.empleado.productionIncome = false;
+      this.empleado.workingDayIncome = false;
+      this.empleado.workingDayValueIncome = 0;
+      this.empleado.salaryIncome = false;
+      this.empleado.salaryAmountIncome = 0;
+      this.empleado.tssOutcome = false;
+      this.empleado.extraSFSOutcome = false;
+      this.empleado.extraSFSValueOutcome = 0;
+      this.empleado.loanOutcome = false;
     },
 
     async loadOneEmpleado() {

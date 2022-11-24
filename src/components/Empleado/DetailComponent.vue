@@ -110,7 +110,6 @@
             >
               <i class="fas fa-trash-alt"></i> Eliminar
             </button>
-            
           </fieldset>
         </form>
       </div>

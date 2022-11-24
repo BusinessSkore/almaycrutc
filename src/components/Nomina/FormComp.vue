@@ -265,6 +265,7 @@ import {
   servAsigPago,
 } from "@/services/almaycru/Pago";
 import {
+  GetNoProd,
   GetAsalar,
   GetDeud,
   GetDesconTss,
@@ -280,7 +281,7 @@ import {
   deleteAsalariados,
   deleteDeudores,
   resetPagos,
-  deleteIncentivados
+  deleteIncentivados,
 } from "@/services/almaycru/Cxp";
 import { servParaPago, servEnPago } from "@/services/almaycru/Cxp";
 import {
@@ -325,6 +326,7 @@ export default defineComponent({
       nextNo0: Number,
 
       asalariados: [],
+      noProd: [],
       deudores: [],
       incentivados: [],
       descontadosTss: [],
@@ -655,6 +657,17 @@ export default defineComponent({
       document.getElementById(this.campoFocus).focus();
       this.toggleAlert();
       // this.estadoLoading = "Cargando...";
+    },
+
+    async loadNoProduccion() {
+      this.toggleLoading();
+      try {
+        const res = await GetNoProd();
+        this.noProd = res.data;
+      } catch (error) {
+        // console.error(error);
+      }
+      this.toggleLoading();
     },
 
     async loadAsalariados() {
@@ -1055,6 +1068,14 @@ export default defineComponent({
 
     async generarNomina() {
       this.showModalMethod();
+
+      // Eliminar Ingresos por Producción a los que no aplican-----------------------------------------------------------------------------------------------------------------------
+      
+      // Cargar los que no Aplican para ingresos por producción
+      await this.loadNoProduccion();
+
+      // Eliminar Cxp de cada empleado que no aplica para ingresos por producción
+      
 
       //Ingresos de Asalariados------------------------------------------------------------------------------------------------------------------------------------------------------
 

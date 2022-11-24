@@ -1,7 +1,4 @@
 <template v-show="!cargando">
-  <!-- {{ this.vitolas }} -->
-  <!-- {{ this.vitolaSelected }}<br/> -->
-  <!-- {{ this.cxp }} -->
   <div>
     <div>
       <Navbar />
@@ -322,6 +319,9 @@ export default defineComponent({
   },
 
   methods: {
+    pagarPeg() {
+      alert("it changed");
+    },
     async saveCxp() {
       // this.toggleLoading();
       try {
@@ -600,10 +600,15 @@ export default defineComponent({
           this.cxp.pago = 0;
           this.cxp.fecha = this.rueda.fecha;
           this.cxp.origen = "Producción";
-          this.cxp.empleado = this.rueda.empleadoEmpunero;
-          await this.saveCxp();
-          this.cxp.empleado = this.rueda.empleadoPegador;
-          await this.saveCxp();
+          if (this.pagarEmpunero) {
+            this.cxp.empleado = this.rueda.empleadoEmpunero;
+            await this.saveCxp();
+          }
+
+          if (this.pagarPegador) {
+            this.cxp.empleado = this.rueda.empleadoPegador;
+            await this.saveCxp();
+          }
           const res = await createRueda(this.rueda).then(
             (res) => {
               this.error = this.respuesta = res.data.title;
