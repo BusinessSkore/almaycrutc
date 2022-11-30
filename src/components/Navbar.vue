@@ -12,7 +12,7 @@
         >
 
         <label class="versionNumber"
-          ><span class="version">V 6.9.0</span></label
+          ><span class="version">V 7.2.0</span></label
         >
 
         <label class="name" @click="this.hamburger()" for="btn-modal"
@@ -202,6 +202,18 @@
           ><i class="fas fa-file-invoice-dollar"></i> Nóminas</a
         >
         <!-- End Option -->
+        <!-- Start Option -->
+        <a
+          v-if="
+            this.$store.state.user.type == 'Power User' ||
+              this.$store.state.user.type == 'Administrador'
+          "
+          class="navbar-option"
+          @click="this.hamburger('Activos')"
+          href="#"
+          ><i class="fas fa-boxes"></i> Activos</a
+        >
+        <!-- End Option -->
       </nav>
 
       <nav>
@@ -240,6 +252,9 @@ export default defineComponent({
   methods: {
     hamburger(texto: string) {
       switch (texto) {
+        case "Activos":
+          this.$router.push("/activos");
+          break;
         case "Prestamos":
           this.$router.push("/prestamos");
           break;
@@ -448,9 +463,9 @@ li {
 }
 
 /* nav { */
-  /* position: fixed; */
-  /* width: 100%; */
-  /* left: 0; */
-  /* top: 0; */
+/* position: fixed; */
+/* width: 100%; */
+/* left: 0; */
+/* top: 0; */
 /* } */
 </style>

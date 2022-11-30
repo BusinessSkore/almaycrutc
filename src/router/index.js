@@ -118,6 +118,13 @@ import PagoPrintSeriesComponent from "../components/Pago/PrintSeriesComponent.vu
 import PagoFormComp from "../components/Pago/FormComp.vue";
 // ----------------------------------------------------------------------------
 
+// Activo -------------------------------------------------------------------
+import ActivoComponent from "../components/Activo/PrincipalComponent.vue";
+import ActivoPrintComponent from "../components/Activo/PrintComponent.vue";
+import ActivoPrintSeriesComponent from "../components/Activo/PrintSeriesComponent.vue";
+import ActivoFormComp from "../components/Activo/FormComp.vue";
+// ----------------------------------------------------------------------------
+
 // Nomina -------------------------------------------------------------------
 import NominaComponent from "../components/Nomina/PrincipalComponent.vue";
 import NominaPrintComponent from "../components/Nomina/PrintComponent.vue";
@@ -730,6 +737,50 @@ const routes = [
         path: "/pagos/new",
         name: "pagos-form",
         component: PagoFormComp,
+        meta: {
+          roles: ["Power User", "Administrador"],
+        },
+      },
+
+      // ----------------------------------------------------------------------------
+
+      // Activo --------------------------------------------------------------------
+      {
+        path: "/activos",
+        name: "activos",
+        component: ActivoComponent,
+        meta: {
+          roles: ["Power User", "Administrador"],
+        },
+      },
+      {
+        path: "/activos/:id",
+        name: "activo-details",
+        component: ActivoFormComp,
+        meta: {
+          roles: ["Power User", "Administrador", "Encargado"],
+        },
+      },
+      {
+        path: "/activos2/:id",
+        name: "activo-details2",
+        component: ActivoPrintComponent,
+        meta: {
+          roles: ["Power User", "Administrador", "Encargado"],
+        },
+      },
+      {
+        path: "/activosSeries/:id",
+        name: "activo-detailsSeries",
+        component: ActivoPrintSeriesComponent,
+        meta: {
+          roles: ["Power User", "Administrador", "Encargado"],
+        },
+      },
+      {
+        path: "/activos/new",
+        name: "activos-form",
+        component: ActivoFormComp,
         meta: {
           roles: ["Power User", "Administrador"],
         },
