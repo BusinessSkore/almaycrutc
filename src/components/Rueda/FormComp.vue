@@ -600,15 +600,15 @@ export default defineComponent({
           this.cxp.pago = 0;
           this.cxp.fecha = this.rueda.fecha;
           this.cxp.origen = "Producción";
-          if (this.pagarEmpunero) {
+          // if (this.pagarEmpunero) {
             this.cxp.empleado = this.rueda.empleadoEmpunero;
             await this.saveCxp();
-          }
+          // }
 
-          if (this.pagarPegador) {
+          // if (this.pagarPegador) {
             this.cxp.empleado = this.rueda.empleadoPegador;
             await this.saveCxp();
-          }
+          // }
           const res = await createRueda(this.rueda).then(
             (res) => {
               this.error = this.respuesta = res.data.title;
